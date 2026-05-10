@@ -59,6 +59,17 @@ pnpm -r --version
 dotnet --info
 ```
 
+## Testes da T-01
+
+```powershell
+pnpm run test:t01
+```
+
+Cobertura atual da T-01:
+- smoke de estrutura do scaffold
+- contrato do script `bootstrap-backend.ps1`
+- verificacao de fail-fast para solution ausente ou vazia
+
 ## Proximas tasks
 
 - `T-02`: shell inicial React/Tauri
