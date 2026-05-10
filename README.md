@@ -46,6 +46,12 @@ Ou, para executar os dois:
 pnpm run bootstrap
 ```
 
+### Comportamento esperado na T-01
+
+- `bootstrap:frontend` prepara o workspace `pnpm` do frontend.
+- `bootstrap:backend` faz uma validacao explicita e **falha de forma intencional** enquanto a solution ainda nao contiver projetos reais.
+- Esse fail-fast evita um falso positivo de bootstrap no backend antes da `T-03`.
+
 ## Gate da T-01
 
 ```powershell

@@ -2,11 +2,13 @@
 
 Status: in-progress
 Criado: 2026-05-09
-Branch: `feature/v1-oraculo-local-first` -> `develop`
+Branch: `feature/v1-oraculo-local-first` -> `main`
 PRD: `PRD-fom-oracle.md`
 Tech Solution: `.catalog/architecture.md`
 
 Todas as tasks abaixo foram fatiadas com meta de revisão humana de ate `300 LOC` por task, com limite tolerável de `500 LOC`. Se uma implementação extrapolar isso, a task deve ser quebrada antes de codar.
+
+Excecao registrada para `T-01`: como o repositorio git foi inicializado somente depois das etapas de PRD, arquitetura e breakdown, esta primeira PR tambem precisou persistir os artefatos-base ja aprovados (`PRD`, `.catalog/`, `.milestones/` e governanca) junto com o scaffold inicial. Essa excecao vale apenas para a T-01; as proximas tasks devem voltar ao limite normal de revisabilidade.
 
 ## User Stories
 

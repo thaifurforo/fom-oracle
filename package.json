@@ -5,7 +5,7 @@
   "scripts": {
     "bootstrap": "pnpm run bootstrap:frontend && pnpm run bootstrap:backend",
     "bootstrap:frontend": "pnpm install --dir frontend",
-    "bootstrap:backend": "dotnet restore FomOracle.sln",
+    "bootstrap:backend": "powershell -ExecutionPolicy Bypass -File ./scripts/bootstrap-backend.ps1",
     "check:env": "pnpm -r --version && dotnet --info"
   }
 }
