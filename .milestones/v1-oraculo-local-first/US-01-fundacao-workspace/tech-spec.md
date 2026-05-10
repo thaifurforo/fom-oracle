@@ -1,7 +1,7 @@
 # Spec Tecnica — US-01 Fundacao do workspace e shell local
 
 **Milestone:** v1-oraculo-local-first
-**Status:** ⏳ Pendente
+**Status:** 🔄 Em andamento (T-01 ✅)
 
 ## Contexto
 
@@ -19,6 +19,7 @@ Esta story estabelece a espinha dorsal do monorepo, do shell Tauri/React e do si
 ## Tarefas
 
 ### T-01 — Scaffolding do workspace e solucao multi-app
+**Status:** ✅ Concluída em 2026-05-09
 **Descricao:** criar estrutura raiz do monorepo, solution .NET, workspace frontend e scripts de desenvolvimento.
 **Critérios de aceite relacionados:** CA-01
 **Where:** raiz, `frontend/`, `backend/`, solution `.sln`

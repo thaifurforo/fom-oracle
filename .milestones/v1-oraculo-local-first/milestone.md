@@ -12,7 +12,7 @@ Excecao registrada para `T-01`: como o repositorio git foi inicializado somente 
 
 ## User Stories
 
-- [ ] US-01: Fundacao do workspace e shell local (T-01, T-02, T-03, T-04, T-05)
+- [ ] US-01: Fundacao do workspace e shell local (T-01 ✅, T-02, T-03, T-04, T-05)
 - [ ] US-02: Descoberta de saves e selecao do save ativo (T-06, T-07, T-08, T-09)
 - [ ] US-03: Atualizacao de save e snapshots normalizados (T-10, T-11, T-12, T-13)
 - [ ] US-04: Painel consolidado e home estrategica (T-14, T-15, T-16)

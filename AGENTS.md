@@ -8,6 +8,9 @@ FOM Oracle
 - Arquitetura: [.catalog/architecture.md](/F:/Users/thaif/Documents/programacao/fom-oracle/.catalog/architecture.md)
 - Stack: [.catalog/stack.md](/F:/Users/thaif/Documents/programacao/fom-oracle/.catalog/stack.md)
 - Domínio: [.catalog/domain.md](/F:/Users/thaif/Documents/programacao/fom-oracle/.catalog/domain.md)
+- Funcionalidades: [.catalog/features.md](/F:/Users/thaif/Documents/programacao/fom-oracle/.catalog/features.md)
+- Convenções: [.catalog/conventions.md](/F:/Users/thaif/Documents/programacao/fom-oracle/.catalog/conventions.md)
+- Preocupações: [.catalog/concerns.md](/F:/Users/thaif/Documents/programacao/fom-oracle/.catalog/concerns.md)
 
 ## Diretriz arquitetural obrigatória
 
