@@ -42,7 +42,7 @@ Describe 'T-01 scaffold' {
             $packageJsonPath = Join-Path $repoRoot 'package.json'
             $packageJson = Get-Content -LiteralPath $packageJsonPath -Raw | ConvertFrom-Json
 
-            $expectedScript = 'pwsh -ExecutionPolicy Bypass -File ./scripts/run-t01-tests.ps1'
+            $expectedScript = 'pwsh -NoProfile -ExecutionPolicy Bypass -File ./scripts/run-t01-tests.ps1'
             if ($packageJson.scripts.'test:t01' -ne $expectedScript) {
                 throw "Expected test:t01 script to be '$expectedScript'."
             }

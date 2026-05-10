@@ -6,8 +6,8 @@
   "scripts": {
     "bootstrap": "pnpm run bootstrap:frontend && pnpm run bootstrap:backend",
     "bootstrap:frontend": "pnpm --dir frontend install",
-    "bootstrap:backend": "pwsh -ExecutionPolicy Bypass -File ./scripts/bootstrap-backend.ps1",
+    "bootstrap:backend": "pwsh -NoProfile -ExecutionPolicy Bypass -File ./scripts/bootstrap-backend.ps1",
     "check:env": "pnpm -r --version && dotnet --info",
-    "test:t01": "pwsh -ExecutionPolicy Bypass -File ./scripts/run-t01-tests.ps1"
+    "test:t01": "pwsh -NoProfile -ExecutionPolicy Bypass -File ./scripts/run-t01-tests.ps1"
   }
 }
