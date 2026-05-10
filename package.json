@@ -2,11 +2,12 @@
   "name": "fom-oracle",
   "private": true,
   "version": "0.1.0",
+  "packageManager": "pnpm@11.0.9",
   "scripts": {
     "bootstrap": "pnpm run bootstrap:frontend && pnpm run bootstrap:backend",
     "bootstrap:frontend": "pnpm install --dir frontend",
-    "bootstrap:backend": "powershell -ExecutionPolicy Bypass -File ./scripts/bootstrap-backend.ps1",
+    "bootstrap:backend": "pwsh -ExecutionPolicy Bypass -File ./scripts/bootstrap-backend.ps1",
     "check:env": "pnpm -r --version && dotnet --info",
-    "test:t01": "powershell -ExecutionPolicy Bypass -File ./scripts/run-t01-tests.ps1"
+    "test:t01": "pwsh -ExecutionPolicy Bypass -File ./scripts/run-t01-tests.ps1"
   }
 }

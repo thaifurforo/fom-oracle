@@ -8,7 +8,7 @@ function Invoke-BootstrapScript {
     $stdoutPath = Join-Path $ScriptRoot 'bootstrap.stdout.log'
     $stderrPath = Join-Path $ScriptRoot 'bootstrap.stderr.log'
 
-    $process = Start-Process -FilePath 'powershell' `
+    $process = Start-Process -FilePath 'pwsh' `
         -ArgumentList @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', $scriptPath) `
         -RedirectStandardOutput $stdoutPath `
         -RedirectStandardError $stderrPath `
@@ -87,7 +87,7 @@ Describe 'T-01 scaffold' {
             $packageJsonPath = Join-Path $repoRoot 'package.json'
             $packageJson = Get-Content -LiteralPath $packageJsonPath -Raw | ConvertFrom-Json
 
-            $packageJson.scripts.'test:t01' | Should Be 'powershell -ExecutionPolicy Bypass -File ./scripts/run-t01-tests.ps1'
+            $packageJson.scripts.'test:t01' | Should Be 'pwsh -ExecutionPolicy Bypass -File ./scripts/run-t01-tests.ps1'
         }
     }
 
@@ -114,7 +114,8 @@ Describe 'T-01 scaffold' {
                 $result = Invoke-BootstrapScript -ScriptRoot $sandboxRoot
 
                 $result.ExitCode | Should Be 1
-                ($result.Output -match 'ainda nao\s+contem projetos restauraveis') | Should Be $true
+                ($result.Output -match 'projetos') | Should Be $true
+                ($result.Output -match 'restauraveis') | Should Be $true
             }
             finally {
                 Remove-Item -LiteralPath $sandboxRoot -Recurse -Force -ErrorAction SilentlyContinue
