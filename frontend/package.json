@@ -1,0 +1,12 @@
+{
+  "name": "@fom-oracle/frontend",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "echo Frontend shell sera implementado na T-02",
+    "build": "echo Frontend build sera implementado na T-02",
+    "lint": "echo Frontend lint sera implementado na T-04",
+    "test": "echo Frontend tests serao implementados em tasks posteriores"
+  }
+}

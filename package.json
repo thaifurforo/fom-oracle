@@ -1,0 +1,11 @@
+{
+  "name": "fom-oracle",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "bootstrap": "pnpm run bootstrap:frontend && pnpm run bootstrap:backend",
+    "bootstrap:frontend": "pnpm install --dir frontend",
+    "bootstrap:backend": "dotnet restore FomOracle.sln",
+    "check:env": "pnpm -r --version && dotnet --info"
+  }
+}
