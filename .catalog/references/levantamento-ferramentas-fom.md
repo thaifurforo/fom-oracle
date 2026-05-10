@@ -97,9 +97,9 @@ Um aspecto fundamental de softwares como o Travellers Rest Planner é a visualiz
 
 O Mistria-Editor é uma ferramenta executável (.exe) que permite carregar o arquivo farm.json para editar a disposição dos objetos na fazenda fora do jogo.13 Esta ferramenta é essencial para:
 
-1. **Posicionamento de Estruturas**: Planejár o local de grandes celeiros (Barns) e galinheiros (Coops) que podem ser expandidos até o tamanho Extra-Large.22  
+1. **Posicionamento de Estruturas**: planejar o local de grandes celeiros (Barns) e galinheiros (Coops) que podem ser expandidos até o tamanho Extra-Large.22  
 2. **Zoneamento Eficiente**: Criar zonas distintas para plantio, pecuária e estações de artesanato, economizando tempo de movimentação in-game.2  
-3. **Gerenciamento de Obstáculos**: Visualizar áreas que o jogador ainda não desbloqueou, como a expansão a leste do rio, para planejár o crescimento futuro da infraestrutura.25
+3. **Gerenciamento de Obstáculos**: Visualizar áreas que o jogador ainda não desbloqueou, como a expansão a leste do rio, para planejar o crescimento futuro da infraestrutura.25
 
 Existem também planejadores baseados em planilhas criados pela comunidade (como os de u/urlovebot e u/L3monZ3sty) que funcionam como maquetes digitais. Eles incluem contadores de materiais para caminhos de pedra, cercas e árvores frutíferas, permitindo que o jogador saiba exatamente quantos recursos coletar antes de iniciar uma reforma massiva na fazenda.25
 

@@ -82,7 +82,7 @@ Quer completar coleções, conquistas, relacionamentos, animais raros, receitas 
 **Motivações**
 - Completar conteúdo com menos retrabalho.
 - Evitar perder oportunidades sazonais.
-- Planejár dependências de longo prazo.
+- planejar dependências de longo prazo.
 
 **Frustrações**
 - Falta de visão consolidada do que falta.
