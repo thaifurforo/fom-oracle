@@ -393,14 +393,48 @@ RF/RNF atendido: RF-11, RNF-10, RNF-11, RNF-15.
 | Incompatibilidade com saves modificados por mods | Médio | Sinalizar status partial/unsupported e degradar com elegância |
 | Persistência local corrompida | Baixo | Migrações simples, backup leve e rebuild de estado derivável |
 
-## 10. Configuração de Sensores Computacionais
+## 10. Pipeline de CI/CD
+
+### Workflows
+
+| Workflow | Gatilho | Ações |
+|---|---|---|
+| `ci.yml` | PR para `main`/`develop`; push para `develop` | Setup Node/pnpm/.NET, check-env, testes T-01 (Pester), frontend lint/build, `pnpm audit` |
+| `gc.yml` | Semanal (domingo 06:00 UTC) | Varre TODO/FIXME/HACK no código, abre issue de limpeza |
+| Futuro: deploy | PR → main | Deploy automático em staging + aprovação manual para produção (após T-03) |
+
+### Runner
+
+`ubuntu-latest` + `pwsh` (PowerShell Core) para scripts de teste cross-platform.
+
+### Sensores por Camada
+
+| Camada | Onde | O que roda |
+|---|---|---|
+| 1 — Pré-commit | local (dev) | Lint + type-check + testes unitários (quando T-04 existir) |
+| 2 — CI por PR | `ci.yml` | Setup + T-01 smoke + lint/build placeholder + security audit |
+| 3 — CI pós-merge | `ci.yml` (push develop) | Mesmo que PR |
+| 4 — Agendado | `gc.yml` (semanal) | Scan TODO/FIXME, abre issue de limpeza |
+
+### Gates futuros (após T-03/T-04)
+
+- `dotnet build` e `dotnet test` com cobertura
+- ESLint com regras de boundaries
+- NetArchTest estrutural
+- Testes de contrato da Local API
+- Mutation testing (semanal)
+- Docker multi-stage build
+
+## 11. Configuração de Sensores Computacionais
 
 ### Feedforward
 - [ ] Linter com regras de camada e mensagens de remediação inline no frontend
 - [ ] TypeScript strict mode
 - [ ] .NET nullable + warnings as errors nas camadas centrais
 - [ ] NetArchTest para bloqueio de dependências inválidas
-- [ ] AGENTS.md apontando para `.catalog/`
+- [x] AGENTS.md apontando para `.catalog/`
+- [x] CI pipeline com gates de validação
+- [x] GC semanal automatizado
 
 ### Feedback
 - [ ] Testes unitários para parser, extratores e recommendation service
@@ -410,7 +444,7 @@ RF/RNF atendido: RF-11, RNF-10, RNF-11, RNF-15.
 - [ ] Security scan de dependências em CI
 - [ ] Mutation testing do motor de recomendação em pipeline semanal
 
-## 11. Rastreabilidade RF → Componentes
+## 12. Rastreabilidade RF → Componentes
 
 | RF | Componentes principais |
 |---|---|

@@ -1,0 +1,58 @@
+name: Garbage Collection
+
+on:
+  schedule:
+    - cron: 0 6 * * 0
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Scan for TODO and FIXME comments
+        id: scan-todos
+        shell: pwsh
+        run: |
+          $results = @()
+          Get-ChildItem -Recurse -Include *.cs,*.ts,*.tsx,*.ps1,*.md,*.json,*.yaml,*.yml |
+            Where-Object { $_.FullName -notmatch 'node_modules|\.git|bin|obj' } |
+            Select-String -Pattern 'TODO|FIXME|HACK|XXX' |
+            ForEach-Object {
+              $results += "  - $($_.FileName):$($_.LineNumber) `"$($_.Line.Trim())`""
+            }
+
+          if ($results.Count -gt 0) {
+            $body = @"
+## Garbage Collection Scan - $(Get-Date -Format 'yyyy-MM-dd')
+
+Itens encontrados marcados com TODO/FIXME/HACK/XXX:
+
+$($results -join "`n")
+
+---
+*Gerado automaticamente pelo workflow GC semanal.*
+"@
+            $body | Out-File -FilePath $env:RUNNER_TEMP/gc-body.md -Encoding utf8
+            "$($results.Count) itens encontrados" | Out-File -FilePath $env:RUNNER_TEMP/gc-count.txt
+          } else {
+            "0" | Out-File -FilePath $env:RUNNER_TEMP/gc-count.txt
+          }
+
+      - name: Create cleanup issue
+        shell: pwsh
+        run: |
+          $count = Get-Content $env:RUNNER_TEMP/gc-count.txt
+          if ($count -ne "0") {
+            $body = Get-Content $env:RUNNER_TEMP/gc-body.md -Raw
+            gh issue create `
+              --title "GC: limpeza semanal ($(Get-Date -Format 'yyyy-MM-dd'))" `
+              --body "$body" `
+              --label "chore,gc"
+          } else {
+            Write-Host "Nenhum item encontrado. Pulando criacao de issue."
+          }
+        env:
+          GH_TOKEN: ${{ github.token }}

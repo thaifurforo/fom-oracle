@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main, develop]
+  push:
+    branches: [develop]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: latest
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
+
+      - name: Check environment tools
+        run: pnpm run check:env
+
+      - name: Install Pester for scaffold tests
+        shell: pwsh
+        run: Install-Module Pester -Force -SkipPublisherCheck
+
+      - name: Run T-01 scaffold smoke tests
+        shell: pwsh
+        run: pnpm run test:t01
+
+      - name: Frontend lint
+        run: pnpm --dir frontend lint
+        continue-on-error: true
+
+      - name: Frontend build
+        run: pnpm --dir frontend build
+        continue-on-error: true
+
+      - name: Security audit
+        run: pnpm --dir frontend audit
+        continue-on-error: true
