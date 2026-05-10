@@ -32,6 +32,7 @@ Este repositório está no scaffolding inicial da `T-01`. O objetivo desta etapa
 
 - `pnpm`
 - `.NET SDK`
+- PowerShell 7 / PowerShell Core (`pwsh`)
 
 ### Comandos
 

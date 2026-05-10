@@ -12,7 +12,7 @@ Describe 'T-01 scaffold' {
             foreach ($relativePath in $expectedFiles) {
                 $fullPath = Join-Path $repoRoot $relativePath
 
-                if (-not (Test-Path -LiteralPath $fullPath)) {
+                if (-not (Test-Path -LiteralPath $fullPath -PathType Leaf)) {
                     throw "Expected root file '$relativePath' to exist."
                 }
             }

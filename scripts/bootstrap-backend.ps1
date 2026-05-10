@@ -20,3 +20,6 @@ if ($projectMatches.Count -eq 0) {
 }
 
 dotnet restore $solutionPath
+if ($LASTEXITCODE -ne 0) {
+    throw "Bootstrap abortado: dotnet restore falhou com exit code $LASTEXITCODE."
+}
