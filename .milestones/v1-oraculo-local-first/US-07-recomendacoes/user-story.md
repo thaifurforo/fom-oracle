@@ -1,4 +1,4 @@
-# [US-07] — Recomendacoes estrategicas explicaveis
+# [US-07] — Recomendações estratégicas explicáveis
 
 **Milestone:** v1-oraculo-local-first
 **Status:** ⏳ Pendente
@@ -6,20 +6,20 @@
 ## Historia
 
 Como jogador,
-quero receber recomendacoes estrategicas explicaveis baseadas no save e nas prioridades,
+quero receber recomendações estratégicas explicáveis baseadas no save e nas prioridades,
 para que eu saiba o que fazer naquele dia.
 
-## Criterios de Aceite
+## Critérios de Aceite
 
-- **CA-01:** o backend gera uma lista ordenada de recomendacoes com categoria e justificativa humana.
-- **CA-02:** a UI exibe as recomendacoes atualizadas quando o save ou as prioridades mudam.
+- **CA-01:** o backend gera uma lista ordenada de recomendações com categoria e justificativa humana.
+- **CA-02:** a UI exibe as recomendações atualizadas quando o save ou as prioridades mudam.
 
 ## Fora do escopo
 
-- Otimizacao perfeita de todos os sistemas do jogo.
-- Score tecnico exposto para o usuario.
+- Otimização perfeita de todos os sistemas do jogo.
+- Score técnico exposto para o usuário.
 
 ## Referencias
 
 - Milestone: `../milestone.md`
-- Spec tecnica: `./tech-spec.md`
+- Spec técnica: `./tech-spec.md`

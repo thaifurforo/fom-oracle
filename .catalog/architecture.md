@@ -285,7 +285,7 @@ Response 200:
 
 ```mermaid
 sequenceDiagram
-  participant U as Usuario
+  participant U as Usuário
   participant UI as React UI
   participant API as .NET Sidecar
   participant FS as Filesystem
@@ -305,7 +305,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-  participant U as Usuario
+  participant U as Usuário
   participant UI as React UI
   participant API as .NET Sidecar
   participant Parser as Parsing Service
@@ -317,19 +317,19 @@ sequenceDiagram
   API->>Repo: Ler arquivo atual
   Repo-->>Parser: Conteudo bruto
   Parser-->>API: Snapshot normalizado
-  API->>Rec: Gerar recomendacoes
+  API->>Rec: Gerar recomendações
   Rec-->>API: Batch ranqueado
   API-->>UI: Snapshot + status
   UI->>API: GET /dashboard
   UI->>API: POST /recommendations/generate
-  API-->>UI: Painel atualizado + recomendacoes
+  API-->>UI: Painel atualizado + recomendações
 ```
 
 ### Fluxo 3 — Reordenar prioridades
 
 ```mermaid
 sequenceDiagram
-  participant U as Usuario
+  participant U as Usuário
   participant UI as React UI
   participant API as .NET Sidecar
   participant Pref as Preference Service
@@ -342,7 +342,7 @@ sequenceDiagram
   UI->>API: POST /recommendations/generate
   API->>Rec: Recalcular com mesmo snapshot
   Rec-->>API: Novo batch
-  API-->>UI: Novas recomendacoes
+  API-->>UI: Novas recomendações
 ```
 
 ## 8. Decisões de Arquitetura (ADRs)

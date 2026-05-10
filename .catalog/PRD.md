@@ -24,7 +24,7 @@ Há espaço para um produto que leia o save local do jogador, interprete seu con
 
 ### Quem perde sem isso
 - Jogadores que querem otimizar progresso sem consultar várias fontes paralelas.
-- Completionists que precisam rastrear dependências e janelas sazonais.
+- Completionists que precisam rastrear dependências e jánelas sazonais.
 - Jogadores que retornam a saves antigos e não sabem qual a melhor ação do dia.
 - Jogadores que alternam frequentemente entre prioridades conflitantes.
 
@@ -82,7 +82,7 @@ Quer completar coleções, conquistas, relacionamentos, animais raros, receitas 
 **Motivações**
 - Completar conteúdo com menos retrabalho.
 - Evitar perder oportunidades sazonais.
-- Planejar dependências de longo prazo.
+- Planejár dependências de longo prazo.
 
 **Frustrações**
 - Falta de visão consolidada do que falta.
@@ -102,7 +102,7 @@ Ficou um tempo sem jogar e precisa entender rapidamente o contexto atual do save
 - Contexto fragmentado entre sistemas.
 - Paralisia na tomada de decisão.
 
-### Persona 4 — Planejador Flexível
+### Persona 4 — Planejádor Flexível
 Muda de foco com frequência e quer reordenar prioridades rapidamente.
 
 **Motivações**
@@ -207,7 +207,7 @@ O sistema deve combinar dados do save com uma base estruturada de conhecimento d
 
 **Critérios de aceite**
 - [ ] CA-33: o cálculo das recomendações usa dados além do conteúdo bruto do save quando necessário.
-- [ ] CA-34: a fonte prioritária de dados estruturais do jogo é a instalação local e os arquivos do próprio jogo, quando tecnicamente extraíveis com confiabilidade.
+- [ ] CA-34: a fonte prioritária de dados estruturais do jogo é a instalação local e os arquivos do próprio jogo, quando técnicamente extraíveis com confiabilidade.
 - [ ] CA-35: a wiki e fontes comunitárias são usadas apenas para complementar dados inexistentes, inacessíveis ou não inferíveis de forma confiável via save/instalação.
 - [ ] CA-36: o sistema documenta a origem dos dados usados pelo motor de recomendação em nível de fonte interna versus fonte externa.
 

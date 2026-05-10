@@ -8,5 +8,5 @@ Workspace reservado para a UI React/Tauri.
 - `src/features`: modulos por fluxo/tela
 - `src/shared`: cliente da Local API, tipos de transporte e utilitarios compartilhados
 
-As implementacoes reais comecam na `T-02`.
+As implementações reais comecam na `T-02`.
 

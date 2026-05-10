@@ -9,18 +9,18 @@ Como jogador,
 quero abrir um app desktop local funcional,
 para que eu possa carregar saves e operar a ferramenta sem friccao inicial.
 
-## Criterios de Aceite
+## Critérios de Aceite
 
 - **CA-01:** frontend, shell desktop e sidecar local sobem em desenvolvimento com healthcheck funcional.
-- **CA-02:** guardrails de camada e tipagem estrita bloqueiam violacoes basicas antes de features.
+- **CA-02:** guardrails de camada e tipagem estrita bloqueiam violações básicas antes de features.
 
 ## Fora do escopo
 
 - Fluxos de save reais.
 - Parser do jogo.
-- Recomendacoes.
+- Recomendações.
 
 ## Referencias
 
 - Milestone: `../milestone.md`
-- Spec tecnica: `./tech-spec.md`
+- Spec técnica: `./tech-spec.md`

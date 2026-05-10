@@ -1,10 +1,10 @@
 # FOM Oracle
 
-FOM Oracle e um aplicativo desktop Windows local-first para leitura de saves de Fields of Mistria, consolidacao de progresso e recomendacoes estrategicas diarias.
+FOM Oracle é um aplicativo desktop Windows local-first para leitura de saves de Fields of Mistria, consolidação de progresso e recomendações estratégicas diárias.
 
 ## Estado atual
 
-Este repositorio esta no scaffolding inicial da `T-01`. O objetivo desta etapa e estabelecer a estrutura do workspace, a solution .NET e os comandos base de bootstrap.
+Este repositório está no scaffolding inicial da `T-01`. O objetivo desta etapa é estabelecer a estrutura do workspace, a solution .NET e os comandos base de bootstrap.
 
 ## Estrutura
 
@@ -49,7 +49,7 @@ pnpm run bootstrap
 ### Comportamento esperado na T-01
 
 - `bootstrap:frontend` prepara o workspace `pnpm` do frontend.
-- `bootstrap:backend` faz uma validacao explicita e **falha de forma intencional** enquanto a solution ainda nao contiver projetos reais.
+- `bootstrap:backend` faz uma validação explícita e **falha de forma intencional** enquanto a solution ainda não contiver projetos reais.
 - Esse fail-fast evita um falso positivo de bootstrap no backend antes da `T-03`.
 
 ## Gate da T-01
@@ -68,12 +68,12 @@ pnpm run test:t01
 Cobertura atual da T-01:
 - smoke de estrutura do scaffold
 - contrato do script `bootstrap-backend.ps1`
-- verificacao de fail-fast para solution ausente ou vazia
+- verificação de fail-fast para solution ausente ou vazia
 
-## Proximas tasks
+## Próximas tasks
 
 - `T-02`: shell inicial React/Tauri
 - `T-03`: runtime inicial do sidecar .NET
 - `T-04`: guardrails de tipagem e camadas
-- `T-05`: persistencia local base
+- `T-05`: persistência local base
 
