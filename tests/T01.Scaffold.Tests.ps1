@@ -130,10 +130,13 @@ Describe 'T-01 scaffold' {
         It 'should fail fast for the current T-01 repository state when the solution is still empty' {
             $repoRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
             $scriptPath = Join-Path $repoRoot 'scripts/bootstrap-backend.ps1'
-            $stdoutPath = Join-Path $repoRoot 'bootstrap.stdout.log'
-            $stderrPath = Join-Path $repoRoot 'bootstrap.stderr.log'
+            $sandboxRoot = Join-Path ([System.IO.Path]::GetTempPath()) ([System.Guid]::NewGuid().ToString())
+            $stdoutPath = Join-Path $sandboxRoot 'bootstrap.stdout.log'
+            $stderrPath = Join-Path $sandboxRoot 'bootstrap.stderr.log'
 
             try {
+                New-Item -ItemType Directory -Path $sandboxRoot -Force | Out-Null
+
                 $process = Start-Process -FilePath 'pwsh' `
                     -ArgumentList @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', $scriptPath) `
                     -RedirectStandardOutput $stdoutPath `
@@ -153,8 +156,7 @@ Describe 'T-01 scaffold' {
                 }
             }
             finally {
-                Remove-Item -LiteralPath $stdoutPath -ErrorAction SilentlyContinue
-                Remove-Item -LiteralPath $stderrPath -ErrorAction SilentlyContinue
+                Remove-Item -LiteralPath $sandboxRoot -Recurse -Force -ErrorAction SilentlyContinue
             }
         }
     }

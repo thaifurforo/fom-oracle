@@ -27,7 +27,7 @@ Esta story fecha o ciclo recorrente do produto e endurece os fluxos principais a
 
 ### T-26 — Testes de contrato e integração dos fluxos críticos
 **Descrição:** criar cobertura automatizada para discover/select, refresh e recommendations end-to-end no sidecar.
-**Where:** `backend/tests/`, `frontend/src/shared/api`
+**Where:** `backend/tests/`, `frontend/src/shared`
 **Done when:** os fluxos críticos possuem suites automatizadas que falham em regressão de contrato.
 **Gate:** `dotnet test backend` e `pnpm --dir frontend test`
 **Depends:** T-12, T-23

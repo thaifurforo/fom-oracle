@@ -32,7 +32,7 @@ Esta story estabelece a espinha dorsal do monorepo, do shell Tauri/React e do si
 ### T-02 — Shell inicial React/Tauri
 **Descrição:** criar shell UI minimo com rota inicial e cliente HTTP placeholder para o sidecar.
 **Critérios de aceite relacionados:** CA-01
-**Where:** `frontend/src/app`, `frontend/src/shared/api`
+**Where:** `frontend/src/app`, `frontend/src/shared`
 **Done when:** a aplicacao frontend inicia com tela placeholder e configuração de acesso ao sidecar.
 **Gate:** `pnpm --dir frontend lint`
 **Depends:** T-01

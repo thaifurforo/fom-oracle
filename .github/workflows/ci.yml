@@ -40,12 +40,9 @@ jobs:
 
       - name: Frontend lint
         run: pnpm --dir frontend lint
-        continue-on-error: true
 
       - name: Frontend build
         run: pnpm --dir frontend build
-        continue-on-error: true
 
       - name: Security audit
         run: pnpm --dir frontend audit
-        continue-on-error: true

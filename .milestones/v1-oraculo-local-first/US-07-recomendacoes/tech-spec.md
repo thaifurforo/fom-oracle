@@ -37,7 +37,7 @@ Esta story entrega o coração do produto: transformar snapshot + prioridades + 
 
 ### T-23 — Endpoint de recomendações e contratos de transporte
 **Descrição:** expor `POST /recommendations/generate` e adaptar o payload de transporte para a UI.
-**Where:** `backend/src/FomOracle.Runtime`, `frontend/src/shared/api`
+**Where:** `backend/src/FomOracle.Runtime`, `frontend/src/shared`
 **Done when:** a UI consegue solicitar recomendações para snapshot/perfil atuais via contrato estável.
 **Gate:** `dotnet test backend --filter RecommendationApi`
 **Depends:** T-22

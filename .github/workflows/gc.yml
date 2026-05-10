@@ -49,8 +49,7 @@ $($results -join "`n")
             $body = Get-Content $env:RUNNER_TEMP/gc-body.md -Raw
             gh issue create `
               --title "GC: limpeza semanal ($(Get-Date -Format 'yyyy-MM-dd'))" `
-              --body "$body" `
-              --label "chore,gc"
+              --body "$body"
           } else {
             Write-Host "Nenhum item encontrado. Pulando criacao de issue."
           }
