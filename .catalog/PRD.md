@@ -400,6 +400,6 @@ Medir se usuários voltam ao app em múltiplas sessões.
 - Política exata de versionamento suportado do jogo.
 
 ### Referências de base
-- [levantamento-ferramentas-fom.md](levantamento-ferramentas-fom.md)
+- [levantamento-ferramentas-fom.md](.catalog/references/levantamento-ferramentas-fom.md)
 - Projeto de referência: `truix/travellers-rest-planner`
 - Base de domínio: `fieldsofmistria.wiki.gg`
