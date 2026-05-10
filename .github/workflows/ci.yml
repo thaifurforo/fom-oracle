@@ -32,7 +32,7 @@ jobs:
 
       - name: Install Pester for scaffold tests
         shell: pwsh
-        run: Install-Module Pester -Scope CurrentUser -Force -SkipPublisherCheck
+        run: Install-Module Pester -Scope CurrentUser -Force -RequiredVersion 5.7.1
 
       - name: Run T-01 scaffold smoke tests
         shell: pwsh

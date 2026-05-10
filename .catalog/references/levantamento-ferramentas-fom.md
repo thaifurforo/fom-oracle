@@ -71,7 +71,7 @@ As ferramentas de IA que leem o arquivo player.json levam em conta os "Skill Per
 
 ## **Otimização Culinária e Processamento de Valor Agregado**
 
-A sugestão de "melhores coisas para cozinhar" exige que o software análise a diferença entre o valor de mercado dos ingredientes crus versus o valor do prato final, subtraindo o custo de energia ou o tempo de processamento no moinho (Mill)[^12].
+A sugestão de "melhores coisas para cozinhar" exige que o software analise a diferença entre o valor de mercado dos ingredientes crus versus o valor do prato final, subtraindo o custo de energia ou o tempo de processamento no moinho (Mill)[^12].
 
 ### **Análise de ROI em Receitas e Culinária Profissional**
 
@@ -90,7 +90,7 @@ O uso de softwares de sugestão permite que o jogador identifique o "ponto de eq
 
 Um aspecto fundamental de softwares como o Travellers Rest Planner é a visualização espacial. Em Fields of Mistria, o planejamento do layout da fazenda é vital para minimizar o tempo de deslocamento e otimizar a área de irrigação[^2].
 
-### **Mistria Editor e Planejádores de Grade**
+### **Mistria Editor e Planejadores de Grade**
 
 O Mistria-Editor é uma ferramenta executável (.exe) que permite carregar o arquivo farm.json para editar a disposição dos objetos na fazenda fora do jogo[^13]. Esta ferramenta é essencial para:
 

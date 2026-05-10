@@ -21,7 +21,8 @@ jobs:
             Where-Object { $_.FullName -notmatch 'node_modules|\.git|bin|obj' } |
             Select-String -Pattern 'TODO|FIXME|HACK|XXX' |
             ForEach-Object {
-              $results += "  - $($_.FileName):$($_.LineNumber) `"$($_.Line.Trim())`""
+              $relativePath = [System.IO.Path]::GetRelativePath($env:GITHUB_WORKSPACE, $_.Path).Replace('\', '/')
+              $results += "  - ${relativePath}:$($_.LineNumber) `"$($_.Line.Trim())`""
             }
 
           if ($results.Count -gt 0) {
@@ -46,10 +47,21 @@ $($results -join "`n")
         run: |
           $count = Get-Content $env:RUNNER_TEMP/gc-count.txt
           if ($count -ne "0") {
-            $body = Get-Content $env:RUNNER_TEMP/gc-body.md -Raw
-            gh issue create `
-              --title "GC: limpeza semanal ($(Get-Date -Format 'yyyy-MM-dd'))" `
-              --body "$body"
+            $title = "GC: limpeza semanal"
+            $bodyPath = "$env:RUNNER_TEMP/gc-body.md"
+            $existing = gh issue list `
+              --state open `
+              --search "`"$title`" in:title" `
+              --json number,title |
+              ConvertFrom-Json |
+              Where-Object { $_.title -eq $title } |
+              Select-Object -First 1
+
+            if ($existing) {
+              gh issue edit $existing.number --body-file $bodyPath
+            } else {
+              gh issue create --title "$title" --body-file $bodyPath
+            }
           } else {
             Write-Host "Nenhum item encontrado. Pulando criacao de issue."
           }

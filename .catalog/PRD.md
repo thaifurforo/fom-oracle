@@ -24,7 +24,7 @@ Há espaço para um produto que leia o save local do jogador, interprete seu con
 
 ### Quem perde sem isso
 - Jogadores que querem otimizar progresso sem consultar várias fontes paralelas.
-- Completionists que precisam rastrear dependências e jánelas sazonais.
+- Completionists que precisam rastrear dependências e janelas sazonais.
 - Jogadores que retornam a saves antigos e não sabem qual a melhor ação do dia.
 - Jogadores que alternam frequentemente entre prioridades conflitantes.
 
@@ -102,7 +102,7 @@ Ficou um tempo sem jogar e precisa entender rapidamente o contexto atual do save
 - Contexto fragmentado entre sistemas.
 - Paralisia na tomada de decisão.
 
-### Persona 4 — Planejádor Flexível
+### Persona 4 — Planejador Flexível
 Muda de foco com frequência e quer reordenar prioridades rapidamente.
 
 **Motivações**
