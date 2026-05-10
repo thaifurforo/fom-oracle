@@ -1,4 +1,4 @@
-# **Análise de Sistemas de Otimização e Planejámento de Dados em Fields of Mistria: Uma Perspectiva de Engenharia de Dados e Economia Virtual**
+# **Análise de Sistemas de Otimização e Planejamento de Dados em Fields of Mistria: Uma Perspectiva de Engenharia de Dados e Economia Virtual**
 
 A ascensão de simuladores de vida e RPGs de fazenda na última década, exemplificada pelo sucesso fenomenal de títulos como Stardew Valley, criou um subgênero de jogadores que não buscam apenas o relaxamento, mas a otimização matemática rigorosa de sistemas virtuais. O lançamento de Fields of Mistria, desenvolvido pelo NPC Studio, consolidou-se como um marco nesse gênero ao utilizar o motor GameMaker para entregar uma experiência que une a estética de anime dos anos 90 com mecânicas modernas de simulação.1 No entanto, a complexidade inerente ao jogo, que envolve mais de 600 itens fabricáveis, sistemas de alquimia, árvores de habilidades e ciclos econômicos sazonais, gerou a necessidade imediata de softwares de terceiros capazes de processar dados de arquivos de salvamento para fornecer sugestões estratégicas.4
 
