@@ -16,14 +16,14 @@ A execução técnica do processo de desempacotamento envolve o uso do terminal 
 
 ### **Estrutura de Dados Estratégicos Identificados nos Arquivos JSON**
 
-| Arquivo JSON | Dados Extraídos para Planejámento | Relevância para a Otimização |
+| Arquivo JSON | Dados Extraídos para Planejamento | Relevância para a Otimização |
 | :---- | :---- | :---- |
 | player.json | Ouro (tesserae), essência mágica, mana atual e inventário. | Permite calcular o capital disponível para sementes e ingredientes.9 |
 | npcs.json | Pontos de coração, histórico de presentes e status de relacionamento. | Identifica quais NPCs estão próximos de subir de nível, otimizando a escolha de presentes.8 |
 | farm.json | Localização de plantações, construções e máquinas de processamento. | Essencial para planejadores de layout que buscam eficiência espacial.13 |
 | world.json | Coleção do museu, ranking da cidade e estado dos festivais. | Ajuda ferramentas a sugerir quais itens faltam para completar o progresso de 100%.7 |
 
-## **Análise de Ferramentas de Planejámento e Sugestão Automatizada**
+## **Análise de Ferramentas de Planejamento e Sugestão Automatizada**
 
 Atualmente, não existe um único "super-aplicativo" que reúna todas as funções do Travellers Rest Planner, mas sim uma constelação de ferramentas que, quando combinadas, superam as capacidades de softwares de planejamento tradicionais. Estas ferramentas dividem-se em três categorias principais: analisadores web baseados em upload, assistentes de IA com sincronização ao vivo e simuladores de decisão heurística.
 
@@ -89,7 +89,7 @@ A culinária em Fields of Mistria é uma das formas mais potentes de gerar capit
 
 O uso de softwares de sugestão permite que o jogador identifique o "ponto de equilíbrio" da culinária. Por exemplo, se o jogador possui o perk que permite que a culinária ocasionalmente devolva ingredientes ou produza pratos duplos, o lucro esperado de receitas como "Noodles" ou "Bread" sobe exponencialmente, tornando a compra de ingredientes em massa (como farinha no mercado) uma estratégia de arbitragem financeira viável.12
 
-## **Ferramentas de Planejámento de Layout e Engenharia de Fazenda**
+## **Ferramentas de Planejamento de Layout e Engenharia de Fazenda**
 
 Um aspecto fundamental de softwares como o Travellers Rest Planner é a visualização espacial. Em Fields of Mistria, o planejamento do layout da fazenda é vital para minimizar o tempo de deslocamento e otimizar a área de irrigação.2
 
@@ -131,7 +131,7 @@ A análise abrangente do ecossistema de software para Fields of Mistria indica q
 1. **Extração de Dados**: Utilizar o Vaultc para converter o arquivo .sav em JSON, permitindo a leitura por ferramentas externas.10  
 2. **Análise de Progresso**: Fazer o upload do JSON para o hozblic.github.io para visualizar estatísticas de jogo e identificar lacunas no museu e relacionamentos.14  
 3. **Otimização Ativa via IA**: Configurar o Savecraft.gg para permitir que assistentes de IA análisem o estado do jogo e forneçam sugestões personalizadas sobre o que plantar e cozinhar com base no capital e inventário atuais.6  
-4. **Planejámento de Safra**: Utilizar o Stardew Crop Planner para definir o cronograma de plantio multiharvest mais lucrativo para o restante da estação atual.18  
+4. **Planejamento de Safra**: Utilizar o Stardew Crop Planner para definir o cronograma de plantio multiharvest mais lucrativo para o restante da estação atual.18  
 5. **Aprimoramento in-game**: Instalar mods como Crop Timers e Donate It para integrar as sugestões de otimização diretamente na interface visual do jogo.30
 
 Este conjunto de ferramentas forma um sistema de suporte à decisão de nível profissional, transformando a experiência de Fields of Mistria em um exercício de eficiência baseada em dados. Com a evolução contínua da comunidade de modding e o suporte oficial do NPC Studio às ferramentas de manipulação de save, a tendência é que essas soluções se tornem cada vez mais integradas e automatizadas, atendendo plenamente à demanda por planejamento estratégico complexo no jogo.
