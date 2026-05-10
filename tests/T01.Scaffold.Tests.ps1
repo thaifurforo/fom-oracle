@@ -12,7 +12,9 @@ Describe 'T-01 scaffold' {
             foreach ($relativePath in $expectedFiles) {
                 $fullPath = Join-Path $repoRoot $relativePath
 
-                Test-Path -LiteralPath $fullPath | Should Be $true
+                if (-not (Test-Path -LiteralPath $fullPath)) {
+                    throw "Expected root file '$relativePath' to exist."
+                }
             }
         }
 
@@ -29,7 +31,9 @@ Describe 'T-01 scaffold' {
             foreach ($relativePath in $expectedDirectories) {
                 $fullPath = Join-Path $repoRoot $relativePath
 
-                Test-Path -LiteralPath $fullPath -PathType Container | Should Be $true
+                if (-not (Test-Path -LiteralPath $fullPath -PathType Container)) {
+                    throw "Expected directory '$relativePath' to exist."
+                }
             }
         }
 
@@ -38,7 +42,10 @@ Describe 'T-01 scaffold' {
             $packageJsonPath = Join-Path $repoRoot 'package.json'
             $packageJson = Get-Content -LiteralPath $packageJsonPath -Raw | ConvertFrom-Json
 
-            $packageJson.scripts.'test:t01' | Should Be 'pwsh -ExecutionPolicy Bypass -File ./scripts/run-t01-tests.ps1'
+            $expectedScript = 'pwsh -ExecutionPolicy Bypass -File ./scripts/run-t01-tests.ps1'
+            if ($packageJson.scripts.'test:t01' -ne $expectedScript) {
+                throw "Expected test:t01 script to be '$expectedScript'."
+            }
         }
     }
 
@@ -66,8 +73,13 @@ Describe 'T-01 scaffold' {
                 $output = (Get-Content -LiteralPath $stdoutPath -Raw -ErrorAction SilentlyContinue) +
                     (Get-Content -LiteralPath $stderrPath -Raw -ErrorAction SilentlyContinue)
 
-                $process.ExitCode | Should Be 1
-                ($output -match 'solution nao encontrada') | Should Be $true
+                if ($process.ExitCode -ne 1) {
+                    throw "Expected exit code 1, got $($process.ExitCode)."
+                }
+
+                if ($output -notmatch 'solution nao encontrada') {
+                    throw "Expected missing solution error. Output: $output"
+                }
             }
             finally {
                 Remove-Item -LiteralPath $sandboxRoot -Recurse -Force -ErrorAction SilentlyContinue
@@ -98,9 +110,17 @@ Describe 'T-01 scaffold' {
                 $output = (Get-Content -LiteralPath $stdoutPath -Raw -ErrorAction SilentlyContinue) +
                     (Get-Content -LiteralPath $stderrPath -Raw -ErrorAction SilentlyContinue)
 
-                $process.ExitCode | Should Be 1
-                ($output -match 'projetos') | Should Be $true
-                ($output -match 'restauraveis') | Should Be $true
+                if ($process.ExitCode -ne 1) {
+                    throw "Expected exit code 1, got $($process.ExitCode)."
+                }
+
+                if ($output -notmatch 'projetos') {
+                    throw "Expected project count error. Output: $output"
+                }
+
+                if ($output -notmatch 'restauraveis') {
+                    throw "Expected restorable projects error. Output: $output"
+                }
             }
             finally {
                 Remove-Item -LiteralPath $sandboxRoot -Recurse -Force -ErrorAction SilentlyContinue
@@ -124,8 +144,13 @@ Describe 'T-01 scaffold' {
                 $output = (Get-Content -LiteralPath $stdoutPath -Raw -ErrorAction SilentlyContinue) +
                     (Get-Content -LiteralPath $stderrPath -Raw -ErrorAction SilentlyContinue)
 
-                $process.ExitCode | Should Be 1
-                ($output -match 'Isso e\s+esperado na T-01') | Should Be $true
+                if ($process.ExitCode -ne 1) {
+                    throw "Expected exit code 1, got $($process.ExitCode)."
+                }
+
+                if ($output -notmatch 'Isso e\s+esperado na T-01') {
+                    throw "Expected T-01 empty solution guidance. Output: $output"
+                }
             }
             finally {
                 Remove-Item -LiteralPath $stdoutPath -ErrorAction SilentlyContinue
