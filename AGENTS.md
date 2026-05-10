@@ -4,13 +4,14 @@
 FOM Oracle
 
 ## Documentos-fonte
-- PRD principal: [PRD-fom-oracle.md](/F:/Users/thaif/Documents/programacao/fom-oracle/PRD-fom-oracle.md)
-- Arquitetura: [.catalog/architecture.md](/F:/Users/thaif/Documents/programacao/fom-oracle/.catalog/architecture.md)
-- Stack: [.catalog/stack.md](/F:/Users/thaif/Documents/programacao/fom-oracle/.catalog/stack.md)
-- Domínio: [.catalog/domain.md](/F:/Users/thaif/Documents/programacao/fom-oracle/.catalog/domain.md)
-- Funcionalidades: [.catalog/features.md](/F:/Users/thaif/Documents/programacao/fom-oracle/.catalog/features.md)
-- Convenções: [.catalog/conventions.md](/F:/Users/thaif/Documents/programacao/fom-oracle/.catalog/conventions.md)
-- Preocupações: [.catalog/concerns.md](/F:/Users/thaif/Documents/programacao/fom-oracle/.catalog/concerns.md)
+- PRD principal: [.catalog/PRD.md](.catalog/PRD.md)
+- Arquitetura: [.catalog/architecture.md](.catalog/architecture.md)
+- Stack: [.catalog/stack.md](.catalog/stack.md)
+- Domínio: [.catalog/domain.md](.catalog/domain.md)
+- Funcionalidades: [.catalog/features.md](.catalog/features.md)
+- Convenções: [.catalog/conventions.md](.catalog/conventions.md)
+- Preocupações: [.catalog/concerns.md](.catalog/concerns.md)
+- Convenções de acompanhamento do projeto: [.catalog/project-tracking.md](.catalog/project-tracking.md)
 
 ## Diretriz arquitetural obrigatória
 

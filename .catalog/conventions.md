@@ -32,3 +32,4 @@ Nenhuma camada pode importar camadas a sua direita.
 - `AGENTS.md`: tabela de roteamento (≤100 linhas).
 - `.catalog/`: fonte de verdade tecnica versionada.
 - `.milestones/`: documentacao de entregas (changelogs, tech-specs).
+- Changelogs seguem [Keep a Changelog](https://keepachangelog.com) — secoes `### Adicionado`, `### Corrigido`, `### Impacto`.
