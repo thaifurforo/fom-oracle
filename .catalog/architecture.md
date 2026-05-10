@@ -15,7 +15,7 @@ Harnessability é alta se o projeto mantiver o núcleo de negócio no sidecar C#
 
 ## 2. Stack Recomendada
 
-Ver [stack.md](/F:/Users/thaif/Documents/programacao/fom-oracle/.catalog/stack.md).
+Ver [stack.md](./stack.md).
 
 ## 3. Padrão de Camadas
 
@@ -86,7 +86,7 @@ graph TD
 
 ## 5. Modelo de Dados
 
-Ver [domain.md](/F:/Users/thaif/Documents/programacao/fom-oracle/.catalog/domain.md).
+Ver [domain.md](.catalog/domain.md).
 
 ## 6. Contratos de API
 

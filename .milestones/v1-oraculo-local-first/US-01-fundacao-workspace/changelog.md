@@ -8,7 +8,7 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com).
 
 ### Adicionado
 - Estrutura raiz do monorepo: `package.json`, `pnpm-workspace.yaml`, `FomOracle.sln`, `.gitignore`
-- Diretórios-alvo do frontend: `frontend/src/app`, `frontend/src/features`, `frontend/src/shared/api`
+- Diretórios-alvo do frontend: `frontend/src/app`, `frontend/src/features`, `frontend/src/shared/`
 - Diretórios-alvo do backend: `backend/src/`, `backend/tests/`
 - Scripts de bootstrap: `scripts/bootstrap-backend.ps1`, `scripts/run-t01-tests.ps1`
 - Testes smoke da T-01: `tests/T01.Scaffold.Tests.ps1` (estrutura do scaffold, contrato do bootstrap, fail-fast em solution vazia)
