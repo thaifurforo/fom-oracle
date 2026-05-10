@@ -86,7 +86,7 @@ graph TD
 
 ## 5. Modelo de Dados
 
-Ver [domain.md](.catalog/domain.md).
+Ver [domain.md](./domain.md).
 
 ## 6. Contratos de API
 
