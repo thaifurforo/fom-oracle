@@ -17,11 +17,13 @@ jobs:
         shell: pwsh
         run: |
           $results = @()
-          Get-ChildItem -Recurse -Include *.cs,*.ts,*.tsx,*.ps1,*.md,*.json,*.yaml,*.yml |
-            Where-Object { $_.FullName -notmatch 'node_modules|\.git|bin|obj' } |
+          $trackedFiles = git ls-files |
+            Where-Object { $_ -match '\.(cs|ts|tsx|ps1|md|json|ya?ml)$' }
+
+          $trackedFiles |
             Select-String -Pattern 'TODO|FIXME|HACK|XXX' |
             ForEach-Object {
-              $relativePath = [System.IO.Path]::GetRelativePath($env:GITHUB_WORKSPACE, $_.Path).Replace('\', '/')
+              $relativePath = $_.Path.Replace('\', '/')
               $results += "  - ${relativePath}:$($_.LineNumber) `"$($_.Line.Trim())`""
             }
 
