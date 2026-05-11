@@ -145,79 +145,6 @@ function Find-MilestoneByTitle {
     return @($Milestones | Where-Object { (Get-ObjectValue -InputObject $_ -Names @('title')) -eq $Title } | Select-Object -First 1)[0]
 }
 
-function Get-IssueReleaseLabels {
-    param(
-        [Parameter(Mandatory = $true)]
-        [object]$Issue
-    )
-
-    $labels = Get-ObjectValue -InputObject $Issue -Names @('labels')
-    if ($null -eq $labels) {
-        return @()
-    }
-
-    return @(
-        $labels |
-            ForEach-Object {
-                if ($_ -is [string]) {
-                    $_
-                } else {
-                    Get-ObjectValue -InputObject $_ -Names @('name')
-                }
-            } |
-            Where-Object { $_ -match '^release:v(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$' }
-    )
-}
-
-function Get-BlockingReleaseIssueLabels {
-    param(
-        [Parameter(Mandatory = $true)]
-        [object]$ParsedVersion,
-        [Parameter(Mandatory = $true)]
-        [string]$Kind,
-        [object[]]$OpenIssues = @()
-    )
-
-    if ($Kind -eq 'patch') {
-        return @()
-    }
-
-    $blocking = @()
-    foreach ($issue in $OpenIssues) {
-        foreach ($label in Get-IssueReleaseLabels -Issue $issue) {
-            $labelVersion = ConvertTo-ReleaseVersion -Version ($label.Substring('release:'.Length))
-
-            $blocksMinor = $Kind -eq 'minor' -and
-                $labelVersion.Major -eq $ParsedVersion.Major -and
-                $labelVersion.Minor -eq $ParsedVersion.Minor -and
-                $labelVersion.Patch -gt 0
-
-            $blocksMajor = $Kind -eq 'major' -and
-                $labelVersion.Patch -eq 0 -and
-                $labelVersion.Minor -gt 0 -and
-                (Compare-ReleaseVersion -Left $labelVersion -Right $ParsedVersion) -lt 0
-
-            if ($blocksMinor -or $blocksMajor) {
-                $number = Get-ObjectValue -InputObject $issue -Names @('number')
-                $blocking += [pscustomobject]@{
-                    Number = $number
-                    Label = $label
-                }
-            }
-        }
-    }
-
-    return $blocking
-}
-
-function Format-BlockingReleaseIssueLabels {
-    param(
-        [object[]]$BlockingIssues = @()
-    )
-
-    return (@($BlockingIssues | ForEach-Object { "#$($_.Number) $($_.Label)" }) -join ', ')
-}
-
 function Assert-ReleaseReadiness {
     param(
         [Parameter(Mandatory = $true)]
@@ -225,7 +152,6 @@ function Assert-ReleaseReadiness {
         [Parameter(Mandatory = $true)]
         [hashtable]$Policy,
         [object]$Release,
-        [object[]]$OpenIssues = @(),
         [bool]$Publish = $false,
         [string]$CurrentRef = 'main'
     )
@@ -241,22 +167,6 @@ function Assert-ReleaseReadiness {
     $isDraft = [bool](Get-ObjectValue -InputObject $Release -Names @('isDraft', 'draft'))
     if (-not $isDraft) {
         throw "Release $Version must be a draft before publishing."
-    }
-
-    $blockingIssues = Get-BlockingReleaseIssueLabels `
-        -ParsedVersion $Policy.ParsedVersion `
-        -Kind $Policy.Kind `
-        -OpenIssues $OpenIssues
-
-    if (@($blockingIssues).Count -gt 0) {
-        $formattedIssues = Format-BlockingReleaseIssueLabels -BlockingIssues $blockingIssues
-        if ($Policy.Kind -eq 'minor') {
-            throw "Release $Version is blocked by open patch issue(s): $formattedIssues"
-        }
-
-        if ($Policy.Kind -eq 'major') {
-            throw "Release $Version is blocked by open lower minor issue(s): $formattedIssues"
-        }
     }
 }
 
@@ -290,21 +200,14 @@ function New-ReleaseNotesBody {
     $gateLines = @(
         '## Release Gate'
         ''
-        '- Version labels: `release:vMAJOR.MINOR.PATCH`'
+        '- Version: `' + $Version + '`'
     )
 
     if ($Policy.Milestone) {
         $gateLines += ('- Milestone: `' + $Policy.Milestone + '`')
     }
 
-    if ($Policy.Kind -eq 'minor') {
-        $gateLines += '- Validation: linked patch issues closed'
-    } elseif ($Policy.Kind -eq 'major') {
-        $gateLines += '- Validation: linked lower minor issues closed'
-    } else {
-        $gateLines += '- Validation: patch release basic gates'
-    }
-
+    $gateLines += '- Validation: draft release exists'
     $gateLines += '- Published from: `main`'
 
     return "$($gateLines -join "`n")`n`n$GeneratedBody"
@@ -430,14 +333,12 @@ function Invoke-PublishReleaseCommand {
 
     $release = Invoke-GhJson -Arguments @('release', 'view', $Version, '--repo', $Repository, '--json', 'databaseId,tagName,name,body,isDraft,isPrerelease')
     $milestones = Invoke-GhJson -Arguments @('api', "repos/$Repository/milestones?state=all&per_page=100")
-    $openIssues = Invoke-GhJson -Arguments @('issue', 'list', '--repo', $Repository, '--state', 'open', '--limit', '1000', '--json', 'number,title,labels')
     $policy = Get-ReleasePolicy -Version $Version -Milestones @($milestones)
 
     Assert-ReleaseReadiness `
         -Version $Version `
         -Policy $policy `
         -Release $release `
-        -OpenIssues @($openIssues) `
         -Publish:$Publish `
         -CurrentRef $CurrentRef
 

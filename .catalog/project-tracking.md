@@ -40,27 +40,28 @@ O Project `Fields of Mistria Oracle` usa os campos:
 - `v0.4.0 — Recomendações estratégicas`
 - `v0.5.0 — Resiliência e readiness local-first`
 
-## Release v1.0.0
+## Versionamento e Releases
 
-`v1.0.0 — Local-first MVP` é a primeira release estável do produto.
+Releases automáticas são geradas por merge de PR em `main`.
 
-- O draft release `v1.0.0` deve ser publicado somente depois que todas as issues de minor releases anteriores vinculadas por label `release:vMAJOR.MINOR.PATCH` estiverem fechadas.
-- O changelog final deve ser agregado das release notes incrementais e revisado antes da publicação.
+- O PR é a fonte de verdade do impacto de versionamento.
+- Todo PR para `main` deve fechar pelo menos uma issue com `Closes #N`, `Fixes #N` ou `Resolves #N`.
+- Todo PR para `main` deve ter exatamente uma label de impacto: `release:patch`, `release:minor` ou `release:major`.
+- Após o merge, o workflow copia a label de impacto do PR para as issues fechadas por ele.
+- A próxima versão é calculada a partir da maior GitHub Release SemVer publicada; se não houver release, a base é `v0.0.0`.
+- O cálculo segue SemVer tradicional: patch incrementa patch, minor incrementa minor e zera patch, major incrementa major e zera minor/patch.
+- Releases `v0.*.*` são prereleases; releases `v1.0.0` e posteriores são estáveis/latest.
 
-## Automação de Release
+## Publicação Manual de Release
 
-Releases não são publicadas automaticamente por merge de PR, fechamento de issue ou milestone em 100%. O caminho suportado é o workflow manual `Publish Release`.
+O caminho primário de publicação é o workflow automático pós-merge. O workflow manual `Publish Release` fica como caminho operacional para validar/publicar um draft existente por versão explícita.
 
 - `publish=false`: valida readiness e, se solicitado, regenera release notes sem publicar o draft.
 - `publish=true`: publica o draft release existente apenas após todos os gates passarem.
 - Publicação só é permitida a partir de `main`.
 - O input `version` aceita qualquer tag no formato `vMAJOR.MINOR.PATCH`.
 - Quando existir milestone cujo título começa com a tag da release, por exemplo `v0.6.0 — ...`, ele será associado à release.
-- Release patch `vA.B.C`, com `C > 0`, valida apenas os gates básicos da própria release.
-- Release minor `vA.B.0`, com `B > 0`, exige que não existam issues abertas com labels patch filhas `release:vA.B.P`, onde `P > 0`.
-- Release major `vN.0.0` exige que não existam issues abertas com labels minor menores que ela, como `release:v0.5.0` para `v1.0.0` ou `release:v1.3.0` para `v2.0.0`.
-- Releases `v0.*.*` são publicadas como prerelease; releases `v1.0.0` e posteriores são publicadas como estáveis e latest.
-- Após publicar uma release, o workflow fecha o milestone correspondente quando ele existir.
+- Após publicar uma release manual, o workflow fecha o milestone correspondente quando ele existir.
 
 ## Convenções
 
@@ -69,7 +70,9 @@ Releases não são publicadas automaticamente por merge de PR, fechamento de iss
   - `task`
   - `tech-solution`
   - `rf-01` a `rf-13`
-  - `release:vMAJOR.MINOR.PATCH`, sempre como versão exata, por exemplo `release:v0.6.0` ou `release:v0.6.1`
+  - `release:patch`
+  - `release:minor`
+  - `release:major`
 - Labels de changelog/release notes:
   - `feature`
   - `bug`
@@ -79,8 +82,9 @@ Releases não são publicadas automaticamente por merge de PR, fechamento de iss
   - `changelog`
   - `breaking-change`
   - `ignore-for-release`
-- PRs devem usar `Closes #N` para fechar a issue principal da entrega.
+- PRs para `main` devem usar closing keywords para fechar issues e devem ter exatamente uma label de impacto `release:*`.
 - Quando uma task implementa parte de uma US, o PR deve mencionar a US-mãe e fechar a issue `T-XX`.
+- Para bloquear merges de fato, a branch protection/ruleset de `main` deve exigir o check `PR Release Gate / validate-release-tracking`.
 - Changelogs seguem o formato Keep a Changelog nas GitHub Releases, com seções `Added`, `Changed`, `Fixed`, `Docs` e `Internal`.
 
 ## Migração de `.milestones/`

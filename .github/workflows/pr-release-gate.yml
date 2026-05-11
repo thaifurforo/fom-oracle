@@ -1,0 +1,27 @@
+name: PR Release Gate
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, edited, reopened, synchronize, labeled, unlabeled, ready_for_review]
+
+permissions:
+  contents: read
+  issues: read
+  pull-requests: read
+
+jobs:
+  validate-release-tracking:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate PR issue linkage and release impact
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          ./scripts/release-automation.ps1 `
+            -Mode ValidatePullRequest `
+            -PullRequestNumber ${{ github.event.pull_request.number }} `
+            -Repository '${{ github.repository }}'
