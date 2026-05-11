@@ -1,12 +1,12 @@
-# Frontend
+# Interface React/Tauri
 
-Workspace reservado para a UI React/Tauri.
+Espaço reservado para a interface React/Tauri.
 
 ## Estrutura-alvo
 
 - `src/app`: bootstrap, shell e rotas
-- `src/features`: modulos por fluxo/tela
-- `src/shared`: cliente da Local API, tipos de transporte e utilitarios compartilhados
+- `src/features`: módulos por fluxo/tela
+- `src/shared`: cliente da Local API, tipos de transporte e utilitários compartilhados
 
-As implementações reais comecam na `T-02`.
+As implementações reais começam na `T-02`.
 

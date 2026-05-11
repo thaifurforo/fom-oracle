@@ -62,3 +62,6 @@ Types → Config → Repository → Service → Runtime → UI
 - Fonte secundária: wiki e referências externas apenas para lacunas.
 - Se houver conflito entre fonte local e externa, a local vence na v1, salvo evidência de corrupção.
 - Motor de decisão da v1: heurístico, determinístico e testável; machine learning fica fora do escopo da v1.
+
+## Regra de idioma
+- Toda a documentação do repositório, descrições de PR, issues, comentários de PR e release notes devem ser escritas em português brasileiro, com acentuação correta.
