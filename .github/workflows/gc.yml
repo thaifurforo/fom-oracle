@@ -8,6 +8,7 @@ jobs:
   scan:
     runs-on: ubuntu-latest
     permissions:
+      contents: read
       issues: write
     steps:
       - uses: actions/checkout@v4
@@ -20,24 +21,23 @@ jobs:
           $trackedFiles = git ls-files |
             Where-Object { $_ -match '\.(cs|ts|tsx|ps1|md|json|ya?ml)$' }
 
-          $trackedFiles |
-            Select-String -Pattern 'TODO|FIXME|HACK|XXX' |
+          Select-String -LiteralPath $trackedFiles -Pattern 'TODO|FIXME|HACK|XXX' |
             ForEach-Object {
-              $relativePath = $_.Path.Replace('\', '/')
+              $relativePath = [System.IO.Path]::GetRelativePath((Get-Location).Path, $_.Path).Replace('\', '/')
               $results += "  - ${relativePath}:$($_.LineNumber) `"$($_.Line.Trim())`""
             }
 
           if ($results.Count -gt 0) {
             $body = @"
-## Garbage Collection Scan - $(Get-Date -Format 'yyyy-MM-dd')
+          ## Garbage Collection Scan - $(Get-Date -Format 'yyyy-MM-dd')
 
-Itens encontrados marcados com TODO/FIXME/HACK/XXX:
+          Itens encontrados marcados com TODO/FIXME/HACK/XXX:
 
-$($results -join "`n")
+          $($results -join "`n")
 
----
-*Gerado automaticamente pelo workflow GC semanal.*
-"@
+          ---
+          *Gerado automaticamente pelo workflow GC semanal.*
+          "@
             $body | Out-File -FilePath $env:RUNNER_TEMP/gc-body.md -Encoding utf8
             "$($results.Count) itens encontrados" | Out-File -FilePath $env:RUNNER_TEMP/gc-count.txt
           } else {
