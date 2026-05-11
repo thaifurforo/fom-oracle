@@ -49,6 +49,17 @@ O Project `Fields of Mistria Oracle` usa os campos:
 - O draft release `v1.0.0` deve ser publicado somente depois que todos os milestones `v0.x.0`, US e tasks mapeadas estiverem fechados.
 - O changelog final deve ser agregado das release notes incrementais e revisado antes da publicação.
 
+## Automação de Release
+
+Releases não são publicadas automaticamente por merge de PR, fechamento de issue ou milestone em 100%. O caminho suportado é o workflow manual `Publish Release`.
+
+- `publish=false`: valida readiness e, se solicitado, regenera release notes sem publicar o draft.
+- `publish=true`: publica o draft release existente apenas após todos os gates passarem.
+- Publicação só é permitida a partir de `main`.
+- Releases `v0.x.0` exigem milestone correspondente sem issues abertas e são publicadas como prerelease.
+- Release `v1.0.0` exige `v0.1.0` a `v0.5.0` já publicadas, milestones `v0.x.0` fechadas e issue `#37` fechada.
+- Após publicar uma release `v0.x.0`, o workflow fecha o milestone correspondente.
+
 ## Convenções
 
 - Labels de rastreabilidade:
