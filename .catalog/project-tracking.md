@@ -52,16 +52,15 @@ Releases automáticas são geradas por merge de PR em `main`.
 - O cálculo segue SemVer tradicional: patch incrementa patch, minor incrementa minor e zera patch, major incrementa major e zera minor/patch.
 - Releases `v0.*.*` são prereleases; releases `v1.0.0` e posteriores são estáveis/latest.
 
-## Publicação Manual de Release
+## Automação de Release
 
-O caminho primário de publicação é o workflow automático pós-merge. O workflow manual `Publish Release` fica como caminho operacional para validar/publicar um draft existente por versão explícita.
+O único caminho suportado para publicação de release é o workflow automático pós-merge em `main`.
 
-- `publish=false`: valida readiness e, se solicitado, regenera release notes sem publicar o draft.
-- `publish=true`: publica o draft release existente apenas após todos os gates passarem.
-- Publicação só é permitida a partir de `main`.
-- O input `version` aceita qualquer tag no formato `vMAJOR.MINOR.PATCH`.
-- Quando existir milestone cujo título começa com a tag da release, por exemplo `v0.6.0 — ...`, ele será associado à release.
-- Após publicar uma release manual, o workflow fecha o milestone correspondente quando ele existir.
+- `pr-release-gate.yml` valida PRs para `main` antes do merge.
+- `auto-release.yml` publica uma GitHub Release quando um PR é mergeado em `main`.
+- Releases não são publicadas por workflow manual, fechamento de milestone ou fechamento avulso de issue.
+- A versão é calculada automaticamente a partir da maior GitHub Release SemVer publicada.
+- Milestones são agrupamentos temáticos de roadmap, não números de versão.
 
 ## Convenções
 
