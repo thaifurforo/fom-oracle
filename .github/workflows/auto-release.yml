@@ -1,0 +1,31 @@
+name: Auto Release
+
+on:
+  pull_request:
+    branches: [main]
+    types: [closed]
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: read
+
+jobs:
+  auto-release:
+    if: ${{ github.event.pull_request.merged == true }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Publish release from merged PR
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          ./scripts/release-automation.ps1 `
+            -Mode PublishMergedPullRequest `
+            -PullRequestNumber ${{ github.event.pull_request.number }} `
+            -Repository '${{ github.repository }}' `
+            -TargetCommitish '${{ github.event.pull_request.merge_commit_sha }}'

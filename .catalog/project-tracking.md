@@ -40,14 +40,27 @@ O Project `Fields of Mistria Oracle` usa os campos:
 - `v0.4.0 — Recomendações estratégicas`
 - `v0.5.0 — Resiliência e readiness local-first`
 
-## Release v1.0.0
+## Versionamento e Releases
 
-`v1.0.0 — Local-first MVP` é a release estável que agrega todos os milestones incrementais `v0.1.0` a `v0.5.0`.
+Releases automáticas são geradas por merge de PR em `main`.
 
-- Não mover as US/tasks existentes para um milestone `v1.0.0`; cada item permanece no milestone incremental onde será entregue.
-- A publicação final é rastreada pela issue `Release readiness — v1.0.0 Local-first MVP`.
-- O draft release `v1.0.0` deve ser publicado somente depois que todos os milestones `v0.x.0`, US e tasks mapeadas estiverem fechados.
-- O changelog final deve ser agregado das release notes incrementais e revisado antes da publicação.
+- O PR é a fonte de verdade do impacto de versionamento.
+- Todo PR para `main` deve fechar pelo menos uma issue com `Closes #N`, `Fixes #N` ou `Resolves #N`.
+- Todo PR para `main` deve ter exatamente uma label de impacto: `release:patch`, `release:minor` ou `release:major`.
+- Após o merge, o workflow copia a label de impacto do PR para as issues fechadas por ele.
+- A próxima versão é calculada a partir da maior GitHub Release SemVer publicada; se não houver release, a base é `v0.0.0`.
+- O cálculo segue SemVer tradicional: patch incrementa patch, minor incrementa minor e zera patch, major incrementa major e zera minor/patch.
+- Releases `v0.*.*` são prereleases; releases `v1.0.0` e posteriores são estáveis/latest.
+
+## Automação de Release
+
+O único caminho suportado para publicação de release é o workflow automático pós-merge em `main`.
+
+- `pr-release-gate.yml` valida PRs para `main` antes do merge.
+- `auto-release.yml` publica uma GitHub Release quando um PR é mergeado em `main`.
+- Releases não são publicadas por workflow manual, fechamento de milestone ou fechamento avulso de issue.
+- A versão é calculada automaticamente a partir da maior GitHub Release SemVer publicada.
+- Milestones são agrupamentos temáticos de roadmap, não números de versão.
 
 ## Convenções
 
@@ -56,8 +69,9 @@ O Project `Fields of Mistria Oracle` usa os campos:
   - `task`
   - `tech-solution`
   - `rf-01` a `rf-13`
-  - `release:v0.1.0` a `release:v0.5.0`
-  - `release:v1.0.0`
+  - `release:patch`
+  - `release:minor`
+  - `release:major`
 - Labels de changelog/release notes:
   - `feature`
   - `bug`
@@ -67,8 +81,9 @@ O Project `Fields of Mistria Oracle` usa os campos:
   - `changelog`
   - `breaking-change`
   - `ignore-for-release`
-- PRs devem usar `Closes #N` para fechar a issue principal da entrega.
+- PRs para `main` devem usar closing keywords para fechar issues e devem ter exatamente uma label de impacto `release:*`.
 - Quando uma task implementa parte de uma US, o PR deve mencionar a US-mãe e fechar a issue `T-XX`.
+- Para bloquear merges de fato, a branch protection/ruleset de `main` deve exigir o check `PR Release Gate / validate-release-tracking`.
 - Changelogs seguem o formato Keep a Changelog nas GitHub Releases, com seções `Added`, `Changed`, `Fixed`, `Docs` e `Internal`.
 
 ## Migração de `.milestones/`

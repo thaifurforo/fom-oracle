@@ -400,6 +400,8 @@ RF/RNF atendido: RF-11, RNF-10, RNF-11, RNF-15.
 | Workflow | Gatilho | Ações |
 |---|---|---|
 | `ci.yml` | PR para `main`/`develop`; push para `develop` | Setup Node/pnpm/.NET, check-env, testes T-01 (Pester), frontend lint/build, `pnpm audit` |
+| `pr-release-gate.yml` | PR para `main` | Valida closing keywords para issues e exatamente uma label `release:patch`, `release:minor` ou `release:major` no PR |
+| `auto-release.yml` | PR mergeado em `main` | Sincroniza label de impacto nas issues fechadas, calcula próxima versão SemVer e publica GitHub Release |
 | `gc.yml` | Semanal (domingo 06:00 UTC) | Varre TODO/FIXME/HACK no código, abre issue de limpeza |
 | Futuro: deploy | PR → main | Deploy automático em staging + aprovação manual para produção (após T-03) |
 
@@ -413,7 +415,7 @@ RF/RNF atendido: RF-11, RNF-10, RNF-11, RNF-15.
 |---|---|---|
 | 1 — Pré-commit | local (dev) | Lint + type-check + testes unitários (quando T-04 existir) |
 | 2 — CI por PR | `ci.yml` | Setup + T-01 smoke + lint/build placeholder + security audit |
-| 3 — CI pós-merge | `ci.yml` (push develop) | Mesmo que PR |
+| 3 — Release pós-merge | `auto-release.yml` (PR mergeado em main) | Versionamento automático e GitHub Release |
 | 4 — Agendado | `gc.yml` (semanal) | Scan TODO/FIXME, abre issue de limpeza |
 
 ### Gates futuros (após T-03/T-04)
