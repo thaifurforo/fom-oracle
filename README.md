@@ -1,19 +1,18 @@
 # FOM Oracle
 
-FOM Oracle é um aplicativo desktop Windows local-first para leitura de saves de Fields of Mistria, consolidação de progresso, avaliação de inventário/presentes e recomendações estratégicas diárias.
+FOM Oracle é um aplicativo desktop Windows local-first para leitura de saves de Fields of Mistria, consolidação de progresso, avaliação de inventário e presentes, e recomendações estratégicas diárias.
 
 ## Estado atual
 
-Este repositório está no scaffolding inicial da `T-01`. O objetivo desta etapa é estabelecer a estrutura do workspace, a solution .NET e os comandos base de bootstrap.
+Este repositório está na estrutura inicial da `T-01`. O objetivo desta etapa é estabelecer a estrutura do espaço de trabalho, a solução .NET e os comandos base de inicialização.
 
 O escopo planejado da v1 inclui um motor heurístico explicável para cruzar save, inventário completo, missões, receitas, eventos, aniversários, preferências de NPCs e prioridades do jogador. Machine learning não faz parte da v1.
 
-## Estrutura
+## Estrutura do Repositório
 
 ```text
 .
 |-- .catalog/
-|-- .milestones/
 |-- backend/
 |   |-- src/
 |   `-- tests/
@@ -28,7 +27,7 @@ O escopo planejado da v1 inclui um motor heurístico explicável para cruzar sav
 `-- pnpm-workspace.yaml
 ```
 
-## Bootstrap
+## Inicialização
 
 ### Requisitos
 
@@ -51,11 +50,11 @@ pnpm run bootstrap
 
 ### Comportamento esperado na T-01
 
-- `bootstrap:frontend` prepara o workspace `pnpm` do frontend.
-- `bootstrap:backend` faz uma validação explícita e **falha de forma intencional** enquanto a solution ainda não contiver projetos reais.
-- Esse fail-fast evita um falso positivo de bootstrap no backend antes da `T-03`.
+- `bootstrap:frontend` prepara o espaço de trabalho `pnpm` do frontend.
+- `bootstrap:backend` faz uma validação explícita e **falha de forma intencional** enquanto a solução ainda não contiver projetos reais.
+- Essa falha imediata evita um falso positivo de inicialização no backend antes da `T-03`.
 
-## Gate da T-01
+## Verificação da T-01
 
 ```powershell
 pnpm -r --version
@@ -69,11 +68,11 @@ pnpm run test:t01
 ```
 
 Cobertura atual da T-01:
-- smoke de estrutura do scaffold
+- verificação rápida da estrutura do scaffold
 - contrato do script `bootstrap-backend.ps1`
-- verificação de fail-fast para solution ausente ou vazia
+- verificação de falha imediata para solução ausente ou vazia
 
-## Próximas tasks
+## Próximas tarefas
 
 - `T-02`: shell inicial React/Tauri
 - `T-03`: runtime inicial do sidecar .NET

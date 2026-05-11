@@ -365,13 +365,13 @@ function Get-ReleaseNotesFromGitHub {
     }
 
     $generated = Invoke-GhApiWithJsonBody -Endpoint "repos/$Repository/releases/generate-notes" -Method 'POST' -Payload $payload
-    $issueText = if ($IssueNumbers.Count -gt 0) { ($IssueNumbers | ForEach-Object { "#$_" }) -join ', ' } else { 'none' }
+    $issueText = if ($IssueNumbers.Count -gt 0) { ($IssueNumbers | ForEach-Object { "#$_" }) -join ', ' } else { 'nenhuma' }
     $gate = @(
-        '## Release Automation'
+        '## Automação de Release'
         ''
-        ('- Impact: `' + $ImpactLabel + '`')
-        "- Linked issues: $issueText"
-        '- Published from: merged PR to `main`'
+        ('- Impacto: `' + $ImpactLabel + '`')
+        "- Issues vinculadas: $issueText"
+        '- Publicado a partir de um PR mesclado em `main`'
     ) -join "`n"
 
     return "$gate`n`n$($generated.body)"

@@ -3,25 +3,25 @@ changelog:
     labels:
       - ignore-for-release
   categories:
-    - title: Added
+    - title: Adicionado
       labels:
         - feature
         - enhancement
-    - title: Changed
+    - title: Alterado
       labels:
         - breaking-change
-    - title: Fixed
+    - title: Corrigido
       labels:
         - bug
-    - title: Docs
+    - title: Documentação
       labels:
         - documentation
         - changelog
-    - title: Internal
+    - title: Interno
       labels:
         - infra
         - tests
         - task
-    - title: Other Changes
+    - title: Outras alterações
       labels:
         - "*"

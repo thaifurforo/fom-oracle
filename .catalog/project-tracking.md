@@ -2,7 +2,9 @@
 
 ## Ferramenta Atual
 
-**Tool:** GitHub Issues + GitHub Projects v2 + GitHub Milestones + GitHub Releases
+**Tool:** `github-auto-release`
+
+**Base de rastreio:** GitHub Issues + GitHub Projects v2 + GitHub Milestones + GitHub Releases
 
 **Repositório:** `thaifurforo/fom-oracle`
 **Project:** `Fields of Mistria Oracle` — <https://github.com/users/thaifurforo/projects/2>
@@ -11,7 +13,7 @@ O tracking permanente do projeto fica no GitHub:
 
 - **GitHub Issues:** fonte de verdade para User Stories e tasks técnicas.
 - **GitHub Project v2:** board operacional de status, prioridade, tamanho e visibilidade.
-- **GitHub Milestones:** agrupamento por release incremental `v0.x.0`.
+- **GitHub Milestones:** agrupamento temático de roadmap, sem obrigação de usar números de versão.
 - **GitHub Releases:** histórico versionado e changelog detalhado da aplicação.
 
 ## Estrutura
@@ -32,29 +34,35 @@ O Project `Fields of Mistria Oracle` usa os campos:
 - `Size`: `XS`, `S`, `M`, `L`, `XL`.
 - `Milestone`, `Repository`, `Linked pull requests`, `Parent issue` e `Sub-issues progress` quando disponíveis pelo GitHub.
 
-### Milestones de Release
+### Milestones de Roadmap
 
-- `v0.1.0 — Fundação do workspace`
-- `v0.2.0 — Saves e snapshots`
-- `v0.3.0 — Painel, prioridades e catálogo local`
-- `v0.4.0 — Recomendações estratégicas`
-- `v0.5.0 — Resiliência e readiness local-first`
-- `v0.6.0 — Inteligência de inventário e itens`
-- `v0.7.0 — Presentes de NPCs e integração social`
+- Fundação do workspace
+- Saves e snapshots
+- Painel, prioridades e catálogo local
+- Recomendações estratégicas
+- Resiliência e readiness local-first
+- Inteligência de inventário e itens
+- Presentes de NPCs e integração social
 
-As novas milestones `v0.6.0` e `v0.7.0` expandem o escopo funcional da v1 e devem ser consideradas parte do caminho de readiness do `v1.0.0`. A issue de release readiness consolida o checklist final após essas entregas.
+As milestones acima são temáticas e servem para organizar o roadmap; elas não precisam seguir SemVer nem carregar número de versão. A issue de release readiness consolida o checklist final após as entregas que fecham a v1.
 
 ## Versionamento e Releases
 
 Releases automáticas são geradas por merge de PR em `main`.
 
-- O PR é a fonte de verdade do impacto de versionamento.
+- As labels `release:patch`, `release:minor` e `release:major` são a fonte de verdade do impacto de versionamento.
 - Todo PR para `main` deve fechar pelo menos uma issue com `Closes #N`, `Fixes #N` ou `Resolves #N`.
 - Todo PR para `main` deve ter exatamente uma label de impacto: `release:patch`, `release:minor` ou `release:major`.
 - Após o merge, o workflow copia a label de impacto do PR para as issues fechadas por ele.
 - A próxima versão é calculada a partir da maior GitHub Release SemVer publicada; se não houver release, a base é `v0.0.0`.
 - O cálculo segue SemVer tradicional: patch incrementa patch, minor incrementa minor e zera patch, major incrementa major e zera minor/patch.
 - Releases `v0.*.*` são prereleases; releases `v1.0.0` e posteriores são estáveis/latest.
+
+### Classificação das labels de impacto
+
+- `release:patch`: documentação, correção de bug, testes, infraestrutura sem breaking change e tasks que implementam parte de uma user story.
+- `release:minor`: PR ou task que finaliza uma user story ou entrega uma capacidade funcional compatível.
+- `release:major`: PR ou task que finaliza uma épica ou MVP, ou qualquer mudança breaking.
 
 ## Automação de Release
 
@@ -88,7 +96,7 @@ O único caminho suportado para publicação de release é o workflow automátic
 - PRs para `main` devem usar closing keywords para fechar issues e devem ter exatamente uma label de impacto `release:*`.
 - Quando uma task implementa parte de uma US, o PR deve mencionar a US-mãe e fechar a issue `T-XX`.
 - Para bloquear merges de fato, a branch protection/ruleset de `main` deve exigir o check `PR Release Gate / validate-release-tracking`.
-- Changelogs seguem o formato Keep a Changelog nas GitHub Releases, com seções `Added`, `Changed`, `Fixed`, `Docs` e `Internal`.
+- Changelogs seguem o formato Keep a Changelog nas GitHub Releases, com seções `Adicionado`, `Alterado`, `Corrigido`, `Documentação` e `Interno`.
 
 ## Migração de `.milestones/`
 
@@ -97,6 +105,6 @@ A pasta `.milestones/` foi usada como fonte inicial do breakdown da v1 e migrada
 Após a validação da migração:
 
 - Progresso passa a ser acompanhado apenas em Issues + Project.
-- Planejamento de versão passa a ser acompanhado em GitHub Milestones.
+- Planejamento de roadmap passa a ser acompanhado em GitHub Milestones.
 - Changelog versionado passa a ser mantido em GitHub Releases.
 - `.milestones/` deve ser removida em PR próprio para evitar fonte dupla de verdade.
