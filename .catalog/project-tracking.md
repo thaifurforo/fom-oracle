@@ -2,7 +2,7 @@
 
 ## Ferramenta Atual
 
-**Tool:** `github-auto-release`
+**Ferramenta:** `github-auto-release` (padrão interno de automação de release deste repositório)
 
 **Base de rastreio:** GitHub Issues + GitHub Projects v2 + GitHub Milestones + GitHub Releases
 

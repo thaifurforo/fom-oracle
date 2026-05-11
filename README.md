@@ -13,6 +13,7 @@ O escopo planejado da v1 inclui um motor heurístico explicável para cruzar sav
 ```text
 .
 |-- .catalog/
+|-- .milestones/
 |-- backend/
 |   |-- src/
 |   `-- tests/
