@@ -98,13 +98,8 @@ O único caminho suportado para publicação de release é o workflow automátic
 - Para bloquear merges de fato, a branch protection/ruleset de `main` deve exigir o check `PR Release Gate / validate-release-tracking`.
 - Changelogs seguem o formato Keep a Changelog nas GitHub Releases, com seções `Adicionado`, `Alterado`, `Corrigido`, `Documentação` e `Interno`.
 
-## Migração de `.milestones/`
+## Fontes Ativas
 
-A pasta `.milestones/` foi usada como fonte inicial do breakdown da v1 e migrada para GitHub em 2026-05-11.
-
-Após a validação da migração:
-
-- Progresso passa a ser acompanhado apenas em Issues + Project.
-- Planejamento de roadmap passa a ser acompanhado em GitHub Milestones.
-- Changelog versionado passa a ser mantido em GitHub Releases.
-- `.milestones/` deve ser removida em PR próprio para evitar fonte dupla de verdade.
+- Progresso é acompanhado apenas em GitHub Issues + Project v2.
+- Planejamento de roadmap é acompanhado em GitHub Milestones temáticas.
+- Changelog versionado é mantido em GitHub Releases.

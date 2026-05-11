@@ -35,7 +35,7 @@ Nenhuma camada pode importar camadas a sua direita.
 
 - `AGENTS.md`: tabela de roteamento (≤100 linhas).
 - `.catalog/`: fonte de verdade técnica versionada.
-- GitHub Issues, Project v2 e Milestones temáticas são a fonte de verdade para entregas; `.milestones/` é histórico migrado, não fonte ativa.
+- GitHub Issues, Project v2 e Milestones temáticas são a fonte de verdade para entregas.
 - Toda a documentação do repositório, descrições de PR, issues, comentários de PR e release notes deve ser escrita em português brasileiro, com acentuação correta.
 - Changelogs seguem [Keep a Changelog](https://keepachangelog.com) — seções `### Adicionado`, `### Corrigido`, `### Documentação`, `### Interno`.
 - Mudanças de escopo em `.catalog/` devem manter PRD, arquitetura, domínio, features, concerns e tracking consistentes.
