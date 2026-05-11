@@ -40,6 +40,15 @@ O Project `Fields of Mistria Oracle` usa os campos:
 - `v0.4.0 — Recomendações estratégicas`
 - `v0.5.0 — Resiliência e readiness local-first`
 
+## Release v1.0.0
+
+`v1.0.0 — Local-first MVP` é a release estável que agrega todos os milestones incrementais `v0.1.0` a `v0.5.0`.
+
+- Não mover as US/tasks existentes para um milestone `v1.0.0`; cada item permanece no milestone incremental onde será entregue.
+- A publicação final é rastreada pela issue `Release readiness — v1.0.0 Local-first MVP`.
+- O draft release `v1.0.0` deve ser publicado somente depois que todos os milestones `v0.x.0`, US e tasks mapeadas estiverem fechados.
+- O changelog final deve ser agregado das release notes incrementais e revisado antes da publicação.
+
 ## Convenções
 
 - Labels de rastreabilidade:
@@ -48,6 +57,7 @@ O Project `Fields of Mistria Oracle` usa os campos:
   - `tech-solution`
   - `rf-01` a `rf-13`
   - `release:v0.1.0` a `release:v0.5.0`
+  - `release:v1.0.0`
 - Labels de changelog/release notes:
   - `feature`
   - `bug`
