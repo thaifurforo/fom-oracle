@@ -5,6 +5,7 @@
 - Formato: `tipo(escopo): descrição` (Conventional Commits).
 - Tipos: `feat`, `fix`, `chore`, `test`, `docs`, `refactor`.
 - Commits devem mapear para tasks (ex.: `chore(scaffold): initialize monorepo workspace for T-01`).
+- PRs apenas documentais usam `release:patch`; novas capacidades funcionais do app usam `release:minor` quando entregues.
 
 ## Nomenclatura
 
@@ -33,3 +34,4 @@ Nenhuma camada pode importar camadas a sua direita.
 - `.catalog/`: fonte de verdade técnica versionada.
 - `.milestones/`: documentação de entregas (changelogs, tech-specs).
 - Changelogs seguem [Keep a Changelog](https://keepachangelog.com) — seções `### Adicionado`, `### Corrigido`, `### Impacto`.
+- Mudanças de escopo em `.catalog/` devem manter PRD, arquitetura, domínio, features, concerns e tracking consistentes.

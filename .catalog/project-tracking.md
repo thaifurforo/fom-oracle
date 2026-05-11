@@ -39,6 +39,10 @@ O Project `Fields of Mistria Oracle` usa os campos:
 - `v0.3.0 — Painel, prioridades e catálogo local`
 - `v0.4.0 — Recomendações estratégicas`
 - `v0.5.0 — Resiliência e readiness local-first`
+- `v0.6.0 — Inteligência de inventário e itens`
+- `v0.7.0 — Presentes de NPCs e integração social`
+
+As novas milestones `v0.6.0` e `v0.7.0` expandem o escopo funcional da v1 e devem ser consideradas parte do caminho de readiness do `v1.0.0`. A issue de release readiness consolida o checklist final após essas entregas.
 
 ## Versionamento e Releases
 
@@ -68,7 +72,7 @@ O único caminho suportado para publicação de release é o workflow automátic
   - `user-story`
   - `task`
   - `tech-solution`
-  - `rf-01` a `rf-13`
+  - `rf-01` a `rf-16`
   - `release:patch`
   - `release:minor`
   - `release:major`

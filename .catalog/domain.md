@@ -94,6 +94,43 @@ CREATE TABLE recommendation_item (
   FOREIGN KEY (batch_id) REFERENCES recommendation_batch(id)
 );
 
+CREATE TABLE inventory_item_location (
+  id TEXT PRIMARY KEY,
+  snapshot_id TEXT NOT NULL,
+  item_id TEXT NOT NULL,
+  display_name TEXT NOT NULL,
+  item_type TEXT,
+  location_type TEXT NOT NULL,
+  location_label TEXT,
+  quantity INTEGER NOT NULL,
+  quality TEXT,
+  FOREIGN KEY (snapshot_id) REFERENCES save_snapshot(id)
+);
+
+CREATE TABLE item_evaluation (
+  id TEXT PRIMARY KEY,
+  snapshot_id TEXT NOT NULL,
+  item_id TEXT NOT NULL,
+  best_action TEXT NOT NULL,
+  rationale TEXT NOT NULL,
+  source_trace TEXT,
+  evaluated_at TEXT NOT NULL,
+  FOREIGN KEY (snapshot_id) REFERENCES save_snapshot(id)
+);
+
+CREATE TABLE npc_gift_evaluation (
+  id TEXT PRIMARY KEY,
+  snapshot_id TEXT NOT NULL,
+  npc_id TEXT NOT NULL,
+  item_id TEXT NOT NULL,
+  appreciation TEXT NOT NULL,
+  availability TEXT NOT NULL,
+  rationale TEXT NOT NULL,
+  source_trace TEXT,
+  evaluated_at TEXT NOT NULL,
+  FOREIGN KEY (snapshot_id) REFERENCES save_snapshot(id)
+);
+
 CREATE TABLE knowledge_source (
   id TEXT PRIMARY KEY,
   source_type TEXT NOT NULL,
@@ -123,7 +160,18 @@ CREATE TABLE knowledge_source (
 - `PrioritySelection`
 - `RecommendationBatch`
 - `RecommendationItem`
+- `ItemEvaluation`
+- `NpcGiftEvaluation`
 - Responsabilidade: transformar snapshot + prioridades em plano acionável.
+
+### Inventory Aggregate
+- `InventoryItemLocation`
+- `ItemEvaluation`
+- Responsabilidade: consolidar mochila, baús e baús em celeiros, e avaliar a utilidade de itens no contexto do save.
+
+### Social Planning Aggregate
+- `NpcGiftEvaluation`
+- Responsabilidade: avaliar presentes gostados e amados por NPC considerando disponibilidade, custo de oportunidade e contexto social.
 
 ### Preference Aggregate
 - `UserPreference`
@@ -138,6 +186,12 @@ CREATE TABLE knowledge_source (
 - `CompatibilityStatus`
 - `RationaleTrace`
 - `InventorySummary`
+- `InventoryItemLocation`
+- `ItemUtilitySignal`
+- `QuestItemRequirement`
+- `RecipeRequirement`
+- `ProductionUnlockRequirement`
+- `GiftUtility`
 - `RelationshipProgress`
 - `MineProgress`
 - `AnimalBreedingProgress`
@@ -150,6 +204,10 @@ CREATE TABLE knowledge_source (
 - Um `SaveSnapshot` combinado a um `PriorityProfile` gera um `RecommendationBatch`.
 - Um `RecommendationBatch` possui muitos `RecommendationItem`.
 - Uma `GameInstallation` abastece os catálogos usados pelo motor de recomendação.
+- Um `SaveSnapshot` possui muitas localizações de itens normalizadas.
+- Um item em um `SaveSnapshot` pode gerar uma avaliação de utilidade.
+- Uma avaliação de presente de NPC reutiliza inventário, relacionamento e catálogo de presentes.
+- O `RecommendationBatch` pode reutilizar sinais de `ItemEvaluation` e `NpcGiftEvaluation`.
 
 ## Fontes de verdade
 

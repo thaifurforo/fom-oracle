@@ -44,6 +44,10 @@ O produto será um painel completo + assistente estratégico, não apenas um vis
 - Assistente estratégico diário com recomendações ranqueadas.
 - Sistema de prioridades dinâmicas com múltiplas prioridades ordenadas da maior para a menor.
 - Recomendações considerando múltiplos domínios do jogo: dia, estação, inventário, dinheiro, skills, perks, Town Rank, relacionamentos, mina, animais, quests, coleções e progresso geral.
+- Recomendações cruzando inventário completo, missões, receitas conhecidas, desbloqueios de produção, aniversários e eventos do dia.
+- Painel de inventário completo cobrindo mochila, baús e baús em celeiros, com busca e filtros por tipo.
+- Avaliação de utilidade de itens para vender, manter, doar ao museu, presentear, alimentar animais ou transformar via receita.
+- Painel de presentes por NPC, avaliando opções gostadas e amadas conforme custo, disponibilidade, apreciação e contexto do save.
 - Sugestões em categorias práticas como agricultura, mina, coleta, social, crafting, culinária, economia, animais e progressão.
 - Justificativas humanas para cada recomendação.
 - Persistência local de preferências entre sessões.
@@ -227,6 +231,35 @@ O sistema deve persistir localmente preferências operacionais do usuário entre
 - [ ] CA-41: ao reabrir o aplicativo, as preferências persistidas são restauradas quando ainda válidas.
 - [ ] CA-42: se uma preferência restaurada não estiver mais válida, o sistema informa o problema e oferece recuperação.
 
+### RF-14 — Avaliar inventário e utilidade de itens
+O sistema deve permitir que o jogador consulte o inventário atual completo, incluindo mochila, baús e baús dentro de celeiros, e avalie a melhor destinação de cada item.
+
+**Critérios de aceite**
+- [ ] CA-43: o painel de inventário oferece busca textual, filtro por tipo e diferenciação de localização do item quando disponível.
+- [ ] CA-44: ao selecionar um item, o sistema indica se o item deve ser vendido, mantido, doado, usado como presente, reservado para animais ou transformado por receita.
+- [ ] CA-45: a avaliação considera missões ativas, pedidos de NPCs, missões futuras conhecidas, museu, valor de venda, presentes de NPCs, alimentação de animais e uso em receitas.
+- [ ] CA-46: quando o item é ingrediente, o sistema avalia também os itens produzíveis a partir dele, incluindo rentabilidade, custo de produção, utilidade para missões e utilidade social.
+- [ ] CA-47: o sistema diferencia itens já suficientes para entrega de missão, itens que ainda precisam ser acumulados e itens que devem ser guardados em baús para objetivos futuros.
+
+### RF-15 — Avaliar presentes de NPCs
+O sistema deve oferecer um painel em que o jogador seleciona um NPC e recebe uma avaliação das melhores opções de presente considerando o estado real do save.
+
+**Critérios de aceite**
+- [ ] CA-48: o painel permite selecionar um NPC e listar presentes gostados e amados conhecidos.
+- [ ] CA-49: a avaliação considera apreciação do NPC, disponibilidade no inventário, materiais ou receitas para produzir o item e custo de oportunidade de vender ou comprar.
+- [ ] CA-50: o motor de avaliação de presentes é reutilizado pelo painel de inventário para explicar quando um item deve ser guardado para presentear.
+- [ ] CA-51: aniversários e eventos do dia aumentam a prioridade de recomendações sociais relacionadas ao NPC afetado.
+
+### RF-16 — Gerar recomendações orientadas a itens, missões e desbloqueios
+O motor de recomendação deve cruzar inventário, missões, receitas, níveis desbloqueados, equipamentos, skills, eventos e prioridades do usuário para gerar ações diárias mais específicas.
+
+**Critérios de aceite**
+- [ ] CA-52: a prioridade de missões permite escolher exatamente quais missões devem ser priorizadas.
+- [ ] CA-53: para missões priorizadas, o sistema recomenda entregar itens já suficientes, produzir itens necessários a partir de ingredientes existentes ou acumular itens em baús até alcançar a quantidade desejada.
+- [ ] CA-54: recomendações consideram receitas possuídas, receitas desbloqueáveis, níveis necessários para cozinha, fundição, crafting e sistemas equivalentes.
+- [ ] CA-55: o sistema pode recomendar melhorar skills, melhorar equipamentos ou desbloquear receitas quando isso destrava objetivos relevantes para prioridades do usuário.
+- [ ] CA-56: sugestões do dia incluem ações relacionadas a itens, como doar ao museu, vender excesso, vender item cuja melhor opção é venda, produzir item útil ou rentável e guardar item para missão ou presente.
+
 ## 5. Requisitos Não Funcionais
 
 ### RNF-01 — Operação local e privacidade por padrão
@@ -283,13 +316,15 @@ O produto deve priorizar dados extraídos do save e da instalação local do jog
 5. O usuário seleciona o save que deseja usar.
 6. O sistema lê o save, carrega os dados e exibe o assistente estratégico como tela principal.
 7. No topo da tela, o usuário vê um resumo do painel com o contexto essencial do save.
-8. O usuário revisa o resumo e o restante do painel consolidado para entender rapidamente progresso, gargalos e oportunidades.
+8. O usuário revisa o resumo, o inventário completo e o restante do painel consolidado para entender rapidamente progresso, gargalos e oportunidades.
 9. O usuário seleciona uma ou mais prioridades e ordena essas prioridades da mais importante para a menos importante.
-10. O sistema recalcula e exibe recomendações estratégicas do dia com justificativas humanas.
-11. O usuário pode ajustar prioridades a qualquer momento e ver novas recomendações.
-12. Depois de jogar mais, o usuário aciona atualizar save.
-13. O sistema relê o save ativo, atualiza o resumo do painel, o painel detalhado e as recomendações.
-14. Ao fechar e reabrir o app, o sistema restaura preferências persistidas quando válidas.
+10. Quando a prioridade envolve missões, o usuário pode escolher quais missões específicas deseja priorizar.
+11. O sistema recalcula e exibe recomendações estratégicas do dia com justificativas humanas.
+12. O usuário pode abrir a avaliação de inventário ou presentes para investigar por que guardar, vender, produzir, doar ou presentear determinado item.
+13. O usuário pode ajustar prioridades a qualquer momento e ver novas recomendações.
+14. Depois de jogar mais, o usuário aciona atualizar save.
+15. O sistema relê o save ativo, atualiza o resumo do painel, o painel detalhado, as avaliações de itens/presentes e as recomendações.
+16. Ao fechar e reabrir o app, o sistema restaura preferências persistidas quando válidas.
 
 ### Fluxos alternativos
 1. Se nenhum save for encontrado, o sistema informa o problema e oferece seleção manual de pasta.
@@ -354,6 +389,7 @@ Medir se usuários voltam ao app em múltiplas sessões.
 - Recomendações podem parecer genéricas se a base de conhecimento estiver incompleta.
 - O painel pode ficar denso demais e competir com a clareza do assistente estratégico.
 - O produto pode exigir calibragem fina para não parecer excessivamente técnico.
+- A inteligência de itens e presentes pode expandir demais a v1 se não for entregue como avaliações explicáveis e incrementais.
 
 ### Riscos técnicos
 - Mudanças de versão do jogo podem quebrar parsing ou interpretação.
@@ -361,6 +397,7 @@ Medir se usuários voltam ao app em múltiplas sessões.
 - Parte do modelo de decisão pode depender de dados não explícitos, exigindo heurísticas transparentes.
 - A detecção automática da pasta de saves pode falhar em ambientes não padrão.
 - A engenharia reversa da instalação local pode ser mais complexa do que o esperado.
+- Receitas, preferências de NPCs, eventos e missões futuras podem depender de catálogo incompleto ou divergente entre versão local e wiki.
 
 ### Riscos de dados e qualidade
 - Informações da comunidade podem ficar desatualizadas após patches.
@@ -368,6 +405,7 @@ Medir se usuários voltam ao app em múltiplas sessões.
 - Prioridades do usuário podem entrar em conflito e exigir arbitragem compreensível.
 - Nem sempre existe uma única melhor atividade do dia; o sistema precisa evitar falsa precisão.
 - Se a engenharia reversa da instalação local revelar poucos dados úteis, aumenta a dependência de fontes externas.
+- Itens podem ter múltiplas utilidades concorrentes; a recomendação precisa explicar a escolha sem expor score técnico.
 
 ### Estratégias de mitigação
 - Delimitar claramente o que a v1 recomenda bem.
@@ -375,6 +413,7 @@ Medir se usuários voltam ao app em múltiplas sessões.
 - Informar compatibilidade por versão e degradar com elegância em leitura parcial.
 - Exibir justificativas humanas claras.
 - Validar cedo o núcleo de recomendação com saves reais diferentes.
+- Manter o motor de decisão da v1 heurístico, determinístico e explicável; machine learning fica fora da v1.
 
 ## 9. Anexos / Decisões Adiadas
 
@@ -387,6 +426,7 @@ Medir se usuários voltam ao app em múltiplas sessões.
 - Explicação das sugestões: apenas justificativas humanas, sem score técnico exposto.
 - Persona casual: fora da v1, melhoria futura.
 - Estratégia de dados: priorizar extração do save e da instalação local; usar wiki apenas como complemento subsidiário.
+- Motor de decisão da v1: heurístico explicável, sem machine learning no escopo.
 
 ### Decisões adiadas
 - Implementação exata do parser e dos extratores.
@@ -398,6 +438,7 @@ Medir se usuários voltam ao app em múltiplas sessões.
 - Nome final do botão atualizar save.
 - Política de atualização da base de conhecimento derivada da instalação local.
 - Política exata de versionamento suportado do jogo.
+- Uso futuro de machine learning para calibragem de pesos ou personalização, condicionado a dados reais de uso e preservação de explicabilidade.
 
 ### Referências de base
 - [levantamento-ferramentas-fom.md](./references/levantamento-ferramentas-fom.md)

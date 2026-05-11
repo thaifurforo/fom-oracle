@@ -1,10 +1,12 @@
 # FOM Oracle
 
-FOM Oracle é um aplicativo desktop Windows local-first para leitura de saves de Fields of Mistria, consolidação de progresso e recomendações estratégicas diárias.
+FOM Oracle é um aplicativo desktop Windows local-first para leitura de saves de Fields of Mistria, consolidação de progresso, avaliação de inventário/presentes e recomendações estratégicas diárias.
 
 ## Estado atual
 
 Este repositório está no scaffolding inicial da `T-01`. O objetivo desta etapa é estabelecer a estrutura do workspace, a solution .NET e os comandos base de bootstrap.
+
+O escopo planejado da v1 inclui um motor heurístico explicável para cruzar save, inventário completo, missões, receitas, eventos, aniversários, preferências de NPCs e prioridades do jogador. Machine learning não faz parte da v1.
 
 ## Estrutura
 
@@ -77,4 +79,6 @@ Cobertura atual da T-01:
 - `T-03`: runtime inicial do sidecar .NET
 - `T-04`: guardrails de tipagem e camadas
 - `T-05`: persistência local base
-
+- `US-09`: avaliação de inventário e utilidade de itens
+- `US-10`: avaliação de presentes de NPCs
+- `US-11`: recomendações item-aware e mission-aware

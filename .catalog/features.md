@@ -16,6 +16,16 @@
 | Catálogo local do jogo | US-06 | ⏳ Pendente | Sim |
 | Recomendações explicáveis | US-07 | ⏳ Pendente | Sim |
 | Restauração de sessão e resiliência | US-08 | ⏳ Pendente | Sim |
+| Avaliação de inventário e utilidade de itens | US-09 | ⏳ Pendente | Sim |
+| Avaliação de presentes de NPCs | US-10 | ⏳ Pendente | Sim |
+| Recomendações item-aware e mission-aware | US-11 | ⏳ Pendente | Sim |
+
+## Interações de Funcionalidade
+
+- Avaliação de inventário alimenta a home estratégica com sugestões como doar ao museu, vender excesso, guardar item para missão, produzir item útil ou reservar presente.
+- Avaliação de presentes de NPCs alimenta tanto o painel social quanto a avaliação de inventário quando um item é bom presente.
+- Recomendações estratégicas reutilizam sinais de inventário, presentes, receitas, eventos, aniversários, missões priorizadas, skills e equipamentos desbloqueáveis.
+- A prioridade `missões` deve permitir selecionar missões específicas, não apenas o tema geral de quests.
 
 ## Regras
 
