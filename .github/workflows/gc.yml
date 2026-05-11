@@ -21,10 +21,9 @@ jobs:
           $trackedFiles = git ls-files |
             Where-Object { $_ -match '\.(cs|ts|tsx|ps1|md|json|ya?ml)$' }
 
-          $trackedFiles |
-            Select-String -Pattern 'TODO|FIXME|HACK|XXX' |
+          Select-String -LiteralPath $trackedFiles -Pattern 'TODO|FIXME|HACK|XXX' |
             ForEach-Object {
-              $relativePath = $_.Path.Replace('\', '/')
+              $relativePath = [System.IO.Path]::GetRelativePath((Get-Location).Path, $_.Path).Replace('\', '/')
               $results += "  - ${relativePath}:$($_.LineNumber) `"$($_.Line.Trim())`""
             }
 
