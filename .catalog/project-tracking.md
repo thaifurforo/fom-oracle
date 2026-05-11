@@ -42,11 +42,9 @@ O Project `Fields of Mistria Oracle` usa os campos:
 
 ## Release v1.0.0
 
-`v1.0.0 — Local-first MVP` é a release estável que agrega todos os milestones incrementais `v0.1.0` a `v0.5.0`.
+`v1.0.0 — Local-first MVP` é a primeira release estável do produto.
 
-- Não mover as US/tasks existentes para um milestone `v1.0.0`; cada item permanece no milestone incremental onde será entregue.
-- A publicação final é rastreada pela issue `Release readiness — v1.0.0 Local-first MVP`.
-- O draft release `v1.0.0` deve ser publicado somente depois que todos os milestones `v0.x.0`, US e tasks mapeadas estiverem fechados.
+- O draft release `v1.0.0` deve ser publicado somente depois que todas as issues de minor releases anteriores vinculadas por label `release:vMAJOR.MINOR.PATCH` estiverem fechadas.
 - O changelog final deve ser agregado das release notes incrementais e revisado antes da publicação.
 
 ## Automação de Release
@@ -56,9 +54,13 @@ Releases não são publicadas automaticamente por merge de PR, fechamento de iss
 - `publish=false`: valida readiness e, se solicitado, regenera release notes sem publicar o draft.
 - `publish=true`: publica o draft release existente apenas após todos os gates passarem.
 - Publicação só é permitida a partir de `main`.
-- Releases `v0.x.0` exigem milestone correspondente sem issues abertas e são publicadas como prerelease.
-- Release `v1.0.0` exige `v0.1.0` a `v0.5.0` já publicadas, milestones `v0.x.0` fechadas e issue `#37` fechada.
-- Após publicar uma release `v0.x.0`, o workflow fecha o milestone correspondente.
+- O input `version` aceita qualquer tag no formato `vMAJOR.MINOR.PATCH`.
+- Quando existir milestone cujo título começa com a tag da release, por exemplo `v0.6.0 — ...`, ele será associado à release.
+- Release patch `vA.B.C`, com `C > 0`, valida apenas os gates básicos da própria release.
+- Release minor `vA.B.0`, com `B > 0`, exige que não existam issues abertas com labels patch filhas `release:vA.B.P`, onde `P > 0`.
+- Release major `vN.0.0` exige que não existam issues abertas com labels minor menores que ela, como `release:v0.5.0` para `v1.0.0` ou `release:v1.3.0` para `v2.0.0`.
+- Releases `v0.*.*` são publicadas como prerelease; releases `v1.0.0` e posteriores são publicadas como estáveis e latest.
+- Após publicar uma release, o workflow fecha o milestone correspondente quando ele existir.
 
 ## Convenções
 
@@ -67,8 +69,7 @@ Releases não são publicadas automaticamente por merge de PR, fechamento de iss
   - `task`
   - `tech-solution`
   - `rf-01` a `rf-13`
-  - `release:v0.1.0` a `release:v0.5.0`
-  - `release:v1.0.0`
+  - `release:vMAJOR.MINOR.PATCH`, sempre como versão exata, por exemplo `release:v0.6.0` ou `release:v0.6.1`
 - Labels de changelog/release notes:
   - `feature`
   - `bug`

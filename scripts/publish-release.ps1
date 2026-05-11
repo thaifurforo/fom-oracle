@@ -9,65 +9,60 @@ param(
 
 $ErrorActionPreference = 'Stop'
 
-function Get-ReleasePolicy {
+function ConvertTo-ReleaseVersion {
     param(
         [Parameter(Mandatory = $true)]
         [string]$Version
     )
 
-    $policies = @{
-        'v0.1.0' = @{
-            Milestone = 'v0.1.0 — Fundação do workspace'
-            PreviousTag = $null
-            Prerelease = $true
-            MakeLatest = 'false'
+    if ($Version -notmatch '^v(?<Major>0|[1-9]\d*)\.(?<Minor>0|[1-9]\d*)\.(?<Patch>0|[1-9]\d*)$') {
+        throw "Release version must use vMAJOR.MINOR.PATCH format: $Version"
+    }
+
+    return [pscustomobject]@{
+        Version = $Version
+        Major = [int]$Matches.Major
+        Minor = [int]$Matches.Minor
+        Patch = [int]$Matches.Patch
+    }
+}
+
+function Compare-ReleaseVersion {
+    param(
+        [Parameter(Mandatory = $true)]
+        [object]$Left,
+        [Parameter(Mandatory = $true)]
+        [object]$Right
+    )
+
+    foreach ($part in @('Major', 'Minor', 'Patch')) {
+        if ($Left.$part -lt $Right.$part) {
+            return -1
         }
-        'v0.2.0' = @{
-            Milestone = 'v0.2.0 — Saves e snapshots'
-            PreviousTag = 'v0.1.0'
-            Prerelease = $true
-            MakeLatest = 'false'
-        }
-        'v0.3.0' = @{
-            Milestone = 'v0.3.0 — Painel, prioridades e catálogo local'
-            PreviousTag = 'v0.2.0'
-            Prerelease = $true
-            MakeLatest = 'false'
-        }
-        'v0.4.0' = @{
-            Milestone = 'v0.4.0 — Recomendações estratégicas'
-            PreviousTag = 'v0.3.0'
-            Prerelease = $true
-            MakeLatest = 'false'
-        }
-        'v0.5.0' = @{
-            Milestone = 'v0.5.0 — Resiliência e readiness local-first'
-            PreviousTag = 'v0.4.0'
-            Prerelease = $true
-            MakeLatest = 'false'
-        }
-        'v1.0.0' = @{
-            Milestone = $null
-            PreviousTag = 'v0.5.0'
-            Prerelease = $false
-            MakeLatest = 'true'
-            ReadinessIssue = 37
+
+        if ($Left.$part -gt $Right.$part) {
+            return 1
         }
     }
 
-    if (-not $policies.ContainsKey($Version)) {
-        throw "Unsupported release version: $Version"
+    return 0
+}
+
+function Get-ReleaseKind {
+    param(
+        [Parameter(Mandatory = $true)]
+        [object]$ParsedVersion
+    )
+
+    if ($ParsedVersion.Minor -eq 0 -and $ParsedVersion.Patch -eq 0) {
+        return 'major'
     }
 
-    return $policies[$Version]
-}
+    if ($ParsedVersion.Patch -eq 0) {
+        return 'minor'
+    }
 
-function Get-V0ReleaseTags {
-    return @('v0.1.0', 'v0.2.0', 'v0.3.0', 'v0.4.0', 'v0.5.0')
-}
-
-function Get-V0MilestoneTitles {
-    return (Get-V0ReleaseTags | ForEach-Object { (Get-ReleasePolicy -Version $_).Milestone })
+    return 'patch'
 }
 
 function Get-ObjectValue {
@@ -92,6 +87,46 @@ function Get-ObjectValue {
     return $null
 }
 
+function Find-MilestoneByVersion {
+    param(
+        [object[]]$Milestones = @(),
+        [Parameter(Mandatory = $true)]
+        [string]$Version
+    )
+
+    $escapedVersion = [regex]::Escape($Version)
+    return @(
+        $Milestones |
+            Where-Object {
+                $title = [string](Get-ObjectValue -InputObject $_ -Names @('title'))
+                $title -match "^$escapedVersion($|[\s\-—])"
+            } |
+            Select-Object -First 1
+    )[0]
+}
+
+function Get-ReleasePolicy {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$Version,
+        [object[]]$Milestones = @()
+    )
+
+    $parsedVersion = ConvertTo-ReleaseVersion -Version $Version
+    $milestone = Find-MilestoneByVersion -Milestones $Milestones -Version $Version
+    $milestoneTitle = if ($null -eq $milestone) { $null } else { Get-ObjectValue -InputObject $milestone -Names @('title') }
+    $isStable = $parsedVersion.Major -ge 1
+
+    return @{
+        Version = $Version
+        ParsedVersion = $parsedVersion
+        Kind = Get-ReleaseKind -ParsedVersion $parsedVersion
+        Milestone = $milestoneTitle
+        Prerelease = (-not $isStable)
+        MakeLatest = if ($isStable) { 'true' } else { 'false' }
+    }
+}
+
 function Find-ReleaseByTag {
     param(
         [object[]]$Releases,
@@ -110,17 +145,87 @@ function Find-MilestoneByTitle {
     return @($Milestones | Where-Object { (Get-ObjectValue -InputObject $_ -Names @('title')) -eq $Title } | Select-Object -First 1)[0]
 }
 
+function Get-IssueReleaseLabels {
+    param(
+        [Parameter(Mandatory = $true)]
+        [object]$Issue
+    )
+
+    $labels = Get-ObjectValue -InputObject $Issue -Names @('labels')
+    if ($null -eq $labels) {
+        return @()
+    }
+
+    return @(
+        $labels |
+            ForEach-Object {
+                if ($_ -is [string]) {
+                    $_
+                } else {
+                    Get-ObjectValue -InputObject $_ -Names @('name')
+                }
+            } |
+            Where-Object { $_ -match '^release:v(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$' }
+    )
+}
+
+function Get-BlockingReleaseIssueLabels {
+    param(
+        [Parameter(Mandatory = $true)]
+        [object]$ParsedVersion,
+        [Parameter(Mandatory = $true)]
+        [string]$Kind,
+        [object[]]$OpenIssues = @()
+    )
+
+    if ($Kind -eq 'patch') {
+        return @()
+    }
+
+    $blocking = @()
+    foreach ($issue in $OpenIssues) {
+        foreach ($label in Get-IssueReleaseLabels -Issue $issue) {
+            $labelVersion = ConvertTo-ReleaseVersion -Version ($label.Substring('release:'.Length))
+
+            $blocksMinor = $Kind -eq 'minor' -and
+                $labelVersion.Major -eq $ParsedVersion.Major -and
+                $labelVersion.Minor -eq $ParsedVersion.Minor -and
+                $labelVersion.Patch -gt 0
+
+            $blocksMajor = $Kind -eq 'major' -and
+                $labelVersion.Patch -eq 0 -and
+                $labelVersion.Minor -gt 0 -and
+                (Compare-ReleaseVersion -Left $labelVersion -Right $ParsedVersion) -lt 0
+
+            if ($blocksMinor -or $blocksMajor) {
+                $number = Get-ObjectValue -InputObject $issue -Names @('number')
+                $blocking += [pscustomobject]@{
+                    Number = $number
+                    Label = $label
+                }
+            }
+        }
+    }
+
+    return $blocking
+}
+
+function Format-BlockingReleaseIssueLabels {
+    param(
+        [object[]]$BlockingIssues = @()
+    )
+
+    return (@($BlockingIssues | ForEach-Object { "#$($_.Number) $($_.Label)" }) -join ', ')
+}
+
 function Assert-ReleaseReadiness {
     param(
         [Parameter(Mandatory = $true)]
         [string]$Version,
         [Parameter(Mandatory = $true)]
         [hashtable]$Policy,
-        [Parameter(Mandatory = $true)]
         [object]$Release,
-        [object[]]$Milestones = @(),
-        [object[]]$Releases = @(),
-        [object]$ReadinessIssue,
+        [object[]]$OpenIssues = @(),
         [bool]$Publish = $false,
         [string]$CurrentRef = 'main'
     )
@@ -138,40 +243,20 @@ function Assert-ReleaseReadiness {
         throw "Release $Version must be a draft before publishing."
     }
 
-    if ($Version -eq 'v1.0.0') {
-        foreach ($tag in Get-V0ReleaseTags) {
-            $v0Release = Find-ReleaseByTag -Releases $Releases -Tag $tag
-            $v0Draft = if ($null -eq $v0Release) { $true } else { [bool](Get-ObjectValue -InputObject $v0Release -Names @('isDraft', 'draft')) }
-            if ($null -eq $v0Release -or $v0Draft) {
-                throw "Release $tag must be published before v1.0.0."
-            }
+    $blockingIssues = Get-BlockingReleaseIssueLabels `
+        -ParsedVersion $Policy.ParsedVersion `
+        -Kind $Policy.Kind `
+        -OpenIssues $OpenIssues
+
+    if (@($blockingIssues).Count -gt 0) {
+        $formattedIssues = Format-BlockingReleaseIssueLabels -BlockingIssues $blockingIssues
+        if ($Policy.Kind -eq 'minor') {
+            throw "Release $Version is blocked by open patch issue(s): $formattedIssues"
         }
 
-        foreach ($milestoneTitle in Get-V0MilestoneTitles) {
-            $milestone = Find-MilestoneByTitle -Milestones $Milestones -Title $milestoneTitle
-            $state = Get-ObjectValue -InputObject $milestone -Names @('state')
-            $openIssues = [int](Get-ObjectValue -InputObject $milestone -Names @('open_issues', 'openIssues'))
-            if ($null -eq $milestone -or $state -ne 'closed' -or $openIssues -ne 0) {
-                throw "Milestone $milestoneTitle must be closed before publishing v1.0.0."
-            }
+        if ($Policy.Kind -eq 'major') {
+            throw "Release $Version is blocked by open lower minor issue(s): $formattedIssues"
         }
-
-        $readinessState = Get-ObjectValue -InputObject $ReadinessIssue -Names @('state')
-        if ($readinessState -ne 'CLOSED') {
-            throw 'Readiness issue #37 must be closed before publishing v1.0.0.'
-        }
-
-        return
-    }
-
-    $milestone = Find-MilestoneByTitle -Milestones $Milestones -Title $Policy.Milestone
-    if ($null -eq $milestone) {
-        throw "Milestone $($Policy.Milestone) was not found."
-    }
-
-    $openIssueCount = [int](Get-ObjectValue -InputObject $milestone -Names @('open_issues', 'openIssues'))
-    if ($openIssueCount -gt 0) {
-        throw "Milestone $($Policy.Milestone) still has $openIssueCount open issue(s)."
     }
 }
 
@@ -185,17 +270,11 @@ function New-ReleaseNotesPayload {
         [string]$TargetCommitish
     )
 
-    $payload = @{
+    return @{
         tag_name = $Version
         target_commitish = $TargetCommitish
         configuration_file_path = '.github/release.yml'
     }
-
-    if ($Policy.PreviousTag) {
-        $payload.previous_tag_name = $Policy.PreviousTag
-    }
-
-    return $payload
 }
 
 function New-ReleaseNotesBody {
@@ -208,26 +287,27 @@ function New-ReleaseNotesBody {
         [string]$GeneratedBody
     )
 
-    if ($Version -eq 'v1.0.0') {
-        $gate = @(
-            '## Release Gate'
-            ''
-            '- Readiness issue: `#37`'
-            '- Validation: v0.1.0 through v0.5.0 published'
-            '- Validation: all v0.x.0 milestones closed'
-            '- Published from: `main`'
-        ) -join "`n"
-    } else {
-        $gate = @(
-            '## Release Gate'
-            ''
-            ('- Milestone: `' + $Policy.Milestone + '`')
-            '- Validation: all milestone issues closed'
-            '- Published from: `main`'
-        ) -join "`n"
+    $gateLines = @(
+        '## Release Gate'
+        ''
+        '- Version labels: `release:vMAJOR.MINOR.PATCH`'
+    )
+
+    if ($Policy.Milestone) {
+        $gateLines += ('- Milestone: `' + $Policy.Milestone + '`')
     }
 
-    return "$gate`n`n$GeneratedBody"
+    if ($Policy.Kind -eq 'minor') {
+        $gateLines += '- Validation: linked patch issues closed'
+    } elseif ($Policy.Kind -eq 'major') {
+        $gateLines += '- Validation: linked lower minor issues closed'
+    } else {
+        $gateLines += '- Validation: patch release basic gates'
+    }
+
+    $gateLines += '- Published from: `main`'
+
+    return "$($gateLines -join "`n")`n`n$GeneratedBody"
 }
 
 function New-ReleaseUpdatePayload {
@@ -263,10 +343,6 @@ function Get-MilestoneToCloseAfterPublish {
         [Parameter(Mandatory = $true)]
         [hashtable]$Policy
     )
-
-    if ($Version -eq 'v1.0.0') {
-        return $null
-    }
 
     return $Policy.Milestone
 }
@@ -350,23 +426,18 @@ function Invoke-PublishReleaseCommand {
         [string]$CurrentRef
     )
 
-    $policy = Get-ReleasePolicy -Version $Version
+    ConvertTo-ReleaseVersion -Version $Version | Out-Null
+
     $release = Invoke-GhJson -Arguments @('release', 'view', $Version, '--repo', $Repository, '--json', 'databaseId,tagName,name,body,isDraft,isPrerelease')
     $milestones = Invoke-GhJson -Arguments @('api', "repos/$Repository/milestones?state=all&per_page=100")
-    $releases = Invoke-GhJson -Arguments @('release', 'list', '--repo', $Repository, '--limit', '100', '--json', 'tagName,name,isDraft,isPrerelease')
-    $readinessIssue = $null
-
-    if ($policy.ReadinessIssue) {
-        $readinessIssue = Invoke-GhJson -Arguments @('issue', 'view', ([string]$policy.ReadinessIssue), '--repo', $Repository, '--json', 'number,title,state,url')
-    }
+    $openIssues = Invoke-GhJson -Arguments @('issue', 'list', '--repo', $Repository, '--state', 'open', '--limit', '1000', '--json', 'number,title,labels')
+    $policy = Get-ReleasePolicy -Version $Version -Milestones @($milestones)
 
     Assert-ReleaseReadiness `
         -Version $Version `
         -Policy $policy `
         -Release $release `
-        -Milestones @($milestones) `
-        -Releases @($releases) `
-        -ReadinessIssue $readinessIssue `
+        -OpenIssues @($openIssues) `
         -Publish:$Publish `
         -CurrentRef $CurrentRef
 
