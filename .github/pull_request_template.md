@@ -7,6 +7,7 @@ Descreva, em poucas linhas, o objetivo desta PR e o problema que ela resolve.
 - Liste as mudanças principais, agrupadas por área ou comportamento.
 - Prefira linguagem objetiva e em português do Brasil.
 - Use acentuação correta, cedilha e til.
+- Adicione a referência à issue vinculada ao PR com `Closes`, `Fixes` ou `Resolves`. Exemplo: Closes #11
 
 ## Critérios de aceite atendidos
 
