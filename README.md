@@ -4,7 +4,7 @@ FOM Oracle e um aplicativo desktop Windows local-first para leitura de saves de 
 
 ## Estado atual
 
-Este repositorio esta no scaffolding inicial da `T-01`. O objetivo desta etapa e estabelecer a estrutura do workspace, a solution .NET e os comandos base de bootstrap.
+O repositório avançou além do scaffolding inicial da `T-01` e já possui o shell React/Tauri da `T-02` em construção. O objetivo desta etapa é consolidar a UI desktop inicial, mantendo o frontend como cliente fino do sidecar .NET.
 
 ## Estrutura
 
@@ -32,6 +32,7 @@ Este repositorio esta no scaffolding inicial da `T-01`. O objetivo desta etapa e
 
 - `pnpm`
 - `.NET SDK`
+- Rust toolchain com `cargo` para o shell React/Tauri da `T-02`
 
 ### Comandos
 
