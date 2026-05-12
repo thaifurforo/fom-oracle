@@ -19,7 +19,7 @@ export async function getHealth(signal?: AbortSignal): Promise<HealthResponse> {
   const baseUrl = getApiBaseUrl();
 
   if (!baseUrl) {
-    throw new ApiUnavailableError("Base URL da API local nao configurada.");
+    throw new ApiUnavailableError("URL base da API local não configurada.");
   }
 
   let response: Response;
@@ -33,7 +33,7 @@ export async function getHealth(signal?: AbortSignal): Promise<HealthResponse> {
       signal,
     });
   } catch {
-    throw new ApiUnavailableError("API local indisponivel.");
+    throw new ApiUnavailableError("API local indisponível.");
   }
 
   if (!response.ok) {

@@ -47,11 +47,11 @@ export default function ConnectionBanner() {
 
   const message =
     status === "connected"
-      ? "Sidecar local acessivel"
+      ? "Sidecar local acessível"
       : status === "connecting"
         ? "Verificando a API local"
         : status === "disconnected"
-          ? "API local nao configurada ou indisponivel"
+          ? "API local não configurada ou indisponível"
           : status === "error"
             ? "Falha ao consultar a API local"
             : "Estado inicial";
@@ -72,7 +72,7 @@ export default function ConnectionBanner() {
       <div className="min-w-0">
         <p className="text-sm font-medium text-white">{message}</p>
         <p className="text-xs text-slate-400">
-          A UI segue operando mesmo quando o sidecar ainda nao esta disponivel.
+          A UI segue operando mesmo quando o sidecar ainda não está disponível.
         </p>
       </div>
     </div>

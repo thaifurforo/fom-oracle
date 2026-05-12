@@ -1,13 +1,14 @@
 import { render, screen } from "@testing-library/react";
 import { HashRouter } from "react-router-dom";
-import { QueryClientProvider } from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { describe, expect, it } from "vitest";
 
 import App from "@/app/App";
-import { queryClient } from "@/shared/api/queryClient";
 
 describe("App shell", () => {
   it("mostra o shell do assistente estrategico e a home inicial", () => {
+    const queryClient = new QueryClient();
+
     render(
       <QueryClientProvider client={queryClient}>
         <HashRouter>
