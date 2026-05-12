@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 
 import { ApiUnavailableError, getHealth } from "@/shared/api/localApi";
+import { getApiBaseUrl } from "@/shared/config/env";
 import { useSessionStore } from "@/shared/state/sessionStore";
 import StatusPill from "@/shared/ui/StatusPill";
 
@@ -24,22 +25,27 @@ function connectionTone(
 
 export default function ConnectionBanner() {
   const setConnectionState = useSessionStore((state) => state.setConnectionState);
+  const baseUrl = getApiBaseUrl();
 
   const healthQuery = useQuery({
-    queryKey: ["health"],
+    queryKey: ["health", baseUrl],
     queryFn: ({ signal }) => getHealth(signal),
+    enabled: Boolean(baseUrl),
+    retry: false,
   });
 
   const status =
-    healthQuery.isFetching && !healthQuery.data
-      ? "connecting"
-      : healthQuery.isSuccess
-        ? "connected"
-        : healthQuery.isError
-          ? healthQuery.error instanceof ApiUnavailableError
-            ? "disconnected"
-            : "error"
-          : "idle";
+    !baseUrl
+      ? "disconnected"
+      : healthQuery.isFetching && !healthQuery.data
+        ? "connecting"
+        : healthQuery.isSuccess
+          ? "connected"
+          : healthQuery.isError
+            ? healthQuery.error instanceof ApiUnavailableError
+              ? "disconnected"
+              : "error"
+            : "idle";
 
   useEffect(() => {
     setConnectionState(status);

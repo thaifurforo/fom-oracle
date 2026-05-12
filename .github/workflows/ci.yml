@@ -61,8 +61,14 @@ jobs:
       - name: Frontend lint
         run: pnpm --dir frontend run lint
 
+      - name: Frontend typecheck
+        run: pnpm --dir frontend run typecheck
+
+      - name: Frontend test
+        run: pnpm --dir frontend run test
+
       - name: Frontend build
-        run: pnpm --dir frontend run build
+        run: pnpm --dir frontend run build:web
 
       - name: Security audit
         run: pnpm --dir frontend audit --prod

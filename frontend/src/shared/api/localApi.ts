@@ -2,8 +2,8 @@ import { getApiBaseUrl } from "@/shared/config/env";
 import type { HealthResponse } from "@/shared/api/contracts";
 
 export class ApiUnavailableError extends Error {
-  constructor(message: string) {
-    super(message);
+  constructor(message: string, options?: ErrorOptions) {
+    super(message, options);
     this.name = "ApiUnavailableError";
   }
 }
@@ -32,8 +32,11 @@ export async function getHealth(signal?: AbortSignal): Promise<HealthResponse> {
       },
       signal,
     });
-  } catch {
-    throw new ApiUnavailableError("API local indisponível.");
+  } catch (error) {
+    if (error instanceof Error && error.name === "AbortError") {
+      throw error;
+    }
+    throw new ApiUnavailableError("API local indisponível.", { cause: error });
   }
 
   if (!response.ok) {

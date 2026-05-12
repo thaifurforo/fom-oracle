@@ -6,8 +6,14 @@ import { describe, expect, it } from "vitest";
 import App from "@/app/App";
 
 describe("App shell", () => {
-  it("mostra o shell do assistente estrategico e a home inicial", () => {
-    const queryClient = new QueryClient();
+  it("mostra o shell do assistente estratégico e a home inicial", () => {
+    const queryClient = new QueryClient({
+      defaultOptions: {
+        queries: {
+          retry: false,
+        },
+      },
+    });
 
     render(
       <QueryClientProvider client={queryClient}>
