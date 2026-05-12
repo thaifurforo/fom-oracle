@@ -16,7 +16,7 @@ it("retorna erro de indisponibilidade quando a URL base não existe", async () =
 it("retorna HealthResponse em caso de sucesso", async () => {
   vi.stubEnv("VITE_FOM_ORACLE_API_BASE_URL", "http://localhost:5000");
 
-  const mockResponse = { status: "ok", version: "0.1.0" };
+  const mockResponse = { status: "ok", appVersion: "0.1.0", coreVersion: "0.1.0" };
   const fetchSpy = vi.spyOn(globalThis, "fetch").mockResolvedValue({
     ok: true,
     json: async () => mockResponse,
