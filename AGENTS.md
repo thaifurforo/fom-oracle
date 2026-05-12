@@ -4,10 +4,14 @@
 FOM Oracle
 
 ## Documentos-fonte
-- PRD principal: [PRD-fom-oracle.md](/F:/Users/thaif/Documents/programacao/fom-oracle/PRD-fom-oracle.md)
-- Arquitetura: [.catalog/architecture.md](/F:/Users/thaif/Documents/programacao/fom-oracle/.catalog/architecture.md)
-- Stack: [.catalog/stack.md](/F:/Users/thaif/Documents/programacao/fom-oracle/.catalog/stack.md)
-- Domínio: [.catalog/domain.md](/F:/Users/thaif/Documents/programacao/fom-oracle/.catalog/domain.md)
+- PRD principal: [.catalog/PRD.md](.catalog/PRD.md)
+- Arquitetura: [.catalog/architecture.md](.catalog/architecture.md)
+- Stack: [.catalog/stack.md](.catalog/stack.md)
+- Domínio: [.catalog/domain.md](.catalog/domain.md)
+- Funcionalidades: [.catalog/features.md](.catalog/features.md)
+- Convenções: [.catalog/conventions.md](.catalog/conventions.md)
+- Preocupações: [.catalog/concerns.md](.catalog/concerns.md)
+- Convenções de acompanhamento do projeto: [.catalog/project-tracking.md](.catalog/project-tracking.md)
 
 ## Diretriz arquitetural obrigatória
 
@@ -23,6 +27,7 @@ Types → Config → Repository → Service → Runtime → UI
 - Todo acesso a save, instalação do jogo e persistência local passa por Repository/Service no core .NET.
 - O frontend React fala apenas com a Local API do sidecar.
 - Dados do save e da instalação local do jogo têm prioridade sobre wiki e fontes externas.
+- Regras de inventário, presentes, receitas, missões e recomendações pertencem ao core .NET, nunca à UI.
 
 ## Estrutura-alvo
 
@@ -50,8 +55,13 @@ Types → Config → Repository → Service → Runtime → UI
 - O app abre direto no assistente estratégico.
 - O topo da tela mostra resumo do painel do save.
 - Recomendações exibem justificativas humanas, sem score técnico exposto.
+- Avaliações de inventário e presentes alimentam as recomendações do dia, mas devem permanecer explicáveis como ações concretas.
 
 ## Diretriz de dados
 - Fonte primária: save do jogador + instalação local do jogo.
 - Fonte secundária: wiki e referências externas apenas para lacunas.
 - Se houver conflito entre fonte local e externa, a local vence na v1, salvo evidência de corrupção.
+- Motor de decisão da v1: heurístico, determinístico e testável; machine learning fica fora do escopo da v1.
+
+## Regra de idioma
+- Toda a documentação do repositório, descrições de PR, issues, comentários de PR e release notes devem ser escritas em português brasileiro, com acentuação correta.

@@ -1,0 +1,27 @@
+changelog:
+  exclude:
+    labels:
+      - ignore-for-release
+  categories:
+    - title: Adicionado
+      labels:
+        - feature
+        - enhancement
+    - title: Alterado
+      labels:
+        - breaking-change
+    - title: Corrigido
+      labels:
+        - bug
+    - title: Documentação
+      labels:
+        - documentation
+        - changelog
+    - title: Interno
+      labels:
+        - infra
+        - tests
+        - task
+    - title: Outras alterações
+      labels:
+        - "*"

@@ -16,6 +16,9 @@ obj/
 .superpowers/
 .handoffs/
 
+# Agent / harness config (project-local, not versioned)
+harness.config.yaml
+
 # OS / editor
 .DS_Store
 Thumbs.db

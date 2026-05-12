@@ -15,7 +15,7 @@ Harnessability é alta se o projeto mantiver o núcleo de negócio no sidecar C#
 
 ## 2. Stack Recomendada
 
-Ver [stack.md](/F:/Users/thaif/Documents/programacao/fom-oracle/.catalog/stack.md).
+Ver [stack.md](./stack.md).
 
 ## 3. Padrão de Camadas
 
@@ -72,9 +72,17 @@ graph TD
   D --> G[Game Installation Extraction Service]
   D --> H[Recommendation Service]
   D --> I[Preference Service]
+  D --> P[Inventory Evaluation Service]
+  D --> Q[Gift Evaluation Service]
   E --> J[Save Repository]
   F --> J
   G --> K[Game Installation Repository]
+  P --> J
+  P --> K
+  Q --> J
+  Q --> K
+  H --> P
+  H --> Q
   H --> J
   H --> K
   I --> L[Preference Repository]
@@ -86,7 +94,7 @@ graph TD
 
 ## 5. Modelo de Dados
 
-Ver [domain.md](/F:/Users/thaif/Documents/programacao/fom-oracle/.catalog/domain.md).
+Ver [domain.md](./domain.md).
 
 ## 6. Contratos de API
 
@@ -249,7 +257,8 @@ Request:
 ```json
 {
   "saveId": "string",
-  "profileId": "string"
+  "profileId": "string",
+  "prioritizedQuestIds": ["string"]
 }
 ```
 
@@ -263,6 +272,60 @@ Response 200:
       "category": "social",
       "title": "string",
       "summary": "string",
+      "rationale": "string"
+    }
+  ]
+}
+```
+
+### GET /api/v1/inventory?saveId={id}
+Response 200:
+```json
+{
+  "snapshotId": "string",
+  "items": [
+    {
+      "itemId": "string",
+      "displayName": "string",
+      "quantity": 0,
+      "locations": [
+        { "type": "backpack|chest|barnChest", "label": "string", "quantity": 0 }
+      ],
+      "type": "string"
+    }
+  ],
+  "filters": {
+    "types": ["string"]
+  }
+}
+```
+
+### GET /api/v1/inventory/items/{itemId}/evaluation?saveId={id}
+Response 200:
+```json
+{
+  "itemId": "string",
+  "bestAction": "sell|keep|donate|gift|feed|craft|store",
+  "rationale": "string",
+  "signals": [
+    {
+      "kind": "quest|recipe|museum|gift|animal|economy",
+      "summary": "string"
+    }
+  ]
+}
+```
+
+### GET /api/v1/npcs/{npcId}/gift-evaluation?saveId={id}
+Response 200:
+```json
+{
+  "npcId": "string",
+  "recommendations": [
+    {
+      "itemId": "string",
+      "appreciation": "liked|loved",
+      "availability": "owned|craftable|buyable|unknown",
       "rationale": "string"
     }
   ]
@@ -285,7 +348,7 @@ Response 200:
 
 ```mermaid
 sequenceDiagram
-  participant U as Usuario
+  participant U as Usuário
   participant UI as React UI
   participant API as .NET Sidecar
   participant FS as Filesystem
@@ -305,7 +368,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-  participant U as Usuario
+  participant U as Usuário
   participant UI as React UI
   participant API as .NET Sidecar
   participant Parser as Parsing Service
@@ -317,19 +380,19 @@ sequenceDiagram
   API->>Repo: Ler arquivo atual
   Repo-->>Parser: Conteudo bruto
   Parser-->>API: Snapshot normalizado
-  API->>Rec: Gerar recomendacoes
+  API->>Rec: Gerar recomendações
   Rec-->>API: Batch ranqueado
   API-->>UI: Snapshot + status
   UI->>API: GET /dashboard
   UI->>API: POST /recommendations/generate
-  API-->>UI: Painel atualizado + recomendacoes
+  API-->>UI: Painel atualizado + recomendações
 ```
 
 ### Fluxo 3 — Reordenar prioridades
 
 ```mermaid
 sequenceDiagram
-  participant U as Usuario
+  participant U as Usuário
   participant UI as React UI
   participant API as .NET Sidecar
   participant Pref as Preference Service
@@ -342,7 +405,28 @@ sequenceDiagram
   UI->>API: POST /recommendations/generate
   API->>Rec: Recalcular com mesmo snapshot
   Rec-->>API: Novo batch
-  API-->>UI: Novas recomendacoes
+  API-->>UI: Novas recomendações
+```
+
+### Fluxo 4 — Avaliar item e reutilizar o racional nas recomendações
+
+```mermaid
+sequenceDiagram
+  participant U as Usuário
+  participant UI as React UI
+  participant API as .NET Sidecar
+  participant Inv as Inventory Evaluation Service
+  participant Gift as Gift Evaluation Service
+  participant Rec as Recommendation Service
+
+  U->>UI: Seleciona item no painel de inventário
+  UI->>API: GET /inventory/items/{itemId}/evaluation
+  API->>Inv: Avaliar item no snapshot atual
+  Inv->>Gift: Consultar utilidade social quando aplicável
+  Gift-->>Inv: Sinais de presente
+  Inv-->>API: Melhor ação + rationale
+  API-->>UI: Avaliação do item
+  Rec->>Inv: Reutiliza sinais para sugestões do dia
 ```
 
 ## 8. Decisões de Arquitetura (ADRs)
@@ -382,6 +466,13 @@ Alternativas: usar wiki como fonte principal; abordagem totalmente híbrida sem 
 Consequências: maior esforço inicial em engenharia reversa; melhor aderência à versão instalada do usuário.
 RF/RNF atendido: RF-11, RNF-10, RNF-11, RNF-15.
 
+### ADR-06
+Decisão: manter o motor de decisão da v1 heurístico, determinístico e explicável, sem machine learning.
+Contexto: recomendações, avaliações de itens e presentes precisam explicar fatores concretos do save e do catálogo.
+Alternativas: ML supervisionado para ranking; modelo híbrido com ranking probabilístico.
+Consequências: maior previsibilidade e testabilidade na v1; futura calibração por ML permanece possível se houver dados reais e preservação de rationale humano.
+RF/RNF atendido: RF-06, RF-07, RF-14, RF-15, RF-16, RNF-05, RNF-14.
+
 ## 9. Riscos Técnicos
 
 | Risco | Severidade | Mitigação |
@@ -389,18 +480,55 @@ RF/RNF atendido: RF-11, RNF-10, RNF-11, RNF-15.
 | Formato do save mudar em patches do jogo | Alto | Versionar parser, snapshots e compatibilidade; testes com fixtures reais |
 | Extração da instalação local revelar menos dados do que o esperado | Alto | Desenhar catálogo com hierarquia de fontes e fallback explícito |
 | UI começar a carregar regras de recomendação | Médio | Enforce de camada; cliente HTTP tipado; revisão estrutural |
+| Avaliação de itens e presentes exigir catálogo incompleto | Alto | Entregar sinais parciais com source trace e degradar recomendações sem bloquear o restante |
 | IPC entre Tauri e sidecar aumentar complexidade de build | Médio | Scripts de desenvolvimento únicos e contratos estáveis por versão |
 | Incompatibilidade com saves modificados por mods | Médio | Sinalizar status partial/unsupported e degradar com elegância |
 | Persistência local corrompida | Baixo | Migrações simples, backup leve e rebuild de estado derivável |
 
-## 10. Configuração de Sensores Computacionais
+## 10. Pipeline de CI/CD
+
+### Workflows
+
+| Workflow | Gatilho | Ações |
+|---|---|---|
+| `ci.yml` | PR para `main`/`develop`; push para `develop` | Setup Node/pnpm/.NET, check-env, testes T-01 (Pester), frontend lint/build, `pnpm audit` |
+| `pr-release-gate.yml` | PR para `main` | Valida closing keywords para issues e exatamente uma label `release:patch`, `release:minor` ou `release:major` no PR |
+| `auto-release.yml` | PR mergeado em `main` | Sincroniza label de impacto nas issues fechadas, calcula próxima versão SemVer e publica GitHub Release |
+| `gc.yml` | Semanal (domingo 06:00 UTC) | Varre TODO/FIXME/HACK no código, abre issue de limpeza |
+| Futuro: deploy | PR → main | Deploy automático em staging + aprovação manual para produção (após T-03) |
+
+### Runner
+
+`ubuntu-latest` + `pwsh` (PowerShell Core) para scripts de teste cross-platform.
+
+### Sensores por Camada
+
+| Camada | Onde | O que roda |
+|---|---|---|
+| 1 — Pré-commit | local (dev) | Lint + type-check + testes unitários (quando T-04 existir) |
+| 2 — CI por PR | `ci.yml` | Setup + T-01 smoke + lint/build placeholder + security audit |
+| 3 — Release pós-merge | `auto-release.yml` (PR mergeado em main) | Versionamento automático e GitHub Release |
+| 4 — Agendado | `gc.yml` (semanal) | Scan TODO/FIXME, abre issue de limpeza |
+
+### Gates futuros (após T-03/T-04)
+
+- `dotnet build` e `dotnet test` com cobertura
+- ESLint com regras de boundaries
+- NetArchTest estrutural
+- Testes de contrato da Local API
+- Mutation testing (semanal)
+- Docker multi-stage build
+
+## 11. Configuração de Sensores Computacionais
 
 ### Feedforward
 - [ ] Linter com regras de camada e mensagens de remediação inline no frontend
 - [ ] TypeScript strict mode
 - [ ] .NET nullable + warnings as errors nas camadas centrais
 - [ ] NetArchTest para bloqueio de dependências inválidas
-- [ ] AGENTS.md apontando para `.catalog/`
+- [x] AGENTS.md apontando para `.catalog/`
+- [x] CI pipeline com gates de validação
+- [x] GC semanal automatizado
 
 ### Feedback
 - [ ] Testes unitários para parser, extratores e recommendation service
@@ -410,7 +538,7 @@ RF/RNF atendido: RF-11, RNF-10, RNF-11, RNF-15.
 - [ ] Security scan de dependências em CI
 - [ ] Mutation testing do motor de recomendação em pipeline semanal
 
-## 11. Rastreabilidade RF → Componentes
+## 12. Rastreabilidade RF → Componentes
 
 | RF | Componentes principais |
 |---|---|
@@ -422,3 +550,6 @@ RF/RNF atendido: RF-11, RNF-10, RNF-11, RNF-15.
 | RF-11 | Game Installation Extraction Service, Knowledge Source model, fallback policy |
 | RF-12 | Compatibility Service, error mapping, diagnostic logging |
 | RF-13 | Preference Repository, startup restore flow |
+| RF-14 | Inventory Evaluation Service, Dashboard projections, Knowledge Catalog |
+| RF-15 | Gift Evaluation Service, Relationship projections, Knowledge Catalog |
+| RF-16 | Recommendation Service, Inventory Evaluation Service, Gift Evaluation Service, Priority Service |
