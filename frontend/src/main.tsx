@@ -11,7 +11,7 @@ import "@/styles/globals.css";
 const container = document.getElementById("root");
 
 if (!container) {
-  throw new Error("Root container not found");
+  throw new Error("Contêiner raiz não encontrado.");
 }
 
 ReactDOM.createRoot(container).render(

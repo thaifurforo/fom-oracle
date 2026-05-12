@@ -27,10 +27,7 @@ export default function ConnectionBanner() {
 
   const healthQuery = useQuery({
     queryKey: ["health"],
-    queryFn: () => getHealth(),
-    retry: false,
-    refetchOnWindowFocus: false,
-    staleTime: 30_000,
+    queryFn: ({ signal }) => getHealth(signal),
   });
 
   const status =

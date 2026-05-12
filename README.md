@@ -49,6 +49,8 @@ Ou, para executar os dois:
 pnpm run bootstrap
 ```
 
+Observação: neste estágio, `pnpm run bootstrap` executa `bootstrap:frontend` e `bootstrap:backend`, mas o backend ainda falha de forma intencional enquanto a solução não contiver projetos reais. Portanto, o resultado esperado desse comando agora é uma falha controlada no backend.
+
 ### Comportamento esperado na T-01
 
 - `bootstrap:frontend` prepara o espaço de trabalho `pnpm` do frontend.
