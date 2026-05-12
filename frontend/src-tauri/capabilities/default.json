@@ -1,0 +1,7 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "Capacidade padrao do shell FOM Oracle",
+  "windows": ["main"],
+  "permissions": ["core:default"]
+}
