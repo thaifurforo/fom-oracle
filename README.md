@@ -51,6 +51,8 @@ Ou, para executar os dois:
 pnpm run bootstrap
 ```
 
+> **Nota:** No estágio atual (`T-02`), `pnpm run bootstrap` executa `bootstrap:frontend` e `bootstrap:backend`. O backend **falhará intencionalmente** (exit code != 0) enquanto a solução não contiver projetos reais. Este é o comportamento esperado até a `T-03`.
+
 ### Comandos do Frontend (T-02)
 
 ```powershell

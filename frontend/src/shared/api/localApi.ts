@@ -32,8 +32,11 @@ export async function getHealth(signal?: AbortSignal): Promise<HealthResponse> {
       },
       signal,
     });
-  } catch (error) {
+  } catch (error: unknown) {
     if (error instanceof Error && error.name === "AbortError") {
+      throw error;
+    }
+    if (typeof error === "object" && error !== null && "name" in error && error.name === "AbortError") {
       throw error;
     }
     throw new ApiUnavailableError("API local indisponível.", { cause: error });

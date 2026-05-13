@@ -50,16 +50,24 @@ it("retorna ApiRequestError quando a resposta não é OK", async () => {
 it("relança AbortError quando o sinal é abortado", async () => {
   vi.stubEnv("VITE_FOM_ORACLE_API_BASE_URL", "http://localhost:5000");
 
-  const abortError = new Error("Aborted");
-  abortError.name = "AbortError";
-  vi.spyOn(globalThis, "fetch").mockRejectedValue(abortError);
-
   const controller = new AbortController();
+  
+  // Simula o comportamento do fetch quando o sinal é abortado
+  vi.spyOn(globalThis, "fetch").mockImplementation(async (_, options) => {
+    if (options?.signal?.aborted) {
+      const error = new Error("The user aborted a request.");
+      error.name = "AbortError";
+      throw error;
+    }
+    return new Response();
+  });
+
+  controller.abort();
+
   await expect(getHealth(controller.signal)).rejects.toThrow();
   try {
     await getHealth(controller.signal);
-  } catch (error) {
-    expect(error).toBeInstanceOf(Error);
-    expect((error as Error).name).toBe("AbortError");
+  } catch (error: unknown) {
+    expect(error).toHaveProperty("name", "AbortError");
   }
 });

@@ -31,7 +31,8 @@ export default function ConnectionBanner() {
     queryKey: ["health", baseUrl],
     queryFn: ({ signal }) => getHealth(signal),
     enabled: Boolean(baseUrl),
-    retry: false,
+    refetchInterval: 5000,
+    refetchIntervalInBackground: true,
   });
 
   const status =
