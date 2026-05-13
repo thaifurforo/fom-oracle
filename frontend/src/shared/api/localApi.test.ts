@@ -64,10 +64,7 @@ it("relança AbortError quando o sinal é abortado", async () => {
 
   controller.abort();
 
-  await expect(getHealth(controller.signal)).rejects.toThrow();
-  try {
-    await getHealth(controller.signal);
-  } catch (error: unknown) {
-    expect(error).toHaveProperty("name", "AbortError");
-  }
+  const promise = getHealth(controller.signal);
+  await expect(promise).rejects.toThrow();
+  await expect(promise).rejects.toHaveProperty("name", "AbortError");
 });
