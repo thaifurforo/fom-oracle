@@ -39,3 +39,10 @@ Nenhuma camada pode importar camadas a sua direita.
 - Toda a documentação do repositório, descrições de PR, issues, comentários de PR e release notes deve ser escrita em português brasileiro, com acentuação correta.
 - Changelogs seguem [Keep a Changelog](https://keepachangelog.com) — seções `### Adicionado`, `### Alterado`, `### Corrigido`, `### Documentação`, `### Interno`.
 - Mudanças de escopo em `.catalog/` devem manter PRD, arquitetura, domínio, features, concerns e tracking consistentes.
+
+## Assets visuais
+
+- Ícone oficial do app desktop: `frontend/src-tauri/icons/source/icon-512-transparent.svg`.
+- Arquivos em `frontend/src-tauri/icons/` são artefatos gerados de bundle, não fonte mestre.
+- Mockups e artes de conceito devem ficar em `.catalog/assets/concept-art/`.
+- Arquivos de concept art devem usar prefixo `concept-` e não podem ser usados diretamente em runtime/UI/bundle.

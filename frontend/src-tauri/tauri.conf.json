@@ -4,8 +4,8 @@
   "version": "0.1.0",
   "identifier": "com.fomoracle.desktop",
   "build": {
-    "beforeDevCommand": "pnpm run dev:web",
-    "beforeBuildCommand": "pnpm run build:web",
+    "beforeDevCommand": "pnpm run icons:generate && pnpm run dev:web",
+    "beforeBuildCommand": "pnpm run icons:generate && pnpm run build:web",
     "devUrl": "http://127.0.0.1:5173",
     "frontendDist": "../dist"
   },

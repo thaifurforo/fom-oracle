@@ -42,7 +42,16 @@ pnpm run build
 
 # Build apenas do bundle web
 pnpm run build:web
+
+# Regenerar ícones do app desktop a partir do SVG mestre
+pnpm run icons:generate
 ```
+
+## Ícones do app desktop
+
+- A fonte oficial do ícone é `frontend/src-tauri/icons/source/icon-512-transparent.svg`.
+- A geração de ícones roda automaticamente no `pnpm run dev` e no `pnpm run build`.
+- Os arquivos em `src-tauri/icons/` são artefatos gerados para bundle Tauri.
 
 ## Comunicação com o Sidecar
 
