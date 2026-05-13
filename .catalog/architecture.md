@@ -39,6 +39,8 @@ Types → Config → Repository → Service → Runtime → UI
 - Responsabilidade: acesso a filesystem, SQLite, snapshots, logs de persistência, extração de arquivos locais do jogo.
 - Pode importar: Types, Config.
 - Não pode importar: Service, Runtime, UI.
+- Deve ler saves em modo estritamente read-only, com o menor tempo possível de abertura de arquivo.
+- Não deve manter handles do save abertos além do necessário para copiar ou materializar um snapshot local.
 
 ### Service
 - Responsabilidade: casos de uso, parser, reconciliação de fontes, motor de recomendação, compatibilidade de versão.
@@ -49,6 +51,8 @@ Types → Config → Repository → Service → Runtime → UI
 - Responsabilidade: composição do sidecar, DI, HTTP local, ciclo de vida do processo, observabilidade, health checks.
 - Pode importar: Types, Config, Repository, Service.
 - Não pode importar: UI.
+- Deve tratar o jogo como processo coexistente: leituras de save precisam degradar com retry/backoff curto quando o arquivo estiver temporariamente indisponível.
+- Deve preservar o último snapshot válido quando uma leitura falhar por conflito de acesso ou arquivo ocupado.
 
 ### UI
 - Responsabilidade: telas, fluxos, estado de interação, renderização de dados, comandos do usuário.
@@ -377,8 +381,9 @@ sequenceDiagram
 
   U->>UI: Clica em atualizar save
   UI->>API: POST /saves/refresh
-  API->>Repo: Ler arquivo atual
-  Repo-->>Parser: Conteudo bruto
+  API->>Repo: Abrir em modo read-only por janela curta
+  Repo->>Repo: Copiar snapshot temporário
+  Repo-->>Parser: Conteúdo bruto do snapshot
   Parser-->>API: Snapshot normalizado
   API->>Rec: Gerar recomendações
   Rec-->>API: Batch ranqueado
@@ -484,6 +489,7 @@ RF/RNF atendido: RF-06, RF-07, RF-14, RF-15, RF-16, RNF-05, RNF-14.
 | IPC entre Tauri e sidecar aumentar complexidade de build | Médio | Scripts de desenvolvimento únicos e contratos estáveis por versão |
 | Incompatibilidade com saves modificados por mods | Médio | Sinalizar status partial/unsupported e degradar com elegância |
 | Persistência local corrompida | Baixo | Migrações simples, backup leve e rebuild de estado derivável |
+| Leitura do save travar o jogo ou falhar durante uso simultâneo | Alto | Abrir arquivo read-only, manter handles curtos, usar snapshot temporário e retry/backoff com preservação do último estado válido |
 
 ## 10. Pipeline de CI/CD
 
