@@ -15,6 +15,15 @@ export class ApiRequestError extends Error {
   }
 }
 
+function isAbortError(error: unknown): boolean {
+  return (
+    typeof error === "object" &&
+    error !== null &&
+    "name" in error &&
+    error.name === "AbortError"
+  );
+}
+
 export async function getHealth(signal?: AbortSignal): Promise<HealthResponse> {
   const baseUrl = getApiBaseUrl();
 
@@ -33,10 +42,7 @@ export async function getHealth(signal?: AbortSignal): Promise<HealthResponse> {
       signal,
     });
   } catch (error: unknown) {
-    if (error instanceof Error && error.name === "AbortError") {
-      throw error;
-    }
-    if (typeof error === "object" && error !== null && "name" in error && error.name === "AbortError") {
+    if (isAbortError(error)) {
       throw error;
     }
     throw new ApiUnavailableError("API local indisponível.", { cause: error });
