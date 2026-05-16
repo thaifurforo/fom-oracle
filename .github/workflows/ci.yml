@@ -7,6 +7,61 @@ on:
     branches: [develop]
 
 jobs:
+  frontend-governance-gate:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Detect frontend/UI changes
+        id: changes
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff --name-only "${{ github.event.pull_request.base.sha }}" "${{ github.event.pull_request.head.sha }}" > changed_files.txt
+          if grep -E '^(frontend/|DESIGN\.md|AGENTS\.md|\.catalog/conventions\.md|\.github/pull_request_template\.md|\.github/ISSUE_TEMPLATE/frontend-task\.yml)' changed_files.txt >/dev/null; then
+            echo "needs_governance=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "needs_governance=false" >> "$GITHUB_OUTPUT"
+          fi
+
+          if grep -E '^DESIGN\.md' changed_files.txt >/dev/null; then
+            echo "changes_design=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "changes_design=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Validate PR body for DESIGN.md governance
+        if: steps.changes.outputs.needs_governance == 'true'
+        shell: bash
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
+        run: |
+          set -euo pipefail
+          test -n "$PR_BODY" || (echo "PR sem descrição. Preencha o template."; exit 1)
+
+          require_section() {
+            local pattern="$1"
+            local message="$2"
+            echo "$PR_BODY" | grep -Eiq "$pattern" || (echo "$message"; exit 1)
+          }
+
+          require_section '^#{2,}[[:space:]]*Ader.*ncia ao DESIGN\.md' "Falta seção obrigatória de aderência ao DESIGN.md."
+          require_section '^#{2,}[[:space:]]*Impacto no DESIGN\.md' "Falta seção obrigatória de impacto no DESIGN.md."
+          require_section '^#{2,}[[:space:]]*Evid.*ncia visual' "Falta seção obrigatória de evidência visual."
+          echo "$PR_BODY" | grep -Eiq '^- \[[xX]\].*DESIGN\.md' || (echo "Checklist de aderência ao DESIGN.md não marcado."; exit 1)
+
+      - name: Validate explicit DESIGN.md approval
+        if: steps.changes.outputs.changes_design == 'true'
+        shell: bash
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
+        run: |
+          set -euo pipefail
+          echo "$PR_BODY" | grep -Ei 'validação humana explícita|validacao humana explicita|review aprovado|aprovação rastreável|aprovacao rastreavel' >/dev/null || (echo "Alterações no DESIGN.md exigem menção de validação humana explícita no corpo da PR."; exit 1)
+
   validate:
     runs-on: ubuntu-latest
     steps:

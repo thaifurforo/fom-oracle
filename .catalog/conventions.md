@@ -34,11 +34,17 @@ Nenhuma camada pode importar camadas a sua direita.
 ## Documentação
 
 - `AGENTS.md`: tabela de roteamento (≤100 linhas).
+- `DESIGN.md`: fonte normativa obrigatória para decisões de UI/UX e arquitetura de interface no frontend, após validação humana explícita.
 - `.catalog/`: fonte de verdade técnica versionada.
 - GitHub Issues, Project v2 e Milestones temáticas são a fonte de verdade para entregas.
 - Toda a documentação do repositório, descrições de PR, issues, comentários de PR e release notes deve ser escrita em português brasileiro, com acentuação correta.
 - Changelogs seguem [Keep a Changelog](https://keepachangelog.com) — seções `### Adicionado`, `### Alterado`, `### Corrigido`, `### Documentação`, `### Interno`.
 - Mudanças de escopo em `.catalog/` devem manter PRD, arquitetura, domínio, features, concerns e tracking consistentes.
+- Tasks de frontend devem declarar aderência ao `DESIGN.md` na issue e na PR.
+- PRs de frontend/UI com impacto visual devem anexar prints ou fluxo gravado curto.
+- PRs que alteram ou impactam o guia devem incluir seção `Impacto no DESIGN.md` com link da proposta aprovada.
+- Alterações no `DESIGN.md` exigem validação humana explícita (review aprovado em PR ou aprovação rastreável na issue relacionada) antes de serem aplicadas em novas tasks de frontend.
+- O gate de governança do CI valida somente a rastreabilidade mínima dessas informações; a qualidade visual e a suficiência das evidências são avaliadas por review humano.
 
 ## Assets visuais
 

@@ -12,6 +12,7 @@ FOM Oracle
 - Convenções: [.catalog/conventions.md](.catalog/conventions.md)
 - Preocupações: [.catalog/concerns.md](.catalog/concerns.md)
 - Convenções de acompanhamento do projeto: [.catalog/project-tracking.md](.catalog/project-tracking.md)
+- Design frontend: [DESIGN.md](DESIGN.md)
 
 ## Diretriz arquitetural obrigatória
 
@@ -56,6 +57,13 @@ Types → Config → Repository → Service → Runtime → UI
 - O topo da tela mostra resumo do painel do save.
 - Recomendações exibem justificativas humanas, sem score técnico exposto.
 - Avaliações de inventário e presentes alimentam as recomendações do dia, mas devem permanecer explicáveis como ações concretas.
+
+## Diretriz de frontend/design
+- `DESIGN.md` é obrigatório para decisões de UI/UX e arquitetura de interface.
+- Tasks de frontend devem declarar aderência ao `DESIGN.md`.
+- PRs de frontend/UI com impacto visual exigem evidência visual.
+- Novos padrões de UI/UX exigem alteração aprovada no `DESIGN.md`.
+- Concept art fica em `.catalog/assets/concept-art/` e não entra em runtime, UI ou bundle.
 
 ## Diretriz de dados
 - Fonte primária: save do jogador + instalação local do jogo.

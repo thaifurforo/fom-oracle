@@ -289,6 +289,7 @@ Governança:
 - Este documento é a fonte normativa obrigatória para decisões de UI/UX, identidade visual e arquitetura de interface do frontend.
 - Alterações neste guia exigem validação humana explícita em GitHub, por review de PR aprovado ou comentário aprovado na issue/PR da mudança.
 - Tasks de frontend não podem introduzir padrão novo de UI/UX sem atualização aprovada deste documento.
+- O CI valida apenas a rastreabilidade mínima de aderência ao guia; a avaliação de qualidade visual e suficiência das evidências permanece responsabilidade do review humano.
 
 Obrigatório:
 
