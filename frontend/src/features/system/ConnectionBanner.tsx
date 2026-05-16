@@ -40,12 +40,12 @@ export default function ConnectionBanner() {
       ? "disconnected"
       : healthQuery.isFetching && !healthQuery.data
         ? "connecting"
-        : healthQuery.isSuccess
-          ? "connected"
-          : healthQuery.isError
-            ? healthQuery.error instanceof ApiUnavailableError
-              ? "disconnected"
-              : "error"
+        : healthQuery.isError || healthQuery.isRefetchError
+          ? healthQuery.error instanceof ApiUnavailableError
+            ? "disconnected"
+            : "error"
+          : healthQuery.isSuccess
+            ? "connected"
             : "idle";
 
   useEffect(() => {
