@@ -19,7 +19,7 @@
     "paths": {
       "@/*": ["src/*"]
     },
-    "types": ["vite/client", "node"]
+    "types": ["vite/client"]
   },
   "include": ["src", "tailwind.config.ts", "vitest.config.ts"]
 }

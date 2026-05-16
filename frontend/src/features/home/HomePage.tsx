@@ -36,15 +36,15 @@ export default function HomePage() {
           />
           <div className="mt-5 space-y-3">
             {nextSteps.map((step, index) => (
-              <div
+              <Card
                 key={step}
-                className="flex items-center gap-3 rounded-2xl border border-white/8 bg-slate-950/45 px-4 py-3"
+                className="flex items-center gap-3 rounded-2xl border-white/8 bg-slate-950/45 px-4 py-3 shadow-none"
               >
                 <span className="flex h-7 w-7 items-center justify-center rounded-full bg-sky-400/15 text-sm font-semibold text-sky-100">
                   {index + 1}
                 </span>
                 <span className="text-sm text-slate-200">{step}</span>
-              </div>
+              </Card>
             ))}
           </div>
         </Card>

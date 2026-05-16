@@ -15,6 +15,35 @@ type ConnectionBannerView = {
   tone: BannerTone;
 };
 
+type HealthQueryState = {
+  isFetching: boolean;
+  isError: boolean;
+  isRefetchError: boolean;
+  isSuccess: boolean;
+  data: unknown;
+  error: unknown;
+};
+
+function deriveConnectionState(healthQuery: HealthQueryState, baseUrl: string): ConnectionState {
+  if (!baseUrl) {
+    return "disconnected";
+  }
+
+  if (healthQuery.isFetching && !healthQuery.data) {
+    return "connecting";
+  }
+
+  if (healthQuery.isError || healthQuery.isRefetchError) {
+    return healthQuery.error instanceof ApiUnavailableError ? "disconnected" : "error";
+  }
+
+  if (healthQuery.isSuccess) {
+    return "connected";
+  }
+
+  return "idle";
+}
+
 function getConnectionBannerView(status: ConnectionState): ConnectionBannerView {
   switch (status) {
     case "connected":
@@ -62,18 +91,7 @@ export default function ConnectionBanner() {
     refetchIntervalInBackground: true,
   });
 
-  const status: ConnectionState =
-    !baseUrl
-      ? "disconnected"
-      : healthQuery.isFetching && !healthQuery.data
-        ? "connecting"
-        : healthQuery.isError || healthQuery.isRefetchError
-          ? healthQuery.error instanceof ApiUnavailableError
-            ? "disconnected"
-            : "error"
-          : healthQuery.isSuccess
-            ? "connected"
-            : "idle";
+  const status = deriveConnectionState(healthQuery, baseUrl ?? "");
 
   useEffect(() => {
     setConnectionState(status);

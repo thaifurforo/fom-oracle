@@ -1,12 +1,18 @@
 import { render, screen } from "@testing-library/react";
 import { HashRouter } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 import App from "@/app/App";
 
+afterEach(() => {
+  vi.unstubAllEnvs();
+});
+
 describe("App shell", () => {
   it("mostra o shell do assistente estratégico e a home inicial", () => {
+    vi.stubEnv("VITE_FOM_ORACLE_API_BASE_URL", "");
+
     const queryClient = new QueryClient({
       defaultOptions: {
         queries: {
