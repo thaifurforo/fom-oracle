@@ -6,7 +6,6 @@ pub fn run() {
     .expect("falha ao iniciar o shell Tauri");
 }
 
-#[cfg_attr(mobile, tauri::mobile_entry_point)]
 fn main() {
   run();
 }

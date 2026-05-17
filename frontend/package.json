@@ -4,7 +4,6 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "icons:generate": "tauri icon ./src-tauri/icons/source/icon-512-transparent.svg",
     "dev:web": "vite",
     "dev": "tauri dev --config src-tauri/tauri.dev.conf.json",
     "build:web": "vite build",
