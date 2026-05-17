@@ -4,13 +4,12 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "icons:generate": "tauri icon ./src-tauri/icons/source/icon-512-transparent.svg",
     "dev:web": "vite",
-    "dev": "tauri dev",
+    "dev": "tauri dev --config src-tauri/tauri.dev.conf.json",
     "build:web": "vite build",
     "build": "tauri build",
     "lint": "eslint .",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p tsconfig.node.json",
     "test": "vitest run"
   },
   "dependencies": {

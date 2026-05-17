@@ -40,6 +40,15 @@ export const appRoutes: RouteObject[] = [
           />
         ),
       },
+      {
+        path: "*",
+        element: (
+          <ComingSoonPage
+            title="Página não encontrada"
+            description="Não encontramos essa rota. Use a navegação lateral para voltar ao assistente."
+          />
+        ),
+      },
     ],
   },
 ];

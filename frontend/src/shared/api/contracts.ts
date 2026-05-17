@@ -1,5 +1,5 @@
 export type HealthResponse = {
-  status: "ok";
+  status: "ok" | "disconnected" | "error";
   appVersion: string;
   coreVersion: string;
 };

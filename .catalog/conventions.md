@@ -25,6 +25,19 @@ Types → Config → Repository → Service → Runtime → UI
 
 Nenhuma camada pode importar camadas a sua direita.
 
+## Princípios de engenharia e revisão
+
+- Toda nova implementação e todo PR devem ser avaliados cuidadosamente à luz de `DRY`, `KISS`, `YAGNI`, `SOLID` e `DDD`.
+- A avaliação deve considerar o escopo local da task/PR, buscando uma solução simples, suficiente, coesa e sem abstração prematura.
+- A avaliação deve considerar o escopo global do projeto, preservando camadas, limites entre UI/core, linguagem de domínio e sustentabilidade da evolução técnica.
+- Em caso de dúvida ou trade-off, a decisão deve ser justificada com base no [.catalog/PRD.md](PRD.md), na [.catalog/architecture.md](architecture.md), no [.catalog/domain.md](domain.md) e nas restrições reais da entrega.
+- Os princípios devem orientar julgamento técnico contextual, e não aplicação dogmática em implementação ou review.
+- `DRY`: evitar duplicação de regra de negócio, decisão de domínio ou lógica espalhada entre camadas.
+- `KISS`: preferir a solução mais simples compatível com o problema atual.
+- `YAGNI`: não introduzir abstrações, extensibilidade ou infraestrutura sem necessidade comprovada pelo escopo.
+- `SOLID`: manter responsabilidades coesas e dependências compatíveis com a ordem obrigatória de camadas.
+- `DDD`: nomear e organizar o código a partir do domínio e das regras do problema, não de detalhes técnicos.
+
 ## Testes
 
 - Testes unitários: `dotnet test backend --filter <categoria>`.
@@ -46,6 +59,12 @@ Nenhuma camada pode importar camadas a sua direita.
 - PRs de frontend/UI podem informar o caminho do protótipo quando ele existir.
 - PRs que alteram ou impactam o guia devem incluir seção `Impacto no DESIGN.md` e atualizar o próprio `DESIGN.md`.
 
+## Segurança de dependências
+
+- O gate `pnpm --dir frontend audit --prod --audit-level=high` é obrigatório na CI e bloqueia qualquer advisory `high` ou `critical` em dependência de produção.
+- Advisories identificados como não-aplicáveis ao produto desktop local-first devem ser triados, documentados e registrados em `.catalog/concerns.md` com justificativa técnica explícita.
+- Exceções devem ser tratadas via allowlist (ex.: `.npmrc` ou `pnpm audit-level`) ou correção direta da dependência; nunca silenciar o gate com `|| true` sem rastreabilidade formal no repositório.
+
 ## Assets visuais
 
 - Ícone oficial do app desktop: `frontend/src-tauri/icons/source/icon-512-transparent.svg`.
@@ -53,3 +72,4 @@ Nenhuma camada pode importar camadas a sua direita.
 - Mockups e artes de conceito devem ficar em `.catalog/assets/concept-art/`.
 - Arquivos de concept art devem usar prefixo `concept-` e não podem ser usados diretamente em runtime/UI/bundle.
 - Protótipos HTML de telas ficam em `.catalog/prototypes/T-XX-slug/prototype.html`, são artefatos de planejamento e também não podem ser usados diretamente em runtime/UI/bundle.
+- A v1 é Windows desktop: o bundle Tauri mantém apenas `frontend/src-tauri/icons/icon.ico` e `frontend/src-tauri/icons/icon.png`.

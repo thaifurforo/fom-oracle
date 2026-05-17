@@ -1,83 +1,115 @@
-import { useEffect } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useEffect, useMemo } from "react";
+import { type UseQueryResult, useQuery } from "@tanstack/react-query";
 
 import { ApiUnavailableError, getHealth } from "@/shared/api/localApi";
+import type { HealthResponse } from "@/shared/api/contracts";
 import { getApiBaseUrl } from "@/shared/config/env";
+import type { ConnectionState } from "@/shared/state/sessionStore";
 import { useSessionStore } from "@/shared/state/sessionStore";
-import StatusPill from "@/shared/ui/StatusPill";
+import StatusPill, { type StatusTone } from "@/shared/ui/StatusPill";
 
-function connectionTone(
-  status: "idle" | "connecting" | "connected" | "disconnected" | "error",
-) {
+type ConnectionBannerView = {
+  message: string;
+  pillLabel: string;
+  tone: StatusTone;
+};
+
+type HealthQueryState = UseQueryResult<HealthResponse, Error>;
+
+function deriveConnectionState(healthQuery: HealthQueryState, baseUrl: string | null): ConnectionState {
+  if (!baseUrl) {
+    return "disconnected";
+  }
+
+  if (healthQuery.isFetching && !healthQuery.data) {
+    return "connecting";
+  }
+
+  if (healthQuery.isError) {
+    return healthQuery.error instanceof ApiUnavailableError ? "disconnected" : "error";
+  }
+
+  if (healthQuery.isSuccess) {
+    if (healthQuery.data.status === "ok") {
+      return "connected";
+    }
+
+    if (healthQuery.data.status === "disconnected") {
+      return "disconnected";
+    }
+
+    return "error";
+  }
+
+  return "idle";
+}
+
+function getConnectionBannerView(status: ConnectionState): ConnectionBannerView {
   switch (status) {
     case "connected":
-      return "success";
+      return {
+        message: "Sidecar local acessível",
+        pillLabel: "Conectado",
+        tone: "success",
+      };
     case "connecting":
-      return "info";
+      return {
+        message: "Verificando a API local",
+        pillLabel: "Conectando",
+        tone: "info",
+      };
     case "disconnected":
-      return "warning";
+      return {
+        message: "API local não configurada ou indisponível",
+        pillLabel: "Desconectado",
+        tone: "warning",
+      };
     case "error":
-      return "danger";
+      return {
+        message: "Falha ao consultar a API local",
+        pillLabel: "Erro",
+        tone: "danger",
+      };
     default:
-      return "neutral";
+      return {
+        message: "Estado inicial",
+        pillLabel: "Aguardando",
+        tone: "neutral",
+      };
   }
 }
 
 export default function ConnectionBanner() {
   const setConnectionState = useSessionStore((state) => state.setConnectionState);
-  const baseUrl = getApiBaseUrl();
+  const baseUrl = useMemo(() => getApiBaseUrl(), []);
 
   const healthQuery = useQuery({
     queryKey: ["health", baseUrl],
     queryFn: ({ signal }) => getHealth(signal),
     enabled: Boolean(baseUrl),
-    refetchInterval: 5000,
+    refetchInterval: (query) => {
+      if (query.state.error) {
+        return 5000;
+      }
+
+      return query.state.data ? 30_000 : 5000;
+    },
     refetchIntervalInBackground: true,
   });
 
-  const status =
-    !baseUrl
-      ? "disconnected"
-      : healthQuery.isFetching && !healthQuery.data
-        ? "connecting"
-        : healthQuery.isSuccess
-          ? "connected"
-          : healthQuery.isError
-            ? healthQuery.error instanceof ApiUnavailableError
-              ? "disconnected"
-              : "error"
-            : "idle";
+  const status = deriveConnectionState(healthQuery, baseUrl);
 
   useEffect(() => {
     setConnectionState(status);
   }, [setConnectionState, status]);
 
-  const message =
-    status === "connected"
-      ? "Sidecar local acessível"
-      : status === "connecting"
-        ? "Verificando a API local"
-        : status === "disconnected"
-          ? "API local não configurada ou indisponível"
-          : status === "error"
-            ? "Falha ao consultar a API local"
-            : "Estado inicial";
+  const view = getConnectionBannerView(status);
 
   return (
-    <div className="flex flex-wrap items-center gap-3 rounded-2xl border border-white/8 bg-slate-950/45 px-4 py-3">
-      <StatusPill tone={connectionTone(status)}>
-        {status === "connected"
-          ? "Conectado"
-          : status === "connecting"
-            ? "Conectando"
-            : status === "disconnected"
-              ? "Desconectado"
-              : status === "error"
-                ? "Erro"
-                : "Aguardando"}
-      </StatusPill>
+    <div className="flex flex-wrap items-center gap-3 rounded-2xl border border-white/10 bg-slate-950/50 px-4 py-3">
+      <StatusPill tone={view.tone}>{view.pillLabel}</StatusPill>
       <div className="min-w-0">
-        <p className="text-sm font-medium text-white">{message}</p>
+        <p className="text-sm font-medium text-white">{view.message}</p>
         <p className="text-xs text-slate-400">
           A UI segue operando mesmo quando o sidecar ainda não está disponível.
         </p>
