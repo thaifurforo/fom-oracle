@@ -35,8 +35,8 @@ function deriveConnectionState(healthQuery: HealthQueryState, baseUrl: string | 
     return healthQuery.error instanceof ApiUnavailableError ? "disconnected" : "error";
   }
 
-  if (healthQuery.isRefetchError) {
-    return healthQuery.error instanceof ApiUnavailableError ? "disconnected" : "error";
+  if (healthQuery.isSuccess && healthQuery.failureCount > 0) {
+    return "disconnected";
   }
 
   if (healthQuery.isSuccess) {
