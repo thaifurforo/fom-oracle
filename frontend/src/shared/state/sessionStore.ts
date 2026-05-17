@@ -9,14 +9,20 @@ type SessionState = {
   setSelectedSaveId: (selectedSaveId: string | null) => void;
   setSelectedPriorityProfileId: (selectedPriorityProfileId: string | null) => void;
   setConnectionState: (connectionState: ConnectionState) => void;
+  reset: () => void;
+};
+
+const initialState = {
+  selectedSaveId: null,
+  selectedPriorityProfileId: null,
+  connectionState: "idle" as ConnectionState,
 };
 
 export const useSessionStore = create<SessionState>((set) => ({
-  selectedSaveId: null,
-  selectedPriorityProfileId: null,
-  connectionState: "idle",
+  ...initialState,
   setSelectedSaveId: (selectedSaveId) => set({ selectedSaveId }),
   setSelectedPriorityProfileId: (selectedPriorityProfileId) =>
     set({ selectedPriorityProfileId }),
   setConnectionState: (connectionState) => set({ connectionState }),
+  reset: () => set(initialState),
 }));

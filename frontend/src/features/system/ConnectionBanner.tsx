@@ -88,7 +88,7 @@ export default function ConnectionBanner() {
     queryFn: ({ signal }) => getHealth(signal),
     enabled: Boolean(baseUrl),
     refetchInterval: 5000,
-    refetchIntervalInBackground: true,
+    refetchIntervalInBackground: false,
   });
 
   const status = deriveConnectionState(healthQuery, baseUrl ?? "");

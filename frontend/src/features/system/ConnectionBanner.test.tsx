@@ -3,6 +3,7 @@ import { act, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, expect, it, vi } from "vitest";
 
 import ConnectionBanner from "@/features/system/ConnectionBanner";
+import { useSessionStore } from "@/shared/state/sessionStore";
 
 function renderConnectionBanner() {
   const queryClient = new QueryClient({
@@ -26,6 +27,7 @@ function renderConnectionBanner() {
 afterEach(() => {
   vi.unstubAllEnvs();
   vi.restoreAllMocks();
+  useSessionStore.getState().reset();
 });
 
 it("mostra desconectado quando o health check falha depois de uma conexão anterior", async () => {
