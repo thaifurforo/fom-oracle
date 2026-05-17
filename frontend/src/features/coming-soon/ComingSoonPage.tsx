@@ -8,7 +8,7 @@ type ComingSoonPageProps = {
 
 export default function ComingSoonPage({ title, description }: ComingSoonPageProps) {
   return (
-    <Card className="border-white/8 bg-white/5">
+    <Card className="border-white/10 bg-white/5">
       <SectionHeader
         eyebrow="Em breve"
         title={title}

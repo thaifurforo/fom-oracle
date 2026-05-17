@@ -1,7 +1,8 @@
 import { useEffect } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { type UseQueryResult, useQuery } from "@tanstack/react-query";
 
 import { ApiUnavailableError, getHealth } from "@/shared/api/localApi";
+import type { HealthResponse } from "@/shared/api/contracts";
 import { getApiBaseUrl } from "@/shared/config/env";
 import type { ConnectionState } from "@/shared/state/sessionStore";
 import { useSessionStore } from "@/shared/state/sessionStore";
@@ -15,14 +16,7 @@ type ConnectionBannerView = {
   tone: BannerTone;
 };
 
-type HealthQueryState = {
-  isFetching: boolean;
-  isError: boolean;
-  isRefetchError: boolean;
-  isSuccess: boolean;
-  data: unknown;
-  error: unknown;
-};
+type HealthQueryState = UseQueryResult<HealthResponse, Error>;
 
 function deriveConnectionState(healthQuery: HealthQueryState, baseUrl: string): ConnectionState {
   if (!baseUrl) {
@@ -100,7 +94,7 @@ export default function ConnectionBanner() {
   const view = getConnectionBannerView(status);
 
   return (
-    <div className="flex flex-wrap items-center gap-3 rounded-2xl border border-white/8 bg-slate-950/45 px-4 py-3">
+    <div className="flex flex-wrap items-center gap-3 rounded-2xl border border-white/10 bg-slate-950/50 px-4 py-3">
       <StatusPill tone={view.tone}>{view.pillLabel}</StatusPill>
       <div className="min-w-0">
         <p className="text-sm font-medium text-white">{view.message}</p>

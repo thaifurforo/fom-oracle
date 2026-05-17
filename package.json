@@ -3,16 +3,11 @@
   "private": true,
   "version": "0.1.0",
   "packageManager": "pnpm@11.0.9",
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "esbuild"
-    ]
-  },
   "scripts": {
     "bootstrap": "pnpm run bootstrap:frontend && pnpm run bootstrap:backend",
     "bootstrap:frontend": "pnpm --dir frontend install",
     "bootstrap:backend": "pwsh -NoProfile -ExecutionPolicy Bypass -File ./scripts/bootstrap-backend.ps1",
-    "check:env": "pnpm --version && dotnet --info",
+    "check:env": "pnpm -r --version && dotnet --info",
     "test:t01": "pwsh -NoProfile -ExecutionPolicy Bypass -File ./scripts/run-t01-tests.ps1"
   }
 }

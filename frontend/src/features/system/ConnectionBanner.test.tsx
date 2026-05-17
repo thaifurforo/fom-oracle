@@ -42,7 +42,8 @@ it("mostra desconectado quando o health check falha depois de uma conexão anter
         coreVersion: "0.1.0",
       }),
     } as Response)
-    .mockRejectedValueOnce(new Error("Network failure"));
+    .mockRejectedValueOnce(new Error("Network failure"))
+    .mockRejectedValue(new Error("Network failure"));
 
   const queryClient = renderConnectionBanner();
 
