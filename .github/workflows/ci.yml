@@ -56,4 +56,4 @@ jobs:
         run: pnpm --dir frontend run build:web
 
       - name: Security audit
-        run: pnpm --dir frontend audit --prod
+        run: pnpm --dir frontend audit --prod --audit-level=high
