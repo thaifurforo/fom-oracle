@@ -17,10 +17,7 @@ export class ApiRequestError extends Error {
 
 function isAbortError(error: unknown): boolean {
   return (
-    typeof error === "object" &&
-    error !== null &&
-    "name" in error &&
-    error.name === "AbortError"
+    error instanceof Error && error.name === "AbortError"
   );
 }
 
