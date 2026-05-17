@@ -18,6 +18,10 @@ type ConnectionBannerView = {
 
 type HealthQueryState = UseQueryResult<HealthResponse, Error>;
 
+type ConnectionBannerProps = {
+  disableAutoRefetch?: boolean;
+};
+
 function deriveConnectionState(healthQuery: HealthQueryState, baseUrl: string | null): ConnectionState {
   if (!baseUrl) {
     return "disconnected";
@@ -28,6 +32,10 @@ function deriveConnectionState(healthQuery: HealthQueryState, baseUrl: string | 
   }
 
   if (healthQuery.isError) {
+    return healthQuery.error instanceof ApiUnavailableError ? "disconnected" : "error";
+  }
+
+  if (healthQuery.isRefetchError) {
     return healthQuery.error instanceof ApiUnavailableError ? "disconnected" : "error";
   }
 
@@ -73,7 +81,7 @@ function getConnectionBannerView(status: ConnectionState): ConnectionBannerView 
   }
 }
 
-export default function ConnectionBanner() {
+export default function ConnectionBanner({ disableAutoRefetch = false }: ConnectionBannerProps) {
   const setConnectionState = useSessionStore((state) => state.setConnectionState);
   const baseUrl = getApiBaseUrl();
 
@@ -81,13 +89,15 @@ export default function ConnectionBanner() {
     queryKey: ["health", baseUrl],
     queryFn: ({ signal }) => getHealth(signal),
     enabled: Boolean(baseUrl),
-    refetchInterval: (query) => {
+    refetchInterval: disableAutoRefetch
+      ? false
+      : (query) => {
       if (query.state.error) {
         return 5000;
       }
 
       return query.state.data ? 30_000 : 5000;
-    },
+      },
     refetchIntervalInBackground: false,
   });
 

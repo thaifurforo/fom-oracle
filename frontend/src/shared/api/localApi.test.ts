@@ -54,22 +54,28 @@ describe("localApi", () => {
     await expect(getHealth()).rejects.toThrow(ApiRequestError);
   });
 
-  it("relança AbortError quando o sinal é abortado", async () => {
+  it("relança AbortError quando a requisição é abortada durante a execução", async () => {
     vi.stubEnv("VITE_FOM_ORACLE_API_BASE_URL", "http://localhost:5000");
 
     const controller = new AbortController();
 
-    // Simula o comportamento do fetch quando o sinal é abortado
     vi.spyOn(globalThis, "fetch").mockImplementation(async (_, options) => {
-      if (options?.signal?.aborted) {
-        throw new DOMException("The user aborted a request.", "AbortError");
-      }
-      return new Response();
+      return await new Promise<Response>((_, reject) => {
+        if (options?.signal?.aborted) {
+          reject(new DOMException("The user aborted a request.", "AbortError"));
+          return;
+        }
+
+        options?.signal?.addEventListener(
+          "abort",
+          () => reject(new DOMException("The user aborted a request.", "AbortError")),
+          { once: true },
+        );
+      });
     });
 
-    controller.abort();
-
     const promise = getHealth(controller.signal);
+    controller.abort();
     await expect(promise).rejects.toHaveProperty("name", "AbortError");
   });
 });

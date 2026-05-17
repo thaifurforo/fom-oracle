@@ -17,7 +17,7 @@ function renderConnectionBanner() {
 
   render(
     <QueryClientProvider client={queryClient}>
-      <ConnectionBanner />
+      <ConnectionBanner disableAutoRefetch />
     </QueryClientProvider>,
   );
 
@@ -60,4 +60,4 @@ it("mostra desconectado quando o health check falha depois de uma conexão anter
   });
 
   queryClient.clear();
-}, 10_000);
+});
