@@ -3,6 +3,11 @@
   "private": true,
   "version": "0.1.0",
   "packageManager": "pnpm@11.0.9",
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
+  },
   "scripts": {
     "bootstrap": "pnpm run bootstrap:frontend && pnpm run bootstrap:backend",
     "bootstrap:frontend": "pnpm --dir frontend install",

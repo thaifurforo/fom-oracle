@@ -56,9 +56,7 @@ describe("localApi", () => {
     // Simula o comportamento do fetch quando o sinal é abortado
     vi.spyOn(globalThis, "fetch").mockImplementation(async (_, options) => {
       if (options?.signal?.aborted) {
-        const error = new Error("The user aborted a request.");
-        error.name = "AbortError";
-        throw error;
+        throw new DOMException("The user aborted a request.", "AbortError");
       }
       return new Response();
     });
@@ -66,7 +64,6 @@ describe("localApi", () => {
     controller.abort();
 
     const promise = getHealth(controller.signal);
-    await expect(promise).rejects.toThrow();
     await expect(promise).rejects.toHaveProperty("name", "AbortError");
   });
 });

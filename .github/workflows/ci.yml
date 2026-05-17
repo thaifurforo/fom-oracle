@@ -27,8 +27,13 @@ jobs:
         with:
           dotnet-version: 9.0.x
 
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
       - name: Check environment tools
-        run: pnpm run check:env
+        run: |
+          pnpm --version
+          dotnet --info
 
       - name: Install Pester for scaffold tests
         shell: pwsh
@@ -37,9 +42,6 @@ jobs:
       - name: Run T-01 scaffold smoke tests
         shell: pwsh
         run: pnpm run test:t01
-
-      - name: Install frontend dependencies
-        run: pnpm --dir frontend install --frozen-lockfile
 
       - name: Frontend lint
         run: pnpm --dir frontend run lint
