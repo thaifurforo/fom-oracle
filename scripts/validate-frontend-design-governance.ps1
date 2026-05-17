@@ -43,6 +43,7 @@ function Test-DesignGuideChanged {
 function Assert-PullRequestDesignGovernance {
     param(
         [Parameter(Mandatory = $true)]
+        [AllowEmptyString()]
         [string]$PullRequestBody,
 
         [Parameter(Mandatory = $true)]
@@ -133,6 +134,7 @@ function Assert-FrontendDesignBoundaries {
 function Assert-FrontendDesignGovernance {
     param(
         [Parameter(Mandatory = $true)]
+        [AllowEmptyString()]
         [string]$PullRequestBody,
 
         [Parameter(Mandatory = $true)]

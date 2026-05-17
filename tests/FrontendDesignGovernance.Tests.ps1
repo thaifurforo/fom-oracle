@@ -1,16 +1,18 @@
 $ErrorActionPreference = 'Stop'
 
-$scriptPath = Join-Path $PSScriptRoot '..\scripts\validate-frontend-design-governance.ps1'
-. $scriptPath
-
-function New-TestRepository {
-    $testRoot = Join-Path ([System.IO.Path]::GetTempPath()) ([System.Guid]::NewGuid().ToString())
-    New-Item -ItemType Directory -Path (Join-Path $testRoot 'frontend/src/features/home') -Force | Out-Null
-    Set-Content -LiteralPath (Join-Path $testRoot 'frontend/src/features/home/Home.tsx') -Value 'export function Home() { return <main /> }'
-    return $testRoot
-}
-
 Describe 'Frontend DESIGN.md governance' {
+    BeforeAll {
+        $scriptPath = Join-Path $PSScriptRoot '..\scripts\validate-frontend-design-governance.ps1'
+        . $scriptPath
+
+        function New-TestRepository {
+            $testRoot = Join-Path ([System.IO.Path]::GetTempPath()) ([System.Guid]::NewGuid().ToString())
+            New-Item -ItemType Directory -Path (Join-Path $testRoot 'frontend/src/features/home') -Force | Out-Null
+            Set-Content -LiteralPath (Join-Path $testRoot 'frontend/src/features/home/Home.tsx') -Value 'export function Home() { return <main /> }'
+            return $testRoot
+        }
+    }
+
     BeforeEach {
         $script:testRoot = New-TestRepository
         $script:validBody = @'
@@ -34,7 +36,7 @@ Sem impacto visual runtime; mudança validada por inspeção.
                 -PullRequestBody '' `
                 -ChangedFiles @('backend/src/FomOracle.Service/Recommendations.cs') `
                 -RepositoryRoot $script:testRoot
-        } | Should Not Throw
+        } | Should -Not -Throw
     }
 
     It 'fails frontend PRs without the DESIGN.md adherence section' {
@@ -49,7 +51,7 @@ Print anexado.
                 -PullRequestBody $body `
                 -ChangedFiles @('frontend/src/features/home/Home.tsx') `
                 -RepositoryRoot $script:testRoot
-        } | Should Throw 'Falta seção obrigatória de aderência ao DESIGN.md.'
+        } | Should -Throw 'Falta seção obrigatória de aderência ao DESIGN.md.'
     }
 
     It 'fails frontend PRs without visual evidence section' {
@@ -64,7 +66,7 @@ Print anexado.
                 -PullRequestBody $body `
                 -ChangedFiles @('frontend/src/features/home/Home.tsx') `
                 -RepositoryRoot $script:testRoot
-        } | Should Throw 'Falta seção obrigatória de evidência visual para mudança de frontend/UI.'
+        } | Should -Throw 'Falta seção obrigatória de evidência visual para mudança de frontend/UI.'
     }
 
     It 'fails frontend PRs when the DESIGN.md checklist is not checked' {
@@ -83,7 +85,7 @@ Print anexado.
                 -PullRequestBody $body `
                 -ChangedFiles @('frontend/src/features/home/Home.tsx') `
                 -RepositoryRoot $script:testRoot
-        } | Should Throw 'Checklist de aderência ao DESIGN.md não marcado.'
+        } | Should -Throw 'Checklist de aderência ao DESIGN.md não marcado.'
     }
 
     It 'requires Impacto no DESIGN.md section when the design guide changes' {
@@ -92,7 +94,7 @@ Print anexado.
                 -PullRequestBody $script:validBody `
                 -ChangedFiles @('DESIGN.md') `
                 -RepositoryRoot $script:testRoot
-        } | Should Throw 'Mudanças no DESIGN.md devem preencher a seção Impacto no DESIGN.md.'
+        } | Should -Throw 'Mudanças no DESIGN.md devem preencher a seção Impacto no DESIGN.md.'
     }
 
     It 'fails when frontend imports concept art or prototypes' {
@@ -106,7 +108,7 @@ export function Home() { return <img src={concept} /> }
                 -PullRequestBody $script:validBody `
                 -ChangedFiles @('frontend/src/features/home/Home.tsx') `
                 -RepositoryRoot $script:testRoot
-        } | Should Throw 'Frontend não pode importar concept art ou protótipos HTML como asset de runtime/UI/bundle. Arquivo: frontend/src/features/home/Home.tsx'
+        } | Should -Throw 'Frontend não pode importar concept art ou protótipos HTML como asset de runtime/UI/bundle. Arquivo: frontend/src/features/home/Home.tsx'
     }
 
     It 'fails when frontend accesses filesystem directly' {
@@ -120,7 +122,7 @@ export async function load() { return readTextFile("save.dat"); }
                 -PullRequestBody $script:validBody `
                 -ChangedFiles @('frontend/src/features/home/Home.tsx') `
                 -RepositoryRoot $script:testRoot
-        } | Should Throw 'Frontend não pode acessar filesystem diretamente; use a Local API do sidecar. Arquivo: frontend/src/features/home/Home.tsx'
+        } | Should -Throw 'Frontend não pode acessar filesystem diretamente; use a Local API do sidecar. Arquivo: frontend/src/features/home/Home.tsx'
     }
 
     It 'fails when frontend references SQLite directly' {
@@ -134,7 +136,7 @@ export const db = sqlite("local.db");
                 -PullRequestBody $script:validBody `
                 -ChangedFiles @('frontend/src/features/home/Home.tsx') `
                 -RepositoryRoot $script:testRoot
-        } | Should Throw 'Frontend não pode acessar SQLite diretamente; persistência local pertence ao core. Arquivo: frontend/src/features/home/Home.tsx'
+        } | Should -Throw 'Frontend não pode acessar SQLite diretamente; persistência local pertence ao core. Arquivo: frontend/src/features/home/Home.tsx'
     }
 
     It 'passes when frontend PR has DESIGN.md sections and no forbidden runtime references' {
@@ -143,6 +145,6 @@ export const db = sqlite("local.db");
                 -PullRequestBody $script:validBody `
                 -ChangedFiles @('frontend/src/features/home/Home.tsx') `
                 -RepositoryRoot $script:testRoot
-        } | Should Not Throw
+        } | Should -Not -Throw
     }
 }
