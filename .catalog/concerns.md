@@ -1,31 +1,51 @@
-# FOM Oracle — Preocupações e Dívida Técnica
+# FOM Oracle — Preocupações e Dívida Técnica Ativa
 
-## Dívida Técnica Ativa
+Este arquivo é a fonte única de dívida técnica ativa e preocupações ativas do repositório.
+Itens resolvidos não permanecem aqui: ao concluir a correção, remova o item deste arquivo e descreva a resolução no PR correspondente.
 
-| Item | Categoria | Severidade | Origem | Notas |
-|---|---|---|---|---|
-| Solution .NET vazia (sem projetos) | Infra | Baixa | T-01 | O `FomOracle.sln` foi criado vazio como placeholder. T-03 e T-05 vão popular os projetos. |
-| Escopo de inteligência de itens pode crescer demais | Produto/Técnica | Média | US-09/US-11 | Entregar avaliações incrementais, explicáveis e baseadas em sinais rastreáveis antes de tentar otimização perfeita. |
-| Catálogo de receitas, presentes, eventos e missões futuras pode estar incompleto | Dados | Alta | US-06/US-09/US-10 | Priorizar instalação local/save, marcar lacunas com `source_trace` e degradar sem bloquear recomendações possíveis. |
-| Inventário grande pode prejudicar usabilidade | UX | Média | US-09 | Exigir busca, filtros por tipo e localização de item na v1. |
-| Machine learning pode reduzir explicabilidade se antecipado | Arquitetura | Média | ADR-06 | Manter v1 heurística; ML futuro só como calibragem opcional e auditável. |
-| Orçamento de CPU e memória precisa ser contido durante o jogo | Performance | Alta | US-08 / T-38 | Medir baseline real, limitar recomputações e evitar polling agressivo ou processamento redundante no refresh. |
-| Acesso ao save não pode bloquear o jogo nem competir com o arquivo | Integridade/IO | Alta | US-08 / T-38 | Ler em modo read-only, manter handles curtos, usar snapshot temporário e preservar o último estado válido quando o arquivo estiver ocupado. |
+## Quando registrar um item aqui
 
-## Dívida Técnica Resolvida
+- Quando surgir dívida técnica ativa durante implementação, review ou estabilização.
+- Quando um comentário de review apontar um problema real, mas fora do escopo ativo do PR.
+- Quando um risco ativo exigir reavaliação posterior para não expandir o escopo da entrega atual.
 
-| Item | Resolução | Data |
-|---|---|---|
-| `.catalog/features.md` ausente | Criado com mapa de funcionalidades | 2026-05-10 |
-| `.catalog/conventions.md` ausente | Criado com convenções do projeto | 2026-05-10 |
-| `.catalog/concerns.md` ausente | Criado com dívida técnica inicial | 2026-05-10 |
+## O que não entra aqui
 
-## Riscos Conhecidos
+- Histórico de itens resolvidos.
+- Melhorias já entregues no PR atual.
+- Ideias soltas sem problema concreto, origem identificável ou próxima ação sugerida.
 
-Ver `.catalog/architecture.md` seção 9 — Riscos Técnicos.
+## Como registrar itens vindos de review fora de escopo
 
-## Regras
+1. Confirmar que o item está fora do escopo ativo do PR.
+2. Responder no review, em português brasileiro, que não será implementado neste PR por escopo.
+3. Registrar a dívida técnica ativa nesta seção com todos os campos mínimos.
+4. Reavaliar o item em PR ou task futura, sem ampliar o PR atual sem nova aprovação.
 
-- Dívida técnica identificada durante implementação deve ser registrada aqui com severidade e plano de remediação.
-- Dívida não endereçada na v1 deve ser movida para o backlog após a milestone.
-- Ao resolver um item, movê-lo para "Dívida Técnica Resolvida" com data.
+## Campos mínimos obrigatórios
+
+Cada item novo originado de review fora de escopo deve informar:
+
+- Descrição curta.
+- Categoria e severidade.
+- Origem no formato `PR #N / thread <id> / reviewer <login>`.
+- Motivo de estar fora do escopo.
+- Ação sugerida para reavaliação.
+- Data de registro no formato ISO `YYYY-MM-DD`.
+
+## Regra de resolução
+
+- Ao resolver uma dívida técnica, remova o item deste arquivo.
+- Registre no PR correspondente qual item foi resolvido e como a resolução foi feita.
+
+## Itens ativos
+
+| Descrição | Categoria | Severidade | Origem | Motivo / contexto ativo | Ação sugerida | Data |
+|---|---|---|---|---|---|---|
+| Solution .NET vazia (sem projetos) | Infra | Baixa | T-01 | O `FomOracle.sln` foi criado vazio como placeholder. | Popular a solution nas tasks T-03 e T-05. | 2026-05-10 |
+| Escopo de inteligência de itens pode crescer demais | Produto/Técnica | Média | US-09/US-11 | Há risco de expandir a engine antes de consolidar sinais rastreáveis e explicáveis. | Entregar avaliações incrementais antes de otimização mais ampla. | 2026-05-10 |
+| Catálogo de receitas, presentes, eventos e missões futuras pode estar incompleto | Dados | Alta | US-06/US-09/US-10 | A instalação local e o save podem não cobrir todas as lacunas da v1. | Priorizar fonte local, marcar lacunas com `source_trace` e degradar sem bloquear o restante. | 2026-05-10 |
+| Inventário grande pode prejudicar usabilidade | UX | Média | US-09 | A v1 ainda pode sofrer com volume alto de itens. | Exigir busca e filtros por tipo e localização de item. | 2026-05-10 |
+| Machine learning pode reduzir explicabilidade se antecipado | Arquitetura | Média | ADR-06 | Antecipar ML conflita com a regra de heurística determinística da v1. | Manter ML fora do escopo da v1; considerar apenas calibragem futura auditável. | 2026-05-10 |
+| Orçamento de CPU e memória precisa ser contido durante o jogo | Performance | Alta | US-08 / T-38 | Refresh frequente pode introduzir recomputações e consumo excessivo. | Medir baseline real e limitar polling e processamento redundante. | 2026-05-10 |
+| Acesso ao save não pode bloquear o jogo nem competir com o arquivo | Integridade/IO | Alta | US-08 / T-38 | Leituras longas ou invasivas podem disputar acesso com o jogo. | Ler em modo read-only, usar snapshot temporário e preservar o último estado válido. | 2026-05-10 |

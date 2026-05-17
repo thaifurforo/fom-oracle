@@ -10,7 +10,7 @@ FOM Oracle
 - Domínio: [.catalog/domain.md](.catalog/domain.md)
 - Funcionalidades: [.catalog/features.md](.catalog/features.md)
 - Convenções: [.catalog/conventions.md](.catalog/conventions.md)
-- Preocupações: [.catalog/concerns.md](.catalog/concerns.md)
+- Preocupações: [.catalog/concerns.md](.catalog/concerns.md) — consultar para dívida técnica e preocupações ativas; registrar aqui itens fora de escopo identificados em review; remover itens resolvidos do arquivo e descrever a resolução no PR correspondente
 - Convenções de acompanhamento do projeto: [.catalog/project-tracking.md](.catalog/project-tracking.md)
 
 ## Diretriz arquitetural obrigatória
