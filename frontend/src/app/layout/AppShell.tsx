@@ -12,7 +12,22 @@ const navigationItems = [
   { to: "/configuracoes", label: "Configurações" },
 ];
 
-const summaryTiles = [
+const getLocalStateMessage = (connectionState: string): string => {
+  switch (connectionState) {
+    case "connected":
+      return "API local conectada";
+    case "connecting":
+      return "Conectando ao sidecar...";
+    case "disconnected":
+      return "Sidecar não está disponível";
+    case "error":
+      return "Erro ao conectar ao sidecar";
+    default:
+      return "Cliente pronto";
+  }
+};
+
+const staticSummaryTiles = [
   {
     label: "Save ativo",
     value: "Nenhum save carregado",
@@ -22,11 +37,6 @@ const summaryTiles = [
     label: "Prioridade atual",
     value: "Aguardando seleção",
     hint: "As recomendações ainda não estão ajustadas.",
-  },
-  {
-    label: "Estado local",
-    value: "Cliente pronto",
-    hint: "O shell já está preparado para falar com a API local.",
   },
 ];
 
@@ -88,9 +98,7 @@ export default function AppShell() {
                   Sessão local
                 </p>
                 <p className="mt-2 text-sm text-slate-200">
-                  {connectionState === "connected"
-                    ? "API local conectada"
-                    : "Aguardando resposta do sidecar"}
+                  {getLocalStateMessage(connectionState)}
                 </p>
               </Card>
               <Card className="border-white/10 bg-white/5">
@@ -106,7 +114,7 @@ export default function AppShell() {
 
           <main className="space-y-4">
             <section className="grid gap-4 lg:grid-cols-3">
-              {summaryTiles.map((tile) => (
+              {staticSummaryTiles.map((tile) => (
                 <Card key={tile.label} className="border-white/10 bg-white/5">
                   <p className="text-xs uppercase tracking-[0.24em] text-slate-400">
                     {tile.label}

@@ -1,4 +1,4 @@
-type StatusTone = "neutral" | "info" | "success" | "warning" | "danger";
+export type StatusTone = "neutral" | "info" | "success" | "warning" | "danger";
 
 type StatusPillProps = {
   tone?: StatusTone;

@@ -6,14 +6,12 @@ import type { HealthResponse } from "@/shared/api/contracts";
 import { getApiBaseUrl } from "@/shared/config/env";
 import type { ConnectionState } from "@/shared/state/sessionStore";
 import { useSessionStore } from "@/shared/state/sessionStore";
-import StatusPill from "@/shared/ui/StatusPill";
-
-type BannerTone = "neutral" | "info" | "success" | "warning" | "danger";
+import StatusPill, { type StatusTone } from "@/shared/ui/StatusPill";
 
 type ConnectionBannerView = {
   message: string;
   pillLabel: string;
-  tone: BannerTone;
+  tone: StatusTone;
 };
 
 type HealthQueryState = UseQueryResult<HealthResponse, Error>;
@@ -88,7 +86,7 @@ export default function ConnectionBanner() {
 
       return query.state.data ? 30_000 : 5000;
     },
-    refetchIntervalInBackground: false,
+    refetchIntervalInBackground: true,
   });
 
   const status = deriveConnectionState(healthQuery, baseUrl);
