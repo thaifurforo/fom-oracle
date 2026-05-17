@@ -26,6 +26,9 @@ jobs:
         with:
           dotnet-version: 9.0.x
 
+      - name: Approve build scripts
+        run: pnpm approve-builds --all
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
