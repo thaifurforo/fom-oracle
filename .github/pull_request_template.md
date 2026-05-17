@@ -17,13 +17,16 @@ Descreva, em poucas linhas, o objetivo desta PR e o problema que ela resolve.
 ## Aderência ao DESIGN.md (obrigatório para PRs de frontend/UI)
 
 - [ ] Li e apliquei o `DESIGN.md` nas decisões de UI/UX e arquitetura de interface desta PR.
-- [ ] Esta PR não introduz padrão novo sem aprovação humana prévia no `DESIGN.md`.
 
 ## Impacto no DESIGN.md
 
 - [ ] Sem impacto no guia; esta PR apenas aplica padrões existentes.
-- [ ] Com impacto no guia; registrei a proposta e a validação humana explícita.
-- Link da proposta/validação aprovada: <!-- obrigatório quando houver impacto no guia -->
+- [ ] Com impacto no guia; atualizei o `DESIGN.md` nesta PR.
+- Resumo do impacto: <!-- obrigatório quando houver impacto no guia -->
+
+## Protótipo de frontend/UI
+
+- Caminho do protótipo, quando aplicável: <!-- ex.: `.catalog/prototypes/T-15-strategic-home/prototype.html` -->
 
 ## Evidência visual (obrigatório para PRs de frontend/UI)
 

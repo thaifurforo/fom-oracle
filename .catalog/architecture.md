@@ -497,7 +497,7 @@ RF/RNF atendido: RF-06, RF-07, RF-14, RF-15, RF-16, RNF-05, RNF-14.
 
 | Workflow | Gatilho | Ações |
 |---|---|---|
-| `ci.yml` | PR para `main`/`develop`; push para `develop` | Setup Node/pnpm/.NET, check-env, testes T-01 (Pester), frontend lint/build, `pnpm audit` |
+| `ci.yml` | PR para `main`/`develop`; push para `develop` | Gate objetivo de aderência ao `DESIGN.md` para frontend/UI, setup Node/pnpm/.NET, check-env, testes Pester, frontend lint/build, `pnpm audit` |
 | `pr-release-gate.yml` | PR para `main` | Valida closing keywords para issues e exatamente uma label `release:patch`, `release:minor` ou `release:major` no PR |
 | `auto-release.yml` | PR mergeado em `main` | Sincroniza label de impacto nas issues fechadas, calcula próxima versão SemVer e publica GitHub Release |
 | `gc.yml` | Semanal (domingo 06:00 UTC) | Varre TODO/FIXME/HACK no código, abre issue de limpeza |
@@ -511,8 +511,8 @@ RF/RNF atendido: RF-06, RF-07, RF-14, RF-15, RF-16, RNF-05, RNF-14.
 
 | Camada | Onde | O que roda |
 |---|---|---|
-| 1 — Pré-commit | local (dev) | Lint + type-check + testes unitários (quando T-04 existir) |
-| 2 — CI por PR | `ci.yml` | Setup + T-01 smoke + lint/build placeholder + security audit |
+| 1 — Pré-commit | local (dev) | Fluxo de protótipo quando aplicável + lint + type-check + testes unitários (quando T-04 existir) |
+| 2 — CI por PR | `ci.yml` | Gate de aderência objetiva ao `DESIGN.md` + setup + T-01 smoke + testes de governança + lint/build placeholder + security audit |
 | 3 — Release pós-merge | `auto-release.yml` (PR mergeado em main) | Versionamento automático e GitHub Release |
 | 4 — Agendado | `gc.yml` (semanal) | Scan TODO/FIXME, abre issue de limpeza |
 
@@ -534,6 +534,7 @@ RF/RNF atendido: RF-06, RF-07, RF-14, RF-15, RF-16, RNF-05, RNF-14.
 - [ ] NetArchTest para bloqueio de dependências inválidas
 - [x] AGENTS.md apontando para `.catalog/`
 - [x] CI pipeline com gates de validação
+- [x] Gate de aderência objetiva ao `DESIGN.md` para mudanças de frontend/UI
 - [x] GC semanal automatizado
 
 ### Feedback

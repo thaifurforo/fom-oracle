@@ -16,7 +16,7 @@
 | Tests | xUnit + FluentAssertions + NSubstitute | Boa harnessability para parser, services e regras de recomendação | RNF-13, RNF-14 |
 | Structural checks | NetArchTest + ESLint boundaries | Enforce mecânico das camadas e dependências permitidas | RNF-06, RNF-14 |
 | Build orchestration | pnpm + dotnet CLI | Tooling clara para UI e core, sem excesso de orquestração no início | RNF-02, RNF-14 |
-| CI/CD | GitHub Actions + PowerShell Core (pwsh) | Pipeline de validação por PR com gates de lint, build, teste e security scan; GC semanal automatizado | RNF-13, RNF-14 |
+| CI/CD | GitHub Actions + PowerShell Core (pwsh) | Pipeline de validação por PR com gate objetivo de aderência ao `DESIGN.md`, lint, build, teste, security scan e GC semanal automatizado | RNF-12, RNF-13, RNF-14 |
 
 ## Direção geral
 

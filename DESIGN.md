@@ -86,14 +86,26 @@ components:
     backgroundColor: "{colors.secondary}"
     textColor: "{colors.ink}"
     typography: "{typography.body-sm}"
+    fontWeight: 800
     rounded: "{rounded.sm}"
+    border: "2px solid {colors.border}"
+    boxShadow: "0 4px 0 0 {colors.border}"
     padding: 12px
+    active:
+      transform: "translateY(2px)"
+      boxShadow: "0 2px 0 0 {colors.border}"
   button-secondary:
     backgroundColor: "{colors.primary}"
     textColor: "{colors.ink}"
     typography: "{typography.body-sm}"
+    fontWeight: 800
     rounded: "{rounded.sm}"
+    border: "2px solid {colors.border}"
+    boxShadow: "0 4px 0 0 {colors.border}"
     padding: 12px
+    active:
+      transform: "translateY(2px)"
+      boxShadow: "0 2px 0 0 {colors.border}"
   status-pill:
     backgroundColor: "{colors.tertiary}"
     textColor: "{colors.ink}"
@@ -201,13 +213,13 @@ Regras arquiteturais:
 A paleta combina uma base clara e acolhedora com acentos pastéis mais coloridos. O conjunto deve remeter ao visual geral de Fields of Mistria: céu claro, campo verde, madeira, painéis creme e detalhes rosa/lilás.
 
 - **Primary (`#7ECF95`)**: verde pastoral para estrutura ativa, estado saudável, navegação selecionada e temas de fazenda.
-- **Secondary (`#F5B66D`)**: âmbar/colheita para CTA principal, ações explícitas e destaques de progresso imediato.
+- **Secondary (`#F5B66D`)**: âmbar/colheita para CTA principal, ações explícitas e destaques de progresso imediato. **Obrigatório para botões primários.**
 - **Tertiary (`#EEC6DA`)**: rosa social para NPCs, presentes, aniversários, eventos e recomendações relacionais.
 - **Mystic (`#D8C8F1`)**: lilás mágico para desbloqueios, raridades, magia, progresso especial e descobertas.
 - **Neutral (`#FFF7E8`)**: creme base para fundo geral e áreas de leitura prolongada.
 - **Surface (`#FFFAF0`)**: painel claro para cards, listas, formulários e seções de conteúdo.
 - **Border (`#BD8E69`)**: borda terrosa para molduras, divisões e sensação artesanal.
-- **Ink (`#33251F`)**: texto principal e ícones funcionais.
+- **Ink (`#33251F`)**: texto principal e ícones funcionais. **Texto de botões deve usar esta cor.**
 - **Muted (`#7F694F`)**: metadados, labels, descrições secundárias e texto de apoio.
 - **Danger (`#C05A65`)**: falhas, inconsistências de save e ações destrutivas.
 - **Success (`#5F9F6B`)**: carregamento bem-sucedido, conexão ativa e estados concluídos.
@@ -220,6 +232,7 @@ Não usar uma tela dominada por apenas uma família de cor. Verde, creme e terro
 A tipografia funcional usa `Inter` com fallback para fontes de sistema. Não há dependência obrigatória de fonte pixelada na v1.
 
 - Títulos usam peso alto, linhas curtas e hierarquia clara.
+- Botões e CTAs devem usar peso **negrito/extra-bold** para destacar a ação sobre o fundo colorido.
 - Labels podem usar caixa alta com espaçamento moderado, mas não devem ficar longos.
 - Texto de recomendação usa frases objetivas em português brasileiro, com verbos de ação.
 - Texto operacional não deve usar fonte pixelada, decorativa ou de baixa legibilidade.
@@ -249,9 +262,10 @@ Cada fluxo que consome dados deve cobrir estados:
 
 A profundidade deve sugerir painéis físicos e UI de RPG, sem transformar o app em skeuomorfismo pesado.
 
+- **Botões Estilo RPG**: Devem possuir bordas terrosas de 2px e sombras sólidas inferiores (não difusas) de 4px para simular profundidade física.
+- **Estado de Clique (Feedback)**: No clique, os botões e CTAs devem aplicar um deslocamento vertical (`translateY(2px)`) e redução da sombra, simulando a pressão física de um botão mecânico.
 - Painéis principais podem usar borda terrosa de 1px a 2px e sombra curta vertical.
 - Cards internos usam elevação menor que painéis para não competir com a estrutura.
-- Botões primários podem ter sombra ou deslocamento curto para parecerem pressionáveis.
 - Evitar blur pesado, vidro escuro, gradientes corporativos e sombras muito difusas.
 - Estados de foco devem ser visíveis por contorno e não depender apenas de cor.
 
@@ -272,8 +286,9 @@ Cada componente de UI deve começar pelos tokens do front matter. Variações no
 - **App shell**: fundo `neutral`, texto `ink`, navegação clara e resumo do save sempre visível no topo da experiência principal.
 - **Panel**: superfície `surface`, borda terrosa e espaço suficiente para agrupar fluxos principais.
 - **Card**: superfície clara, conteúdo escaneável e hierarquia curta; usado para recomendações, tiles e itens repetidos.
-- **Button primary**: usa `secondary`; reservado para ações explícitas como atualizar save, confirmar seleção ou aplicar prioridade.
-- **Button secondary**: usa `primary`; usado para navegação contextual, filtros e ações reversíveis.
+- **Button primary**: usa `secondary`; possui borda terrosa física, sombra sólida de 4px e texto em negrito cor `ink`. Reservado para ações explícitas como atualizar save, confirmar seleção ou aplicar prioridade.
+- **Button secondary**: usa `primary`; segue a mesma lógica de elevação e borda física do botão primário, mas em verde. Usado para navegação contextual, filtros e ações reversíveis.
+- **Floating Action Button (Checklist)**: Deve seguir rigorosamente a estética de botão RPG elevado, com sombra sólida e borda física, garantindo destaque sobre o conteúdo da tela.
 - **Status pill**: usa rosa, lilás, verde, warning ou danger conforme significado; nunca depender apenas da cor para comunicar estado.
 - **Recommendation card**: deve mostrar ação concreta, justificativa humana e categoria prática, sem score técnico exposto.
 - **Summary tile**: mostra dia, estação, save ativo, prioridade, conexão ou alerta com label curto e valor legível.
@@ -287,16 +302,17 @@ Textos de interface devem ser objetivos e em português brasileiro. Ícones pode
 Governança:
 
 - Este documento é a fonte normativa obrigatória para decisões de UI/UX, identidade visual e arquitetura de interface do frontend.
-- Alterações neste guia exigem validação humana explícita em GitHub, por review de PR aprovado ou comentário aprovado na issue/PR da mudança.
-- Tasks de frontend não podem introduzir padrão novo de UI/UX sem atualização aprovada deste documento.
-- O CI valida apenas a rastreabilidade mínima de aderência ao guia; a avaliação de qualidade visual e suficiência das evidências permanece responsabilidade do review humano.
+- Tasks de frontend não podem introduzir padrão novo de UI/UX sem atualizar explicitamente este documento.
+- Para tela nova ou mudança visual relevante, o agente deve tentar gerar um protótipo com Google Stitch MCP ou gerar ele próprio como fallback, antes da implementação React.
+- O agente deve revisar o protótipo contra este guia, ajustar o HTML quando necessário e pedir validação humana no fluxo de trabalho antes de implementar.
+- O CI valida apenas regras objetivas de aderência ao guia; avaliação de qualidade visual e suficiência das evidências permanece responsabilidade do agente e do review humano.
 
 Obrigatório:
 
 - Usar tokens do `DESIGN.md` antes de criar estilos ad hoc.
 - Descrever na PR como a mudança aderiu ao `DESIGN.md`.
 - Incluir evidência visual na PR para toda task de frontend com impacto visual, como prints ou fluxo gravado curto.
-- Se houver impacto no guia, incluir seção "Impacto no DESIGN.md" e link da proposta aprovada.
+- Se houver impacto no guia, incluir seção "Impacto no DESIGN.md" e atualizar este documento.
 - Garantir navegação por teclado para fluxos principais.
 - Manter contraste suficiente e hierarquia tipográfica legível.
 - Usar semântica HTML adequada para headings, listas, botões e regiões.

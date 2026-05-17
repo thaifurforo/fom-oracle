@@ -12,20 +12,23 @@ O escopo planejado da v1 inclui um motor heurístico explicável para cruzar sav
 
 ```text
 .
-|-- .catalog/
-|-- .milestones/
+|-- .catalog/                (documentação de produto, arquitetura e protótipos)
 |-- backend/
 |   |-- src/
-|   `-- tests/
+|   `-- README.md
 |-- frontend/
-|   |-- src-tauri/  (configuração nativa do Tauri)
-|   `-- src/        (aplicação React)
+|   |-- src-tauri/           (runtime desktop Tauri/Rust e assets nativos)
+|   `-- src/                 (aplicação React)
 |       |-- app/
 |       |-- features/
 |       `-- shared/
+|-- scripts/                 (automações de bootstrap, release e governança)
+|-- tests/                   (sensores de scaffolding/release/design governance)
 |-- AGENTS.md
+|-- DESIGN.md
 |-- FomOracle.sln
 |-- package.json
+|-- pnpm-lock.yaml
 `-- pnpm-workspace.yaml
 ```
 
@@ -76,6 +79,7 @@ pnpm --dir frontend run typecheck
 
 ```powershell
 pnpm run test:t01
+pnpm run test:design-governance
 pnpm --dir frontend run test
 ```
 
