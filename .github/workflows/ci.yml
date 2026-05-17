@@ -28,7 +28,7 @@ jobs:
           dotnet-version: 9.0.x
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile --allow-build esbuild
+        run: pnpm install --frozen-lockfile
 
       - name: Check environment tools
         run: |
