@@ -2,5 +2,3 @@ packages:
   - frontend
 allowBuilds:
   esbuild: true
-onlyBuiltDependencies:
-  - esbuild
