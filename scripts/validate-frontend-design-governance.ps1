@@ -66,7 +66,7 @@ function Assert-PullRequestDesignGovernance {
         throw 'Falta seção obrigatória de evidência visual para mudança de frontend/UI.'
     }
 
-    if ($PullRequestBody -notmatch '(?im)^-\s*\[[xX]\].*DESIGN\.md') {
+    if ($PullRequestBody -notmatch '(?im)^-\s*\[[xX]\]\s+Li e apliquei o `?DESIGN\.md`? nas decisões de UI/UX e arquitetura de interface desta PR\.') {
         throw 'Checklist de aderência ao DESIGN.md não marcado.'
     }
 

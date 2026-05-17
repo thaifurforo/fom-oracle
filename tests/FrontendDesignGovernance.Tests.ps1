@@ -88,6 +88,29 @@ Print anexado.
         } | Should -Throw 'Checklist de aderência ao DESIGN.md não marcado.'
     }
 
+    It 'does not accept the DESIGN.md impact checkbox as adherence evidence' {
+        $body = @'
+## Aderência ao DESIGN.md
+
+- [ ] Li e apliquei o `DESIGN.md` nas decisões de UI/UX e arquitetura de interface desta PR.
+
+## Evidência visual
+
+Print anexado.
+
+## Impacto no DESIGN.md
+
+- [x] Com impacto no guia; atualizei o DESIGN.md.
+'@
+
+        {
+            Assert-FrontendDesignGovernance `
+                -PullRequestBody $body `
+                -ChangedFiles @('DESIGN.md') `
+                -RepositoryRoot $script:testRoot
+        } | Should -Throw 'Checklist de aderência ao DESIGN.md não marcado.'
+    }
+
     It 'requires Impacto no DESIGN.md section when the design guide changes' {
         {
             Assert-FrontendDesignGovernance `
