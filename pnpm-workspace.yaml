@@ -1,4 +1,7 @@
 packages:
   - frontend
 allowBuilds:
-  esbuild: true
+  esbuild: set this to true or false
+onlyBuiltDependencies:
+  - esbuild@0.21.5
+  - esbuild@0.27.7

@@ -18,7 +18,7 @@ type ConnectionBannerView = {
 
 type HealthQueryState = UseQueryResult<HealthResponse, Error>;
 
-function deriveConnectionState(healthQuery: HealthQueryState, baseUrl: string): ConnectionState {
+function deriveConnectionState(healthQuery: HealthQueryState, baseUrl: string | null): ConnectionState {
   if (!baseUrl) {
     return "disconnected";
   }
@@ -91,7 +91,7 @@ export default function ConnectionBanner() {
     refetchIntervalInBackground: false,
   });
 
-  const status = deriveConnectionState(healthQuery, baseUrl ?? "");
+  const status = deriveConnectionState(healthQuery, baseUrl);
 
   useEffect(() => {
     setConnectionState(status);

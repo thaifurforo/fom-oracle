@@ -74,7 +74,7 @@ export default function AppShell() {
               </p>
             </div>
 
-            <nav className="space-y-2">
+            <nav className="space-y-2" aria-label="Navegação principal">
               {navigationItems.map((item) => (
                 <NavLink key={item.to} to={item.to} className={navClassName} end={item.to === "/"}>
                   {item.label}

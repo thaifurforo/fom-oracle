@@ -4,9 +4,11 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import App from "@/app/App";
+import { useSessionStore } from "@/shared/state/sessionStore";
 
 afterEach(() => {
   vi.unstubAllEnvs();
+  useSessionStore.getState().reset();
 });
 
 describe("App shell", () => {

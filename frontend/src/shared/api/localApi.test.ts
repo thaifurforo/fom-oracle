@@ -25,7 +25,13 @@ describe("localApi", () => {
 
     const result = await getHealth();
 
-    expect(fetchSpy).toHaveBeenCalledWith("http://localhost:5000/api/v1/health", expect.anything());
+    expect(fetchSpy).toHaveBeenCalledWith(
+      "http://localhost:5000/api/v1/health",
+      expect.objectContaining({
+        method: "GET",
+        headers: expect.any(Object),
+      }),
+    );
     expect(result).toEqual(mockResponse);
   });
 

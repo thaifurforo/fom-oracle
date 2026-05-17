@@ -50,7 +50,7 @@ pnpm run icons:generate
 ## Ícones do app desktop
 
 - A fonte oficial do ícone é `frontend/src-tauri/icons/source/icon-512-transparent.svg`.
-- A geração de ícones roda automaticamente no `pnpm run dev` e no `pnpm run build`.
+- A geração de ícones é manual por enquanto e deve ser executada com `pnpm run icons:generate` quando o SVG mestre for alterado.
 - Os arquivos em `src-tauri/icons/` são artefatos gerados para bundle Tauri.
 
 ## Comunicação com o Sidecar
