@@ -10,7 +10,7 @@ FOM Oracle
 - Domínio: [.catalog/domain.md](.catalog/domain.md)
 - Funcionalidades: [.catalog/features.md](.catalog/features.md)
 - Convenções: [.catalog/conventions.md](.catalog/conventions.md)
-- Preocupações: [.catalog/concerns.md](.catalog/concerns.md)
+- Preocupações: [.catalog/concerns.md](.catalog/concerns.md) — consultar para dívida técnica e preocupações ativas; registrar aqui itens fora de escopo identificados em review; remover itens resolvidos do arquivo e descrever a resolução no PR correspondente
 - Convenções de acompanhamento do projeto: [.catalog/project-tracking.md](.catalog/project-tracking.md)
 
 ## Diretriz arquitetural obrigatória
@@ -28,6 +28,10 @@ Types → Config → Repository → Service → Runtime → UI
 - O frontend React fala apenas com a Local API do sidecar.
 - Dados do save e da instalação local do jogo têm prioridade sobre wiki e fontes externas.
 - Regras de inventário, presentes, receitas, missões e recomendações pertencem ao core .NET, nunca à UI.
+
+## Diretrizes de engenharia obrigatórias
+- Toda implementação e todo code review devem verificar aderência a `DRY`, `KISS`, `YAGNI`, `SOLID` e `DDD`.
+- Essa avaliação deve considerar simultaneamente o escopo específico da task/PR e a consistência global do projeto.
 
 ## Estrutura-alvo
 

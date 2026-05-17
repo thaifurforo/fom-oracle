@@ -1,0 +1,6 @@
+{
+  "identifier": "default",
+  "description": "Capacidade padrão do shell FOM Oracle",
+  "windows": ["main"],
+  "permissions": ["core:default"]
+}

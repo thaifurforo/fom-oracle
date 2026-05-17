@@ -4,7 +4,7 @@ FOM Oracle é um aplicativo desktop Windows local-first para leitura de saves de
 
 ## Estado atual
 
-Este repositório está na estrutura inicial da `T-01`. O objetivo desta etapa é estabelecer a estrutura do espaço de trabalho, a solução .NET e os comandos base de inicialização.
+Este repositório está na etapa `T-02`. O objetivo desta etapa foi estabelecer o shell inicial utilizando React e Tauri, configurando a base da interface e a comunicação com a Local API.
 
 O escopo planejado da v1 inclui um motor heurístico explicável para cruzar save, inventário completo, missões, receitas, eventos, aniversários, preferências de NPCs e prioridades do jogador. Machine learning não faz parte da v1.
 
@@ -18,7 +18,8 @@ O escopo planejado da v1 inclui um motor heurístico explicável para cruzar sav
 |   |-- src/
 |   `-- tests/
 |-- frontend/
-|   `-- src/
+|   |-- src-tauri/  (configuração nativa do Tauri)
+|   `-- src/        (aplicação React)
 |       |-- app/
 |       |-- features/
 |       `-- shared/
@@ -35,6 +36,7 @@ O escopo planejado da v1 inclui um motor heurístico explicável para cruzar sav
 - `pnpm`
 - `.NET SDK`
 - PowerShell 7 / PowerShell Core (`pwsh`)
+- Rust (para build nativo do Tauri)
 
 ### Comandos
 
@@ -49,33 +51,36 @@ Ou, para executar os dois:
 pnpm run bootstrap
 ```
 
-### Comportamento esperado na T-01
+> **Nota:** No estágio atual (`T-02`), `pnpm run bootstrap` executa `bootstrap:frontend` e `bootstrap:backend`. O backend **falhará intencionalmente** (exit code != 0) enquanto a solução não contiver projetos reais. Este é o comportamento esperado até a `T-03`.
 
-- `bootstrap:frontend` prepara o espaço de trabalho `pnpm` do frontend.
-- `bootstrap:backend` faz uma validação explícita e **falha de forma intencional** enquanto a solução ainda não contiver projetos reais.
-- Essa falha imediata evita um falso positivo de inicialização no backend antes da `T-03`.
-
-## Verificação da T-01
+### Comandos do Frontend (T-02)
 
 ```powershell
-pnpm -r --version
-dotnet --info
+# Iniciar em modo dev (web + tauri)
+pnpm --dir frontend run dev
+
+# Rodar testes
+pnpm --dir frontend run test
+
+# Verificar tipos
+pnpm --dir frontend run typecheck
 ```
 
-## Testes da T-01
+### Comportamento esperado na T-02
+
+- `bootstrap:frontend` prepara o ambiente web e Tauri.
+- O shell abre com um dashboard inicial e um banner de status da conexão com o sidecar.
+- A comunicação com o sidecar é simulada ou via health check na URL configurada.
+
+## Verificação da T-01/T-02
 
 ```powershell
 pnpm run test:t01
+pnpm --dir frontend run test
 ```
-
-Cobertura atual da T-01:
-- verificação rápida da estrutura do scaffold
-- contrato do script `bootstrap-backend.ps1`
-- verificação de falha imediata para solução ausente ou vazia
 
 ## Próximas tarefas
 
-- `T-02`: shell inicial React/Tauri
 - `T-03`: runtime inicial do sidecar .NET
 - `T-04`: guardrails de tipagem e camadas
 - `T-05`: persistência local base
