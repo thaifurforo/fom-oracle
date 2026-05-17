@@ -44,8 +44,6 @@ O Project `Fields of Mistria Oracle` usa os campos:
 - Inteligência de inventário e itens
 - Presentes de NPCs e integração social
 
-A milestone `Resiliência e readiness local-first` também cobre a convivência do app com o jogo em execução, incluindo consumo de recursos, acesso não intrusivo ao save e degradação segura quando o arquivo estiver ocupado.
-
 As milestones acima são temáticas e servem para organizar o roadmap; elas não precisam seguir SemVer nem carregar número de versão. A issue de release readiness consolida o checklist final após as entregas que fecham a v1.
 
 ## Versionamento e Releases

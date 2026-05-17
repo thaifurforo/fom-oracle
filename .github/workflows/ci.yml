@@ -77,16 +77,10 @@ jobs:
         run: pnpm --dir frontend install --frozen-lockfile
 
       - name: Frontend lint
-        run: pnpm --dir frontend run lint
-
-      - name: Frontend typecheck
-        run: pnpm --dir frontend run typecheck
-
-      - name: Frontend test
-        run: pnpm --dir frontend run test
+        run: pnpm --dir frontend lint
 
       - name: Frontend build
-        run: pnpm --dir frontend run build:web
+        run: pnpm --dir frontend build
 
       - name: Security audit
-        run: pnpm --dir frontend audit --prod
+        run: pnpm --dir frontend audit

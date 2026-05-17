@@ -307,9 +307,6 @@ A arquitetura deve permitir adicionar novas prioridades, novas regras e novos do
 ### RNF-15 — Prioridade para fontes primárias locais de dados
 O produto deve priorizar dados extraídos do save e da instalação local do jogo por engenharia reversa sempre que isso for viável, usando fontes externas como wiki apenas de forma subsidiária.
 
-### RNF-16 — Convivência segura com o jogo em execução
-O aplicativo deve conseguir rodar em paralelo com Fields of Mistria sem interferir no uso normal do jogo. Isso inclui baixo consumo de CPU e memória para um aplicativo de apoio local-first e leitura do save sem bloqueio exclusivo, sem travar a pasta de save e sem impedir o jogo de escrever ou ler seus próprios arquivos.
-
 ## 6. Fluxo de Usuário
 
 1. O usuário abre o aplicativo pela primeira vez.
@@ -386,7 +383,6 @@ Medir se usuários voltam ao app em múltiplas sessões.
 - Fontes externas de conhecimento do jogo, como wiki e referências comunitárias, apenas para complementar lacunas.
 - Evolução do jogo em Early Access, que pode alterar save, balanceamento e sistemas relevantes.
 - Descoberta precisa de quais dados estão no save e quais estão disponíveis na instalação local do jogo.
-- Convivência estável com o processo do jogo enquanto ele mantém acesso ao arquivo de save.
 
 ### Riscos de produto
 - O motor de recomendação pode ficar ambicioso demais para a v1.
@@ -394,7 +390,6 @@ Medir se usuários voltam ao app em múltiplas sessões.
 - O painel pode ficar denso demais e competir com a clareza do assistente estratégico.
 - O produto pode exigir calibragem fina para não parecer excessivamente técnico.
 - A inteligência de itens e presentes pode expandir demais a v1 se não for entregue como avaliações explicáveis e incrementais.
-- O consumo de CPU, memória ou I/O pode degradar a experiência de jogo se o app não limitar leitura e recomputação.
 
 ### Riscos técnicos
 - Mudanças de versão do jogo podem quebrar parsing ou interpretação.
@@ -403,7 +398,6 @@ Medir se usuários voltam ao app em múltiplas sessões.
 - A detecção automática da pasta de saves pode falhar em ambientes não padrão.
 - A engenharia reversa da instalação local pode ser mais complexa do que o esperado.
 - Receitas, preferências de NPCs, eventos e missões futuras podem depender de catálogo incompleto ou divergente entre versão local e wiki.
-- Leitura do save pode disputar acesso com o jogo se o sidecar abrir o arquivo com lock inadequado ou mantiver handles por tempo excessivo.
 
 ### Riscos de dados e qualidade
 - Informações da comunidade podem ficar desatualizadas após patches.
