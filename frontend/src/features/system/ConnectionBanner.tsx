@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { type UseQueryResult, useQuery } from "@tanstack/react-query";
 
 import { ApiUnavailableError, getHealth } from "@/shared/api/localApi";
@@ -73,7 +73,7 @@ function getConnectionBannerView(status: ConnectionState): ConnectionBannerView 
 
 export default function ConnectionBanner() {
   const setConnectionState = useSessionStore((state) => state.setConnectionState);
-  const baseUrl = getApiBaseUrl();
+  const baseUrl = useMemo(() => getApiBaseUrl(), []);
 
   const healthQuery = useQuery({
     queryKey: ["health", baseUrl],

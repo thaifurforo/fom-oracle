@@ -3,7 +3,7 @@ import { NavLink, Outlet } from "react-router-dom";
 import ConnectionBanner from "@/features/system/ConnectionBanner";
 import Card from "@/shared/ui/Card";
 import StatusPill from "@/shared/ui/StatusPill";
-import { useSessionStore } from "@/shared/state/sessionStore";
+import { useSessionStore, type ConnectionState } from "@/shared/state/sessionStore";
 
 const navigationItems = [
   { to: "/", label: "Assistente" },
@@ -12,7 +12,7 @@ const navigationItems = [
   { to: "/configuracoes", label: "Configurações" },
 ];
 
-const getLocalStateMessage = (connectionState: string): string => {
+const getLocalStateMessage = (connectionState: ConnectionState): string => {
   switch (connectionState) {
     case "connected":
       return "API local conectada";
