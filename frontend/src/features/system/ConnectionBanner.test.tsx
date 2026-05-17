@@ -17,7 +17,7 @@ function renderConnectionBanner() {
 
   render(
     <QueryClientProvider client={queryClient}>
-      <ConnectionBanner disableAutoRefetch />
+      <ConnectionBanner />
     </QueryClientProvider>,
   );
 
@@ -25,6 +25,7 @@ function renderConnectionBanner() {
 }
 
 afterEach(() => {
+  vi.clearAllTimers();
   vi.unstubAllEnvs();
   vi.restoreAllMocks();
   useSessionStore.getState().reset();

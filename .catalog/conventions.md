@@ -53,6 +53,12 @@ Nenhuma camada pode importar camadas a sua direita.
 - Changelogs seguem [Keep a Changelog](https://keepachangelog.com) — seções `### Adicionado`, `### Alterado`, `### Corrigido`, `### Documentação`, `### Interno`.
 - Mudanças de escopo em `.catalog/` devem manter PRD, arquitetura, domínio, features, concerns e tracking consistentes.
 
+## Segurança de dependências
+
+- O gate `pnpm --dir frontend audit --prod --audit-level=high` é obrigatório na CI e bloqueia qualquer advisory `high` ou `critical` em dependência de produção.
+- Advisories identificados como não-aplicáveis ao produto desktop local-first devem ser triados, documentados e registrados em `.catalog/concerns.md` com justificativa técnica explícita.
+- Exceções devem ser tratadas via allowlist (ex.: `.npmrc` ou `pnpm audit-level`) ou correção direta da dependência; nunca silenciar o gate com `|| true` sem rastreabilidade formal no repositório.
+
 ## Assets visuais
 
 - Ícone oficial do app desktop: `frontend/src-tauri/icons/source/icon-512-transparent.svg`.
