@@ -1,5 +1,5 @@
 export type HealthResponse = {
-  status: "ok";
+  status: string;
   appVersion: string;
   coreVersion: string;
 };
