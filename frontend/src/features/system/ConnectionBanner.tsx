@@ -30,7 +30,15 @@ function deriveConnectionState(healthQuery: HealthQueryState, baseUrl: string | 
   }
 
   if (healthQuery.isSuccess) {
-    return "connected";
+    if (healthQuery.data.status === "ok") {
+      return "connected";
+    }
+
+    if (healthQuery.data.status === "disconnected") {
+      return "disconnected";
+    }
+
+    return "error";
   }
 
   return "idle";

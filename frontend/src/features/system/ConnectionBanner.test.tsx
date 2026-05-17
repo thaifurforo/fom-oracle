@@ -62,3 +62,24 @@ it("mostra desconectado quando o health check falha depois de uma conexão anter
 
   queryClient.clear();
 });
+
+it("mostra desconectado quando a API responde status disconnected com HTTP 200", async () => {
+  vi.stubEnv("VITE_FOM_ORACLE_API_BASE_URL", "http://localhost:5000");
+
+  vi.spyOn(globalThis, "fetch").mockResolvedValue({
+    ok: true,
+    json: async () => ({
+      status: "disconnected",
+      appVersion: "0.1.0",
+      coreVersion: "0.1.0",
+    }),
+  } as Response);
+
+  const queryClient = renderConnectionBanner();
+
+  await waitFor(() => {
+    expect(screen.getByText("Desconectado")).toBeInTheDocument();
+  });
+
+  queryClient.clear();
+});
