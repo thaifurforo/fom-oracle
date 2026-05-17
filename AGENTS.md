@@ -29,6 +29,10 @@ Types → Config → Repository → Service → Runtime → UI
 - Dados do save e da instalação local do jogo têm prioridade sobre wiki e fontes externas.
 - Regras de inventário, presentes, receitas, missões e recomendações pertencem ao core .NET, nunca à UI.
 
+## Diretrizes de engenharia obrigatórias
+- Toda implementação e todo code review devem verificar aderência a `DRY`, `KISS`, `YAGNI`, `SOLID` e `DDD`.
+- Essa avaliação deve considerar simultaneamente o escopo específico da task/PR e a consistência global do projeto.
+
 ## Estrutura-alvo
 
 ### Frontend
