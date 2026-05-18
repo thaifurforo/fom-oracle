@@ -12,20 +12,24 @@ O escopo planejado da v1 inclui um motor heurístico explicável para cruzar sav
 
 ```text
 .
-|-- .catalog/
-|-- .milestones/
+|-- .catalog/                (documentação de produto, arquitetura e protótipos)
 |-- backend/
 |   |-- src/
-|   `-- tests/
+|   |-- tests/
+|   `-- README.md
 |-- frontend/
-|   |-- src-tauri/  (configuração nativa do Tauri)
-|   `-- src/        (aplicação React)
+|   |-- src-tauri/           (runtime desktop Tauri/Rust e assets nativos)
+|   `-- src/                 (aplicação React)
 |       |-- app/
 |       |-- features/
 |       `-- shared/
+|-- scripts/                 (automações de bootstrap, release e governança)
+|-- tests/                   (sensores de scaffolding/release/design governance)
 |-- AGENTS.md
+|-- DESIGN.md
 |-- FomOracle.sln
 |-- package.json
+|-- pnpm-lock.yaml
 `-- pnpm-workspace.yaml
 ```
 
@@ -72,10 +76,11 @@ pnpm --dir frontend run typecheck
 - O shell abre com um dashboard inicial e um banner de status da conexão com o sidecar.
 - A comunicação com o sidecar é simulada ou via health check na URL configurada.
 
-## Verificação da T-01/T-02
+## Verificação local
 
 ```powershell
 pnpm run test:t01
+pnpm run test:design-governance
 pnpm --dir frontend run test
 ```
 

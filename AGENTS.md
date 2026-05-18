@@ -12,6 +12,7 @@ FOM Oracle
 - Convenções: [.catalog/conventions.md](.catalog/conventions.md)
 - Preocupações: [.catalog/concerns.md](.catalog/concerns.md) — consultar para dívida técnica e preocupações ativas; registrar aqui itens fora de escopo identificados em review; remover itens resolvidos do arquivo e descrever a resolução no PR correspondente
 - Convenções de acompanhamento do projeto: [.catalog/project-tracking.md](.catalog/project-tracking.md)
+- Design frontend: [DESIGN.md](DESIGN.md)
 
 ## Diretriz arquitetural obrigatória
 
@@ -60,6 +61,17 @@ Types → Config → Repository → Service → Runtime → UI
 - O topo da tela mostra resumo do painel do save.
 - Recomendações exibem justificativas humanas, sem score técnico exposto.
 - Avaliações de inventário e presentes alimentam as recomendações do dia, mas devem permanecer explicáveis como ações concretas.
+
+## Diretriz de frontend/design
+- `DESIGN.md` é obrigatório para decisões de UI/UX e arquitetura de interface.
+- Tasks de frontend devem declarar aderência ao `DESIGN.md`.
+- Para tela nova ou mudança visual relevante, o agente deve tentar gerar protótipo, preferencialmente utilizando Google Stitch MCP, antes da implementação React.
+- Se não for possível utilizar o Google Stitch MCP, o agente deverá gerar o protótipo HTML por conta própria, confirmando a mudança da abordagem com o usuário antes de iniciar.
+- O agente deve revisar o protótipo gerado contra o `DESIGN.md`, ajustar o HTML quando necessário e pedir validação humana no fluxo de trabalho antes de implementar.
+- Protótipos HTML, quando existirem, ficam em `.catalog/prototypes/T-XX-slug/prototype.html` e não entram em runtime, UI ou bundle.
+- PRs de frontend/UI com impacto visual exigem evidência visual.
+- Novos padrões de UI/UX exigem alteração explícita no `DESIGN.md`.
+- Concept art fica em `.catalog/assets/concept-art/` e não entra em runtime, UI ou bundle.
 
 ## Diretriz de dados
 - Fonte primária: save do jogador + instalação local do jogo.

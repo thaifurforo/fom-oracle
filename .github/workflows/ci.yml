@@ -6,7 +6,39 @@ on:
   push:
     branches: [develop]
 
+permissions:
+  contents: read
+  pull-requests: read
+
 jobs:
+  frontend-governance-gate:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Detect frontend/UI changes
+        id: changes
+        shell: bash
+        run: |
+          set -euo pipefail
+          merge_base="$(git merge-base "${{ github.event.pull_request.base.sha }}" "${{ github.event.pull_request.head.sha }}")"
+          git diff --name-only "$merge_base" "${{ github.event.pull_request.head.sha }}" > changed_files.txt
+          if grep -E '^(frontend/|DESIGN\.md|\.catalog/prototypes/)' changed_files.txt >/dev/null; then
+            echo "needs_governance=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "needs_governance=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Validate frontend DESIGN.md governance
+        if: steps.changes.outputs.needs_governance == 'true'
+        shell: pwsh
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
+        run: ./scripts/validate-frontend-design-governance.ps1
+
   validate:
     runs-on: ubuntu-latest
     steps:
@@ -42,6 +74,10 @@ jobs:
       - name: Run T-01 scaffold smoke tests
         shell: pwsh
         run: pnpm run test:t01
+
+      - name: Run frontend design governance tests
+        shell: pwsh
+        run: pnpm run test:design-governance
 
       - name: Frontend lint
         run: pnpm --dir frontend run lint

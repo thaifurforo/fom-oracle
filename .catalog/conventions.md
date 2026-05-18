@@ -47,11 +47,17 @@ Nenhuma camada pode importar camadas a sua direita.
 ## Documentação
 
 - `AGENTS.md`: tabela de roteamento (≤100 linhas).
+- `DESIGN.md`: fonte normativa obrigatória para decisões de UI/UX e arquitetura de interface no frontend.
 - `.catalog/`: fonte de verdade técnica versionada.
+- `.catalog/prototypes/T-XX-slug/prototype.html`: protótipo HTML de planejamento para tela nova ou mudança visual relevante.
 - GitHub Issues, Project v2 e Milestones temáticas são a fonte de verdade para entregas.
 - Toda a documentação do repositório, descrições de PR, issues, comentários de PR e release notes deve ser escrita em português brasileiro, com acentuação correta.
 - Changelogs seguem [Keep a Changelog](https://keepachangelog.com) — seções `### Adicionado`, `### Alterado`, `### Corrigido`, `### Documentação`, `### Interno`.
 - Mudanças de escopo em `.catalog/` devem manter PRD, arquitetura, domínio, features, concerns e tracking consistentes.
+- Tasks de frontend/UI com tela nova ou mudança visual relevante devem seguir o fluxo operacional: ler `DESIGN.md`, gerar prompt para geração de protótipo, usar Stitch MCP quando disponível, salvar ou atualizar protótipo em `.catalog/prototypes`, revisar e ajustar o HTML contra o `DESIGN.md`, pedir validação humana no fluxo de trabalho e só então implementar React.
+- PRs de frontend/UI com impacto visual devem anexar prints ou fluxo gravado curto.
+- PRs de frontend/UI podem informar o caminho do protótipo quando ele existir.
+- PRs que alteram ou impactam o guia devem incluir seção `Impacto no DESIGN.md` e atualizar o próprio `DESIGN.md`.
 
 ## Segurança de dependências
 
@@ -62,7 +68,8 @@ Nenhuma camada pode importar camadas a sua direita.
 ## Assets visuais
 
 - Ícone oficial do app desktop: `frontend/src-tauri/icons/source/icon-512-transparent.svg`.
-- A v1 é Windows desktop: o bundle Tauri mantém apenas `frontend/src-tauri/icons/icon.ico` e `frontend/src-tauri/icons/icon.png`.
-- Ícones de outras plataformas ou canais de distribuição ficam fora do escopo da v1 e só devem voltar com decisão explícita de suporte.
+- Arquivos em `frontend/src-tauri/icons/` são artefatos gerados de bundle, não fonte mestre.
 - Mockups e artes de conceito devem ficar em `.catalog/assets/concept-art/`.
 - Arquivos de concept art devem usar prefixo `concept-` e não podem ser usados diretamente em runtime/UI/bundle.
+- Protótipos HTML de telas ficam em `.catalog/prototypes/T-XX-slug/prototype.html`, são artefatos de planejamento e também não podem ser usados diretamente em runtime/UI/bundle.
+- A v1 é Windows desktop: o bundle Tauri mantém apenas `frontend/src-tauri/icons/icon.ico` e `frontend/src-tauri/icons/icon.png`.
