@@ -276,6 +276,33 @@ export const db = sqlite("local.db");
         } | Should -Throw 'Frontend não pode acessar SQLite diretamente; persistência local pertence ao core. Arquivo: frontend/src/features/home/Home.tsx'
     }
 
+    It 'fails when frontend implements save parsing directly' {
+        Set-Content -LiteralPath (Join-Path $script:testRoot 'frontend/src/features/home/Home.tsx') -Value @'
+export function parseSave(raw: string) { return JSON.parse(raw); }
+'@
+
+        {
+            Assert-FrontendDesignGovernance `
+                -PullRequestBody $script:validBody `
+                -ChangedFiles @('frontend/src/features/home/Home.tsx') `
+                -RepositoryRoot $script:testRoot
+        } | Should -Throw 'Frontend não pode implementar parsing de save; essa regra pertence ao core .NET. Arquivo: frontend/src/features/home/Home.tsx'
+    }
+
+    It 'ignores forbidden references in frontend test files' {
+        Set-Content -LiteralPath (Join-Path $script:testRoot 'frontend/src/features/home/Home.test.tsx') -Value @'
+import { readTextFile } from "@tauri-apps/plugin-fs";
+export const mockedParser = "parseSave";
+'@
+
+        {
+            Assert-FrontendDesignGovernance `
+                -PullRequestBody $script:validBody `
+                -ChangedFiles @('frontend/src/features/home/Home.tsx') `
+                -RepositoryRoot $script:testRoot
+        } | Should -Not -Throw
+    }
+
     It 'passes when frontend PR has DESIGN.md sections and no forbidden runtime references' {
         {
             Assert-FrontendDesignGovernance `

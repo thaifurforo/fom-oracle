@@ -3,6 +3,8 @@
 Este arquivo é a fonte única de dívida técnica ativa e preocupações ativas do repositório.
 Itens resolvidos não permanecem aqui: ao concluir a correção, remova o item deste arquivo e descreva a resolução no PR correspondente.
 
+## Quando registrar
+
 - Quando surgir dívida técnica ativa durante implementação, review ou estabilização.
 - Quando um comentário de review apontar um problema real, mas fora do escopo ativo do PR.
 - Quando um risco ativo exigir reavaliação posterior para não expandir o escopo da entrega atual.

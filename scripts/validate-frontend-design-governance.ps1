@@ -171,7 +171,8 @@ function Get-FrontendRuntimeFiles {
         Where-Object {
             $relativePath = [System.IO.Path]::GetRelativePath($frontendRoot, $_.FullName) -replace '\\', '/'
             $extensions -contains $_.Extension.ToLowerInvariant() -and
-            $relativePath -notmatch '(^|/)(node_modules|dist|build|coverage|TestResults)/'
+            $relativePath -notmatch '(^|/)(node_modules|dist|build|coverage|TestResults|__tests__|fixtures?)/' -and
+            $relativePath -notmatch '(^|/)[^/]+\.(test|spec)\.[^.]+$'
         })
 }
 

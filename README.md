@@ -15,6 +15,7 @@ O escopo planejado da v1 inclui um motor heurístico explicável para cruzar sav
 |-- .catalog/                (documentação de produto, arquitetura e protótipos)
 |-- backend/
 |   |-- src/
+|   |-- tests/
 |   `-- README.md
 |-- frontend/
 |   |-- src-tauri/           (runtime desktop Tauri/Rust e assets nativos)
@@ -75,7 +76,7 @@ pnpm --dir frontend run typecheck
 - O shell abre com um dashboard inicial e um banner de status da conexão com o sidecar.
 - A comunicação com o sidecar é simulada ou via health check na URL configurada.
 
-## Verificação da T-01/T-02
+## Verificação local
 
 ```powershell
 pnpm run test:t01

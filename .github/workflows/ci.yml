@@ -78,9 +78,6 @@ jobs:
         shell: pwsh
         run: pnpm run test:design-governance
 
-      - name: Install frontend dependencies
-        run: pnpm --dir frontend install --frozen-lockfile
-
       - name: Frontend lint
         run: pnpm --dir frontend run lint
 

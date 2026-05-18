@@ -119,13 +119,13 @@ components:
     rounded: "{rounded.pill}"
     padding: 8px
   status-pill-danger:
-    backgroundColor: "{colors.neutral}"
+    backgroundColor: "{colors.danger}"
     textColor: "{colors.ink}"
     typography: "{typography.label-caps}"
     rounded: "{rounded.pill}"
     padding: 8px
   status-pill-success:
-    backgroundColor: "{colors.neutral}"
+    backgroundColor: "{colors.success}"
     textColor: "{colors.ink}"
     typography: "{typography.label-caps}"
     rounded: "{rounded.pill}"
@@ -172,7 +172,7 @@ components:
 
 # FOM Oracle — Guia de Design de Frontend
 
-## Overview
+## Visão Geral
 
 Este documento define o padrão oficial de UI/UX, identidade visual, design system e arquitetura de interface do frontend do FOM Oracle. Os tokens do front matter são normativos para cores, tipografia, espaçamento, formas e componentes; o Markdown explica como aplicar esses tokens em telas reais.
 
@@ -208,7 +208,7 @@ Regras arquiteturais:
 - Feature não importa internals de outra feature; extrações comuns devem ir para `shared`.
 - Componentes de `shared/ui` devem ser genéricos e sem acoplamento a fluxo de negócio específico.
 
-## Colors
+## Cores
 
 A paleta combina uma base clara e acolhedora com acentos pastéis mais coloridos. O conjunto deve remeter ao visual geral de Fields of Mistria: céu claro, campo verde, madeira, painéis creme e detalhes rosa/lilás.
 
@@ -227,7 +227,7 @@ A paleta combina uma base clara e acolhedora com acentos pastéis mais coloridos
 
 Não usar uma tela dominada por apenas uma família de cor. Verde, creme e terroso formam a base; rosa e lilás entram como sinais semânticos, não como decoração aleatória.
 
-## Typography
+## Tipografia
 
 A tipografia funcional usa `Inter` com fallback para fontes de sistema. Não há dependência obrigatória de fonte pixelada na v1.
 
@@ -258,7 +258,7 @@ Cada fluxo que consome dados deve cobrir estados:
 - `error`: mensagem compreensível com ação de recuperação, como tentar novamente.
 - `success`: conteúdo principal com hierarquia visual consistente.
 
-## Elevation & Depth
+## Elevação e Profundidade
 
 A profundidade deve sugerir painéis físicos e UI de RPG, sem transformar o app em skeuomorfismo pesado.
 
@@ -269,7 +269,7 @@ A profundidade deve sugerir painéis físicos e UI de RPG, sem transformar o app
 - Evitar blur pesado, vidro escuro, gradientes corporativos e sombras muito difusas.
 - Estados de foco devem ser visíveis por contorno e não depender apenas de cor.
 
-## Shapes
+## Formas
 
 As formas devem ser acolhedoras e consistentes, com cantos arredondados moderados.
 
@@ -279,7 +279,7 @@ As formas devem ser acolhedoras e consistentes, com cantos arredondados moderado
 - `rounded.pill` para status curtos e categorias.
 - Não usar cards com arredondamento excessivo nem cards dentro de cards quando uma seção simples resolver.
 
-## Components
+## Componentes
 
 Cada componente de UI deve começar pelos tokens do front matter. Variações novas só entram quando removem duplicação real ou representam um estado semântico novo.
 
@@ -297,7 +297,7 @@ Cada componente de UI deve começar pelos tokens do front matter. Variações no
 
 Textos de interface devem ser objetivos e em português brasileiro. Ícones podem complementar ações, mas não substituem rótulos quando a ação não for óbvia.
 
-## Do's and Don'ts
+## Regras e Antipadrões
 
 Governança:
 

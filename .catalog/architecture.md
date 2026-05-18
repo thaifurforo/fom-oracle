@@ -512,7 +512,7 @@ RF/RNF atendido: RF-06, RF-07, RF-14, RF-15, RF-16, RNF-05, RNF-14.
 | Camada | Onde | O que roda |
 |---|---|---|
 | 1 — Pré-commit | local (dev) | Fluxo de protótipo quando aplicável + lint + type-check + testes unitários (quando T-04 existir) |
-| 2 — CI por PR | `ci.yml` | Gate de aderência objetiva ao `DESIGN.md` + setup + T-01 smoke + testes de governança + lint/build placeholder + security audit |
+| 2 — CI por PR | `ci.yml` | Gate de aderência objetiva ao `DESIGN.md` + setup + T-01 smoke + testes de governança + lint, typecheck, testes frontend, build web e security audit |
 | 3 — Release pós-merge | `auto-release.yml` (PR mergeado em main) | Versionamento automático e GitHub Release |
 | 4 — Agendado | `gc.yml` (semanal) | Scan TODO/FIXME, abre issue de limpeza |
 
