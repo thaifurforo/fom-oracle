@@ -69,6 +69,45 @@ Print anexado.
         } | Should -Throw 'Falta seção obrigatória de evidência visual para mudança de frontend/UI.'
     }
 
+    It 'fails frontend PRs when the visual evidence section is empty' {
+        $body = @'
+## Aderência ao DESIGN.md
+
+- [x] Li e apliquei o `DESIGN.md` nas decisões de UI/UX e arquitetura de interface desta PR.
+
+## Evidência visual
+
+'@
+
+        {
+            Assert-FrontendDesignGovernance `
+                -PullRequestBody $body `
+                -ChangedFiles @('frontend/src/features/home/Home.tsx') `
+                -RepositoryRoot $script:testRoot
+        } | Should -Throw 'Seção Evidência visual deve incluir print, gravação ou justificativa explícita de ausência de impacto visual.'
+    }
+
+    It 'fails frontend PRs when the visual evidence section only keeps template instructions' {
+        $body = @'
+## Aderência ao DESIGN.md
+
+- [x] Li e apliquei o `DESIGN.md` nas decisões de UI/UX e arquitetura de interface desta PR.
+
+## Evidência visual
+
+- Inclua prints ou fluxo gravado curto demonstrando a mudança de interface.
+- Explique rapidamente o que cada evidência comprova.
+- Se não houver impacto visual, justificar explicitamente.
+'@
+
+        {
+            Assert-FrontendDesignGovernance `
+                -PullRequestBody $body `
+                -ChangedFiles @('frontend/src/features/home/Home.tsx') `
+                -RepositoryRoot $script:testRoot
+        } | Should -Throw 'Seção Evidência visual deve incluir print, gravação ou justificativa explícita de ausência de impacto visual.'
+    }
+
     It 'fails frontend PRs when the DESIGN.md checklist is not checked' {
         $body = @'
 ## Aderência ao DESIGN.md
@@ -118,6 +157,81 @@ Print anexado.
                 -ChangedFiles @('DESIGN.md') `
                 -RepositoryRoot $script:testRoot
         } | Should -Throw 'Mudanças no DESIGN.md devem preencher a seção Impacto no DESIGN.md.'
+    }
+
+    It 'fails when DESIGN.md changes but impact options are unchecked and summary is empty' {
+        $body = @'
+## Aderência ao DESIGN.md
+
+- [x] Li e apliquei o `DESIGN.md` nas decisões de UI/UX e arquitetura de interface desta PR.
+
+## Impacto no DESIGN.md
+
+- [ ] Sem impacto no guia; esta PR apenas aplica padrões existentes.
+- [ ] Com impacto no guia; atualizei o `DESIGN.md` nesta PR.
+- Resumo do impacto: <!-- obrigatório quando houver impacto no guia -->
+
+## Evidência visual
+
+Sem impacto visual runtime; mudança validada por inspeção.
+'@
+
+        {
+            Assert-FrontendDesignGovernance `
+                -PullRequestBody $body `
+                -ChangedFiles @('DESIGN.md') `
+                -RepositoryRoot $script:testRoot
+        } | Should -Throw 'Mudanças no DESIGN.md devem marcar uma opção de impacto no guia.'
+    }
+
+    It 'fails when DESIGN.md changes with impact checked but summary is empty' {
+        $body = @'
+## Aderência ao DESIGN.md
+
+- [x] Li e apliquei o `DESIGN.md` nas decisões de UI/UX e arquitetura de interface desta PR.
+
+## Impacto no DESIGN.md
+
+- [ ] Sem impacto no guia; esta PR apenas aplica padrões existentes.
+- [x] Com impacto no guia; atualizei o `DESIGN.md` nesta PR.
+- Resumo do impacto: <!-- obrigatório quando houver impacto no guia -->
+
+## Evidência visual
+
+Sem impacto visual runtime; mudança validada por inspeção.
+'@
+
+        {
+            Assert-FrontendDesignGovernance `
+                -PullRequestBody $body `
+                -ChangedFiles @('DESIGN.md') `
+                -RepositoryRoot $script:testRoot
+        } | Should -Throw 'Resumo do impacto no DESIGN.md deve descrever a mudança aplicada ao guia.'
+    }
+
+    It 'passes when DESIGN.md changes with impact option and summary filled' {
+        $body = @'
+## Aderência ao DESIGN.md
+
+- [x] Li e apliquei o `DESIGN.md` nas decisões de UI/UX e arquitetura de interface desta PR.
+
+## Impacto no DESIGN.md
+
+- [ ] Sem impacto no guia; esta PR apenas aplica padrões existentes.
+- [x] Com impacto no guia; atualizei o `DESIGN.md` nesta PR.
+- Resumo do impacto: Documentei a nova regra de evidência visual obrigatória para PRs de frontend/UI.
+
+## Evidência visual
+
+Sem impacto visual runtime; mudança validada por inspeção.
+'@
+
+        {
+            Assert-FrontendDesignGovernance `
+                -PullRequestBody $body `
+                -ChangedFiles @('DESIGN.md') `
+                -RepositoryRoot $script:testRoot
+        } | Should -Not -Throw
     }
 
     It 'fails when frontend imports concept art or prototypes' {

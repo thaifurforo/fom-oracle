@@ -40,6 +40,80 @@ function Test-DesignGuideChanged {
     return $false
 }
 
+function Get-MarkdownSectionBody {
+    param(
+        [Parameter(Mandatory = $true)]
+        [AllowEmptyString()]
+        [string]$Markdown,
+
+        [Parameter(Mandatory = $true)]
+        [string]$SectionTitle
+    )
+
+    $escapedTitle = [regex]::Escape($SectionTitle)
+    $pattern = "(?ims)^#{2,}\s*$escapedTitle[^\r\n]*\r?\n(?<body>.*?)(?=^#{1,}\s+|\z)"
+    $match = [regex]::Match($Markdown, $pattern)
+
+    if (-not $match.Success) {
+        return $null
+    }
+
+    return $match.Groups['body'].Value.Trim()
+}
+
+function Assert-VisualEvidenceSectionFilled {
+    param(
+        [Parameter(Mandatory = $true)]
+        [AllowEmptyString()]
+        [string]$PullRequestBody
+    )
+
+    $sectionBody = Get-MarkdownSectionBody -Markdown $PullRequestBody -SectionTitle 'Evidência visual'
+
+    if ([string]::IsNullOrWhiteSpace($sectionBody)) {
+        throw 'Seção Evidência visual deve incluir print, gravação ou justificativa explícita de ausência de impacto visual.'
+    }
+
+    $templateOnlyPattern = '(?ims)^\s*-\s*Inclua prints ou fluxo gravado curto demonstrando a mudança de interface\.\s*-\s*Explique rapidamente o que cada evidência comprova\.\s*-\s*Se não houver impacto visual, justificar explicitamente\.\s*$'
+    if ($sectionBody -match $templateOnlyPattern) {
+        throw 'Seção Evidência visual deve incluir print, gravação ou justificativa explícita de ausência de impacto visual.'
+    }
+}
+
+function Assert-DesignGuideImpactSectionFilled {
+    param(
+        [Parameter(Mandatory = $true)]
+        [AllowEmptyString()]
+        [string]$PullRequestBody
+    )
+
+    $sectionBody = Get-MarkdownSectionBody -Markdown $PullRequestBody -SectionTitle 'Impacto no DESIGN.md'
+
+    if ([string]::IsNullOrWhiteSpace($sectionBody)) {
+        throw 'Mudanças no DESIGN.md devem preencher a seção Impacto no DESIGN.md.'
+    }
+
+    $noImpactChecked = $sectionBody -match '(?im)^-\s*\[[xX]\]\s+Sem impacto no guia; esta PR apenas aplica padrões existentes\.'
+    $withImpactChecked = $sectionBody -match '(?im)^-\s*\[[xX]\]\s+Com impacto no guia; atualizei o `?DESIGN\.md`? nesta PR\.'
+
+    if (-not $noImpactChecked -and -not $withImpactChecked) {
+        throw 'Mudanças no DESIGN.md devem marcar uma opção de impacto no guia.'
+    }
+
+    if ($noImpactChecked -and $withImpactChecked) {
+        throw 'Mudanças no DESIGN.md devem marcar apenas uma opção de impacto no guia.'
+    }
+
+    if ($withImpactChecked) {
+        $summaryMatch = [regex]::Match($sectionBody, '(?im)^-\s*Resumo do impacto:\s*(?<summary>.+)$')
+        $summary = $summaryMatch.Groups['summary'].Value.Trim()
+
+        if (-not $summaryMatch.Success -or [string]::IsNullOrWhiteSpace($summary) -or $summary -match '^<!--.*-->$') {
+            throw 'Resumo do impacto no DESIGN.md deve descrever a mudança aplicada ao guia.'
+        }
+    }
+}
+
 function Assert-PullRequestDesignGovernance {
     param(
         [Parameter(Mandatory = $true)]
@@ -66,12 +140,18 @@ function Assert-PullRequestDesignGovernance {
         throw 'Falta seção obrigatória de evidência visual para mudança de frontend/UI.'
     }
 
+    Assert-VisualEvidenceSectionFilled -PullRequestBody $PullRequestBody
+
     if ($PullRequestBody -notmatch '(?im)^-\s*\[[xX]\]\s+Li e apliquei o `?DESIGN\.md`? nas decisões de UI/UX e arquitetura de interface desta PR\.') {
         throw 'Checklist de aderência ao DESIGN.md não marcado.'
     }
 
-    if ((Test-DesignGuideChanged -ChangedFiles $ChangedFiles) -and $PullRequestBody -notmatch '(?im)^#{2,}\s*Impacto no DESIGN\.md') {
-        throw 'Mudanças no DESIGN.md devem preencher a seção Impacto no DESIGN.md.'
+    if (Test-DesignGuideChanged -ChangedFiles $ChangedFiles) {
+        if ($PullRequestBody -notmatch '(?im)^#{2,}\s*Impacto no DESIGN\.md') {
+            throw 'Mudanças no DESIGN.md devem preencher a seção Impacto no DESIGN.md.'
+        }
+
+        Assert-DesignGuideImpactSectionFilled -PullRequestBody $PullRequestBody
     }
 }
 
