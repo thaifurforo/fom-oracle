@@ -12,7 +12,7 @@ colors:
   border: "#BD8E69"
   ink: "#33251F"
   muted: "#7F694F"
-  danger: "#C05A65"
+  danger: "#B94B5A"
   success: "#5F9F6B"
   warning: "#D88A45"
 typography:
@@ -120,7 +120,7 @@ components:
     padding: 8px
   status-pill-danger:
     backgroundColor: "{colors.danger}"
-    textColor: "{colors.ink}"
+    textColor: "{colors.surface}"
     typography: "{typography.label-caps}"
     rounded: "{rounded.pill}"
     padding: 8px

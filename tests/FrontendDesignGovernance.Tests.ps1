@@ -108,6 +108,25 @@ Print anexado.
         } | Should -Throw 'Seção Evidência visual deve incluir print, gravação ou justificativa explícita de ausência de impacto visual.'
     }
 
+    It 'accepts visual evidence heading without accent when content is filled' {
+        $body = @'
+## Aderência ao DESIGN.md
+
+- [x] Li e apliquei o `DESIGN.md` nas decisões de UI/UX e arquitetura de interface desta PR.
+
+## Evidencia visual
+
+Sem impacto visual runtime; mudança validada por inspeção.
+'@
+
+        {
+            Assert-FrontendDesignGovernance `
+                -PullRequestBody $body `
+                -ChangedFiles @('frontend/src/features/home/Home.tsx') `
+                -RepositoryRoot $script:testRoot
+        } | Should -Not -Throw
+    }
+
     It 'fails frontend PRs when the DESIGN.md checklist is not checked' {
         $body = @'
 ## Aderência ao DESIGN.md
@@ -252,6 +271,20 @@ export function Home() { return <img src={concept} /> }
         Set-Content -LiteralPath (Join-Path $script:testRoot 'frontend/src/features/home/Home.tsx') -Value @'
 import { readTextFile } from "@tauri-apps/plugin-fs";
 export async function load() { return readTextFile("save.dat"); }
+'@
+
+        {
+            Assert-FrontendDesignGovernance `
+                -PullRequestBody $script:validBody `
+                -ChangedFiles @('frontend/src/features/home/Home.tsx') `
+                -RepositoryRoot $script:testRoot
+        } | Should -Throw 'Frontend não pode acessar filesystem diretamente; use a Local API do sidecar. Arquivo: frontend/src/features/home/Home.tsx'
+    }
+
+    It 'fails when frontend imports node filesystem promises directly' {
+        Set-Content -LiteralPath (Join-Path $script:testRoot 'frontend/src/features/home/Home.tsx') -Value @'
+import { readFile } from "node:fs/promises";
+export async function load() { return readFile("save.dat", "utf8"); }
 '@
 
         {

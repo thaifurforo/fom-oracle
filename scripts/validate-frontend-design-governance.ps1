@@ -61,6 +61,23 @@ function Get-MarkdownSectionBody {
     return $match.Groups['body'].Value.Trim()
 }
 
+function Get-VisualEvidenceSectionBody {
+    param(
+        [Parameter(Mandatory = $true)]
+        [AllowEmptyString()]
+        [string]$Markdown
+    )
+
+    $pattern = "(?ims)^#{2,}\s*Evid[eê]ncia visual[^\r\n]*\r?\n(?<body>.*?)(?=^#{1,}\s+|\z)"
+    $match = [regex]::Match($Markdown, $pattern)
+
+    if (-not $match.Success) {
+        return $null
+    }
+
+    return $match.Groups['body'].Value.Trim()
+}
+
 function Assert-VisualEvidenceSectionFilled {
     param(
         [Parameter(Mandatory = $true)]
@@ -68,7 +85,7 @@ function Assert-VisualEvidenceSectionFilled {
         [string]$PullRequestBody
     )
 
-    $sectionBody = Get-MarkdownSectionBody -Markdown $PullRequestBody -SectionTitle 'Evidência visual'
+    $sectionBody = Get-VisualEvidenceSectionBody -Markdown $PullRequestBody
 
     if ([string]::IsNullOrWhiteSpace($sectionBody)) {
         throw 'Seção Evidência visual deve incluir print, gravação ou justificativa explícita de ausência de impacto visual.'
@@ -188,7 +205,7 @@ function Assert-FrontendDesignBoundaries {
             Message = 'Frontend não pode importar concept art ou protótipos HTML como asset de runtime/UI/bundle.'
         },
         @{
-            Pattern = '(?i)(from\s+[''"](?:node:)?fs[''"]|require\([''"](?:node:)?fs[''"]\)|@tauri-apps/plugin-fs|readTextFile|writeTextFile|BaseDirectory)'
+            Pattern = '(?i)(from\s+[''"](?:node:)?fs(?:/promises)?[''"]|require\([''"](?:node:)?fs(?:/promises)?[''"]\)|@tauri-apps/plugin-fs|readTextFile|writeTextFile|BaseDirectory)'
             Message = 'Frontend não pode acessar filesystem diretamente; use a Local API do sidecar.'
         },
         @{
