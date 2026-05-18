@@ -108,6 +108,45 @@ Print anexado.
         } | Should -Throw 'Seção Evidência visual deve incluir print, gravação ou justificativa explícita de ausência de impacto visual.'
     }
 
+    It 'fails frontend PRs when the visual evidence section only keeps one template instruction' {
+        $body = @'
+## Aderência ao DESIGN.md
+
+- [x] Li e apliquei o `DESIGN.md` nas decisões de UI/UX e arquitetura de interface desta PR.
+
+## Evidência visual
+
+- Inclua prints ou fluxo gravado curto demonstrando a mudança de interface.
+'@
+
+        {
+            Assert-FrontendDesignGovernance `
+                -PullRequestBody $body `
+                -ChangedFiles @('frontend/src/features/home/Home.tsx') `
+                -RepositoryRoot $script:testRoot
+        } | Should -Throw 'Seção Evidência visual deve incluir print, gravação ou justificativa explícita de ausência de impacto visual.'
+    }
+
+    It 'fails frontend PRs when the visual evidence section only keeps two template instructions' {
+        $body = @'
+## Aderência ao DESIGN.md
+
+- [x] Li e apliquei o `DESIGN.md` nas decisões de UI/UX e arquitetura de interface desta PR.
+
+## Evidência visual
+
+- Inclua prints ou fluxo gravado curto demonstrando a mudança de interface.
+- Explique rapidamente o que cada evidência comprova.
+'@
+
+        {
+            Assert-FrontendDesignGovernance `
+                -PullRequestBody $body `
+                -ChangedFiles @('frontend/src/features/home/Home.tsx') `
+                -RepositoryRoot $script:testRoot
+        } | Should -Throw 'Seção Evidência visual deve incluir print, gravação ou justificativa explícita de ausência de impacto visual.'
+    }
+
     It 'accepts visual evidence heading without accent when content is filled' {
         $body = @'
 ## Aderência ao DESIGN.md

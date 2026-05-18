@@ -61,4 +61,4 @@ Descreva, em poucas linhas, o objetivo desta PR e o problema que ela resolve.
 - [ ] A PR referencia a issue correta com `Closes`, `Fixes` ou `Resolves`.
 - [ ] Há exatamente uma label de impacto de release, quando a branch aponta para `main`.
 - [ ] A validação foi registrada antes do merge.
-- [ ] Para PR de frontend/UI: checklist de aderência ao `DESIGN.md`, impacto no guia e evidência visual preenchidos.
+- [ ] Para PR de frontend/UI: checklist de aderência ao `DESIGN.md` e evidência visual preenchidos; impacto no guia preenchido quando o `DESIGN.md` for alterado.

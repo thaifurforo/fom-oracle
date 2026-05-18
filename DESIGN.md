@@ -221,7 +221,7 @@ A paleta combina uma base clara e acolhedora com acentos pastéis mais coloridos
 - **Border (`#BD8E69`)**: borda terrosa para molduras, divisões e sensação artesanal.
 - **Ink (`#33251F`)**: texto principal e ícones funcionais. **Texto de botões deve usar esta cor.**
 - **Muted (`#7F694F`)**: metadados, labels, descrições secundárias e texto de apoio.
-- **Danger (`#C05A65`)**: falhas, inconsistências de save e ações destrutivas.
+- **Danger (`#B94B5A`)**: falhas, inconsistências de save e ações destrutivas.
 - **Success (`#5F9F6B`)**: carregamento bem-sucedido, conexão ativa e estados concluídos.
 - **Warning (`#D88A45`)**: atenção, leitura parcial, conflito de dados e ação pendente.
 

@@ -24,7 +24,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          git diff --name-only "${{ github.event.pull_request.base.sha }}" "${{ github.event.pull_request.head.sha }}" > changed_files.txt
+          merge_base="$(git merge-base "${{ github.event.pull_request.base.sha }}" "${{ github.event.pull_request.head.sha }}")"
+          git diff --name-only "$merge_base" "${{ github.event.pull_request.head.sha }}" > changed_files.txt
           if grep -E '^(frontend/|DESIGN\.md|\.catalog/prototypes/)' changed_files.txt >/dev/null; then
             echo "needs_governance=true" >> "$GITHUB_OUTPUT"
           else

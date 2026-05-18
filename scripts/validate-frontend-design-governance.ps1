@@ -91,8 +91,23 @@ function Assert-VisualEvidenceSectionFilled {
         throw 'Seção Evidência visual deve incluir print, gravação ou justificativa explícita de ausência de impacto visual.'
     }
 
-    $templateOnlyPattern = '(?ims)^\s*-\s*Inclua prints ou fluxo gravado curto demonstrando a mudança de interface\.\s*-\s*Explique rapidamente o que cada evidência comprova\.\s*-\s*Se não houver impacto visual, justificar explicitamente\.\s*$'
-    if ($sectionBody -match $templateOnlyPattern) {
+    $boilerplateLines = @(
+        'Inclua prints ou fluxo gravado curto demonstrando a mudança de interface.',
+        'Explique rapidamente o que cada evidência comprova.',
+        'Se não houver impacto visual, justificar explicitamente.'
+    )
+
+    $contentLines = @($sectionBody -split '\r?\n' | Where-Object {
+            $line = $_.Trim()
+            if ([string]::IsNullOrWhiteSpace($line)) {
+                return $false
+            }
+
+            $normalizedLine = ($line -replace '^\s*-\s*', '').Trim()
+            return $boilerplateLines -notcontains $normalizedLine
+        })
+
+    if ($contentLines.Count -eq 0) {
         throw 'Seção Evidência visual deve incluir print, gravação ou justificativa explícita de ausência de impacto visual.'
     }
 }
